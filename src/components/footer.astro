@@ -1,15 +1,12 @@
 ---
-import { Icon } from "astro-icon/components";
+import IconButton from "./icon-button.astro";
 ---
 
-<footer class="bg-gray-800 px-6 py-12 text-white">
-  <div class="mx-auto max-w-7xl">
+<footer class="bg-neutral-800 py-12 text-white">
+  <div class="mx-auto max-w-7xl px-6">
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
       <div class="flex items-center">
-        <h2 class="text-2xl font-bold">
-          <span class="text-red-600">지스트</span>
-          <span class="text-white">신문</span>
-        </h2>
+        <img src="/logo.png" alt="지스트신문" class="h-8" />
       </div>
 
       <div>
@@ -26,20 +23,20 @@ import { Icon } from "astro-icon/components";
       <div>
         <h3 class="mb-4 text-lg font-bold uppercase">Follow Us</h3>
         <div class="flex gap-3">
-          <a
+          <IconButton
+            icon="tabler:brand-facebook"
+            label="Facebook"
             href="#"
-            class="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-700 transition-colors hover:bg-gray-600"
-            aria-label="Facebook"
-          >
-            <Icon name="tabler:brand-facebook" class="h-5 w-5" />
-          </a>
-          <a
+            class="h-10 w-10 bg-neutral-700 hover:bg-neutral-600"
+            iconClass="h-5 w-5"
+          />
+          <IconButton
+            icon="tabler:brand-instagram"
+            label="Instagram"
             href="#"
-            class="flex h-10 w-10 items-center justify-center rounded-lg bg-gray-700 transition-colors hover:bg-gray-600"
-            aria-label="Instagram"
-          >
-            <Icon name="tabler:brand-instagram" class="h-5 w-5" />
-          </a>
+            class="h-10 w-10 bg-neutral-700 hover:bg-neutral-600"
+            iconClass="h-5 w-5"
+          />
         </div>
       </div>
     </div>

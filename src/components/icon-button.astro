@@ -1,0 +1,35 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  icon: string;
+  label: string;
+  href?: string;
+  class?: string;
+  iconClass?: string;
+}
+
+const {
+  icon,
+  label,
+  href,
+  class: className = "",
+  iconClass = "h-6 w-6 text-neutral-600",
+} = Astro.props;
+
+const baseClass = href
+  ? "flex items-center justify-center rounded-lg transition-colors"
+  : "rounded-lg p-2 transition-colors hover:bg-neutral-100";
+---
+
+{
+  href ? (
+    <a href={href} class={`${baseClass} ${className}`} aria-label={label}>
+      <Icon name={icon} class={iconClass} />
+    </a>
+  ) : (
+    <button class={`${baseClass} ${className}`} aria-label={label}>
+      <Icon name={icon} class={iconClass} />
+    </button>
+  )
+}
