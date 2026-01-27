@@ -1,4 +1,6 @@
 ---
+import { cn } from "../lib/utils";
+
 interface Props {
   items: Array<{ label: string; href: string; active?: boolean }>;
 }
@@ -14,11 +16,12 @@ const { items } = Astro.props;
           <li>
             <a
               href={item.href}
-              class={`block border-b-2 py-4 text-nav text-neutral-600 transition-colors hover:text-neutral-900 ${
+              class={cn(
+                "text-nav block border-b-2 py-4 text-neutral-600 transition-colors hover:text-neutral-900",
                 item.active
                   ? "border-primary"
-                  : "border-transparent hover:border-neutral-300"
-              }`}
+                  : "border-transparent hover:border-neutral-300",
+              )}
             >
               {item.label}
             </a>

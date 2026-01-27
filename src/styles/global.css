@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@import "@fontsource/pretendard/variable.css";
+@import "@fontsource/pretendard";
 
 @theme {
   /* Colors */
@@ -8,10 +8,10 @@
 
   /* Typography - Font Family */
   --font-family-sans:
-    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
-    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
-    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
-    "Segoe UI Symbol", sans-serif;
+    "Pretendard", Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+    Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR",
+    "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+    sans-serif;
 
   /* Typography Tokens */
   /* Headings */

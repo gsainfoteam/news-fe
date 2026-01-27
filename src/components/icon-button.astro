@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { cn } from "../lib/utils";
 
 interface Props {
   icon: string;
@@ -24,11 +25,11 @@ const baseClass = href
 
 {
   href ? (
-    <a href={href} class={`${baseClass} ${className}`} aria-label={label}>
+    <a href={href} class={cn(baseClass, className)} aria-label={label}>
       <Icon name={icon} class={iconClass} />
     </a>
   ) : (
-    <button class={`${baseClass} ${className}`} aria-label={label}>
+    <button class={cn(baseClass, className)} aria-label={label}>
       <Icon name={icon} class={iconClass} />
     </button>
   )
