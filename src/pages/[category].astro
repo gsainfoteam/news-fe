@@ -1,0 +1,21 @@
+---
+import Layout from "../layouts/layout.astro";
+import { CATEGORIES, CATEGORIES_MAP } from "../lib/constants";
+
+export function getStaticPaths() {
+  return CATEGORIES.map((category) => ({
+    params: { category: category.slug },
+  }));
+}
+
+const { category } = Astro.params;
+const categoryName = category ? CATEGORIES_MAP[category] : null;
+
+if (!categoryName) {
+  return Astro.redirect("/404");
+}
+---
+
+<Layout>
+  <h1>{categoryName}</h1>
+</Layout>

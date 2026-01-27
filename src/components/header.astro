@@ -2,24 +2,25 @@
 import IconButton from "./icon-button.astro";
 import SearchInput from "./search-input.astro";
 import NavigationBar from "./navigation-bar.astro";
+import { CATEGORIES } from "../lib/constants";
 
-const navItems = [
-  { label: "대학", href: "#", active: true },
-  { label: "사회", href: "#" },
-  { label: "학술·연구", href: "#" },
-  { label: "문화", href: "#" },
-  { label: "기획·특집", href: "#" },
-  { label: "현장르포", href: "#" },
-  { label: "오피니언", href: "#" },
-  { label: "제보하기", href: "#" },
-];
+const currentPath = Astro.url.pathname;
+
+const navItems = CATEGORIES.map((category) => ({
+  label: category.label,
+  href: `/${category.slug}`,
+  slug: category.slug,
+  active: currentPath === `/${category.slug}`,
+}));
 ---
 
-<header class="border-b border-neutral-200 bg-white">
+<header class="border-b border-neutral-200 bg-white/80 backdrop-blur-md">
   <div class="mx-auto max-w-7xl px-6 py-4">
     <div class="flex items-center justify-between gap-4">
       <div class="shrink-0">
-        <img src="/logo.png" width="120px" alt="지스트신문" class="h-8" />
+        <a href="/">
+          <img src="/logo.png" width="120px" alt="지스트신문" />
+        </a>
       </div>
 
       <SearchInput class="max-w-2xl flex-1" />

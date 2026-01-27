@@ -2,13 +2,13 @@
 import { cn } from "../lib/utils";
 
 interface Props {
-  items: Array<{ label: string; href: string; active?: boolean }>;
+  items: { label: string; href: string; active?: boolean }[];
 }
 
 const { items } = Astro.props;
 ---
 
-<nav class="border-t border-neutral-200">
+<nav>
   <div class="mx-auto max-w-7xl px-6">
     <ul class="flex items-center gap-8 overflow-x-auto">
       {
@@ -17,7 +17,7 @@ const { items } = Astro.props;
             <a
               href={item.href}
               class={cn(
-                "text-nav block border-b-2 py-4 text-neutral-600 transition-colors hover:text-neutral-900",
+                "text-nav block border-b-2 py-3 text-neutral-600 transition-colors hover:text-neutral-900",
                 item.active
                   ? "border-primary"
                   : "border-transparent hover:border-neutral-300",
