@@ -8,15 +8,9 @@ const tokens = [
   "text-h3",
   "text-h4",
   "text-body",
-  "text-body-bold",
-  "text-body-large",
   "text-caption",
-  "text-caption-bold",
-  "text-small",
   "text-nav",
   "text-button",
-  "text-button-large",
-  "text-logo",
 ] as const;
 
 const twMergeConfig = {

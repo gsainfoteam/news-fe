@@ -6,7 +6,13 @@ import IconButton from "./icon-button.astro";
   <div class="mx-auto max-w-7xl px-6">
     <div class="grid grid-cols-1 gap-20 md:grid-cols-3">
       <div class="flex items-center">
-        <img src="/logo.png" width="150px" alt="지스트신문" />
+        <a
+          href="/"
+          aria-label="홈으로 이동"
+          class="inline-block cursor-pointer rounded-md focus-visible:ring-2 focus-visible:ring-white/60 focus-visible:outline-none"
+        >
+          <img src="/logo.png" width="150px" alt="지스트신문" />
+        </a>
       </div>
 
       <div class="flex flex-col gap-4">

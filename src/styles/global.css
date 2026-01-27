@@ -15,37 +15,25 @@
 
   /* Typography Tokens */
   /* Headings */
-  --text-h1: 32px;
+  --text-h1: 22px;
   --text-h1--font-weight: 700;
 
-  --text-h2: 24px;
+  --text-h2: 20px;
   --text-h2--font-weight: 700;
 
-  --text-h3: 20px;
+  --text-h3: 18px;
   --text-h3--font-weight: 600;
 
-  --text-h4: 18px;
+  --text-h4: 17px;
   --text-h4--font-weight: 600;
 
   /* Body Text */
   --text-body: 16px;
   --text-body--font-weight: 400;
 
-  --text-body-bold: 16px;
-  --text-body-bold--font-weight: 600;
-
-  --text-body-large: 18px;
-  --text-body-large--font-weight: 400;
-
   /* Small Text */
   --text-caption: 14px;
   --text-caption--font-weight: 400;
-
-  --text-caption-bold: 14px;
-  --text-caption-bold--font-weight: 600;
-
-  --text-small: 12px;
-  --text-small--font-weight: 400;
 
   /* Navigation */
   --text-nav: 14px;
@@ -54,18 +42,12 @@
   /* Buttons */
   --text-button: 16px;
   --text-button--font-weight: 600;
-
-  --text-button-large: 18px;
-  --text-button-large--font-weight: 600;
-
-  /* Logo */
-  --text-logo: 24px;
-  --text-logo--font-weight: 700;
 }
 
 /* Apply font family globally */
-body {
+html {
   font-family: var(--font-family-sans);
+  overscroll-behavior-y: none;
 }
 
 /* Apply typography tokens to default HTML elements */

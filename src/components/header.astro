@@ -17,9 +17,13 @@ const navItems = CATEGORIES.map((category) => ({
 <header class="border-b border-neutral-200 bg-white/80 backdrop-blur-md">
   <div class="mx-auto max-w-7xl px-6 py-4">
     <div class="flex items-center justify-between gap-4">
-      <div class="shrink-0">
-        <a href="/">
-          <img src="/logo.png" width="120px" alt="지스트신문" />
+      <div class="flex shrink-0 items-center">
+        <a
+          href="/"
+          aria-label="홈으로 이동"
+          class="inline-block cursor-pointer rounded-md focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:outline-none"
+        >
+          <img src="/logo.png" width="120px" alt="지스트신문" class="block" />
         </a>
       </div>
 
