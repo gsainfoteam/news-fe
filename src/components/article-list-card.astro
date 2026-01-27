@@ -1,0 +1,94 @@
+---
+import Article from "./article.astro";
+import Button from "./button.astro";
+import { cv } from "../lib/utils";
+
+export interface ArticleData {
+  category: string;
+  title: string;
+  author: string;
+  publishedAt: string;
+  thumbnailImage?: string;
+  mainImage?: string;
+  href: string;
+}
+
+interface Props {
+  title?: string;
+  buttonLabel?: string;
+  buttonHref?: string;
+  articles: ArticleData[];
+  orientation?: "vertical" | "horizontal";
+  class?: string;
+}
+
+const {
+  title,
+  buttonLabel = "Button",
+  buttonHref,
+  articles,
+  orientation = "vertical",
+  class: className = "",
+} = Astro.props;
+
+const container = cv({
+  base: "flex flex-col gap-4 rounded-2xl bg-white p-5",
+  variants: {
+    orientation: {
+      vertical: "",
+      horizontal: "",
+    },
+  },
+});
+
+const list = cv({
+  base: "flex flex-col gap-4",
+  variants: {
+    orientation: {
+      vertical: "",
+      horizontal: "grid grid-cols-1 md:grid-cols-2 gap-4",
+    },
+  },
+});
+---
+
+<div class={container({ orientation, class: className })}>
+  {
+    title && (
+      <div class="flex items-center justify-between">
+        <h2 class="text-neutral-900">{title}</h2>
+      </div>
+    )
+  }
+
+  <div class={list({ orientation })}>
+    {
+      articles.map((article) => (
+        <Article
+          orientation={orientation}
+          category={article.category}
+          title={article.title}
+          author={article.author}
+          publishedAt={article.publishedAt}
+          thumbnailImage={article.thumbnailImage}
+          mainImage={article.mainImage}
+          href={article.href}
+        />
+      ))
+    }
+  </div>
+
+  {
+    buttonLabel && (
+      <div class="flex justify-center">
+        <Button
+          label={buttonLabel}
+          variant="secondary"
+          rightIcon="tabler:chevron-right"
+          href={buttonHref}
+          class="w-full"
+        />
+      </div>
+    )
+  }
+</div>

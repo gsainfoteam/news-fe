@@ -1,7 +1,75 @@
 ---
 import Layout from "../layouts/layout.astro";
+import ArticleListCard from "../components/article-list-card.astro";
+import type { ArticleData } from "../components/article-list-card.astro";
+
+// 왼쪽 열 - 기획/특집 기사 (horizontal)
+const featuredArticles: ArticleData[] = [
+  {
+    category: "분류 없음",
+    title: "빠른 콘텐츠와 느린 식사법",
+    author: "지스트 신문사",
+    publishedAt: "2025년 12월 26일",
+    href: "#",
+    mainImage:
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+  },
+  {
+    category: "4컷 만화/만평",
+    title: "[만평] 화석연료 사용",
+    author: "지스트 신문사",
+    publishedAt: "15시간 전",
+    href: "#",
+    mainImage:
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+  },
+];
+
+// 오른쪽 열 - 트렌드 기사 (vertical)
+const trendArticles: ArticleData[] = [
+  {
+    category: "사회",
+    title: "2025 APEC Among Engineers",
+    author: "장도윤",
+    publishedAt: "15시간 전",
+    href: "#",
+    thumbnailImage:
+      "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=200&h=200&fit=crop",
+  },
+  {
+    category: "대학",
+    title: "학생들 '호실 부족' 우려... 대학생활관 현황과 대책은",
+    author: "장도윤",
+    publishedAt: "2026. 1. 26",
+    href: "#",
+    thumbnailImage:
+      "https://images.unsplash.com/photo-1514565131-fce0801e5785?w=200&h=200&fit=crop",
+  },
+];
 ---
 
 <Layout>
-  <h1>지스트신문</h1>
+  <div class="container mx-auto">
+    <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <!-- 왼쪽 열: 기획/특집 -->
+      <div>
+        <ArticleListCard
+          articles={featuredArticles}
+          orientation="horizontal"
+          buttonLabel="기획/특집 더 보러가기"
+          buttonHref="/special"
+        />
+      </div>
+
+      <!-- 오른쪽 열: 트렌드 -->
+      <div>
+        <ArticleListCard
+          articles={trendArticles}
+          orientation="vertical"
+          buttonLabel="트렌드 더 보러가기"
+          buttonHref="/trend"
+        />
+      </div>
+    </div>
+  </div>
 </Layout>

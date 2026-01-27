@@ -1,0 +1,28 @@
+---
+import Badge from "./badge.astro";
+
+interface Props {
+  category: string;
+  class?: string;
+}
+
+const { category, class: className = "" } = Astro.props;
+
+const badgeVariantMap: Record<string, "default" | "blue" | "red" | "green"> = {
+  사회: "red",
+  대학: "green",
+  "학술·연구": "blue",
+  문화: "default",
+  "기획·특집": "default",
+  현장르포: "default",
+  오피니언: "default",
+  제보하기: "default",
+  "분류 없음": "green",
+  "4컷 만화/만평": "blue",
+};
+
+const variant = badgeVariantMap[category] || "default";
+---
+
+<Badge label={category} variant={variant} class={className} />
+

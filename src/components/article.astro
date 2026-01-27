@@ -1,0 +1,127 @@
+---
+import CategoryBadge from "./category-badge.astro";
+import { cv } from "../lib/utils";
+
+interface Props {
+  orientation?: "vertical" | "horizontal";
+  category: string;
+  title: string;
+  author: string;
+  publishedAt: string;
+  thumbnailImage?: string;
+  mainImage?: string;
+  href: string;
+  class?: string;
+}
+
+const {
+  orientation = "vertical",
+  category,
+  title,
+  author,
+  publishedAt,
+  thumbnailImage,
+  mainImage,
+  href,
+  class: className = "",
+} = Astro.props;
+
+const article = cv({
+  base: "flex",
+  variants: {
+    orientation: {
+      vertical: "flex-row gap-4",
+      horizontal: "flex-col gap-3",
+    },
+  },
+});
+
+const contentWrapper = cv({
+  base: "flex flex-col",
+  variants: {
+    orientation: {
+      vertical: "flex-1",
+      horizontal: "w-full",
+    },
+  },
+});
+
+const thumbnailWrapper = cv({
+  base: "overflow-hidden rounded-2xl",
+  variants: {
+    orientation: {
+      vertical: "w-20 h-20 flex-shrink-0",
+      horizontal: "hidden",
+    },
+  },
+});
+
+const thumbnail = cv({
+  base: "h-full w-full object-cover transition-transform duration-200 ease-out will-change-transform group-hover:scale-[1.06]",
+  variants: {
+    orientation: {
+      vertical: "",
+      horizontal: "hidden",
+    },
+  },
+});
+
+const mainImgWrapper = cv({
+  base: "overflow-hidden rounded-2xl w-full",
+  variants: {
+    orientation: {
+      vertical: "hidden",
+      horizontal: "block",
+    },
+  },
+});
+
+const mainImg = cv({
+  base: "w-full object-cover transition-transform duration-200 ease-out will-change-transform group-hover:scale-[1.06]",
+  variants: {
+    orientation: {
+      vertical: "hidden",
+      horizontal: "block",
+    },
+  },
+});
+---
+
+{
+  (
+    <a
+      href={href}
+      class="group block cursor-pointer rounded-xl focus-visible:ring-2 focus-visible:ring-neutral-300 focus-visible:outline-none"
+    >
+      <article class={article({ orientation, class: className })}>
+        {orientation === "horizontal" && mainImage && (
+          <div class={mainImgWrapper({ orientation })}>
+            <img src={mainImage} alt={title} class={mainImg({ orientation })} />
+          </div>
+        )}
+
+        <div class={contentWrapper({ orientation })}>
+          <div class="flex flex-col gap-2">
+            <CategoryBadge category={category} />
+            <h4 class="line-clamp-2 text-neutral-900 group-hover:underline">
+              {title}
+            </h4>
+            <p class="text-neutral-500">
+              By {author} · {publishedAt}
+            </p>
+          </div>
+        </div>
+
+        {orientation === "vertical" && thumbnailImage && (
+          <div class={thumbnailWrapper({ orientation })}>
+            <img
+              src={thumbnailImage}
+              alt={title}
+              class={thumbnail({ orientation })}
+            />
+          </div>
+        )}
+      </article>
+    </a>
+  )
+}
