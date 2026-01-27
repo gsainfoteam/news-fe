@@ -14,8 +14,11 @@ const navItems = CATEGORIES.map((category) => ({
 }));
 ---
 
-<header class="border-b border-neutral-200 bg-white/80 backdrop-blur-md">
-  <div class="mx-auto max-w-7xl px-6 py-4">
+<header
+  id="site-header"
+  class="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur-md transition-transform duration-200 ease-out will-change-transform"
+>
+  <div class="mx-auto max-w-7xl px-6 py-4" data-header-main>
     <div class="flex items-center justify-between gap-4">
       <div class="flex shrink-0 items-center">
         <a
@@ -36,5 +39,50 @@ const navItems = CATEGORIES.map((category) => ({
     </div>
   </div>
 
-  <NavigationBar items={navItems} />
+  <div data-header-nav>
+    <NavigationBar items={navItems} />
+  </div>
 </header>
+
+<script>
+  const header = document.getElementById("site-header");
+  if (header) {
+    let lastY = window.scrollY;
+    let ticking = false;
+    const main = header.querySelector(
+      "[data-header-main]",
+    ) as HTMLElement | null;
+    const hideOffsetPx = main?.offsetHeight ?? 72;
+    const thresholdPx = 6;
+
+    const update = () => {
+      const y = window.scrollY;
+      const delta = y - lastY;
+
+      if (y <= 0) {
+        // 페이지 최상단
+        header.style.transform = "translateY(0)";
+      } else if (delta > thresholdPx) {
+        // 아래로 스크롤
+        header.style.transform = `translateY(-${hideOffsetPx}px)`;
+      } else if (delta < -thresholdPx) {
+        // 위로 스크롤
+        header.style.transform = "translateY(0)";
+      }
+
+      lastY = y;
+      ticking = false;
+    };
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (!ticking) {
+          window.requestAnimationFrame(update);
+          ticking = true;
+        }
+      },
+      { passive: true },
+    );
+  }
+</script>
