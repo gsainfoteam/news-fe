@@ -14,9 +14,9 @@ const { items } = Astro.props;
           <li>
             <a
               href={item.href}
-              class={`block border-b-2 py-4 text-sm font-medium text-neutral-600 transition-colors hover:text-neutral-900 ${
+              class={`block border-b-2 py-4 text-nav text-neutral-600 transition-colors hover:text-neutral-900 ${
                 item.active
-                  ? "border-red-600"
+                  ? "border-primary"
                   : "border-transparent hover:border-neutral-300"
               }`}
             >

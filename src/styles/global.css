@@ -1,1 +1,96 @@
 @import "tailwindcss";
+@import "@fontsource/pretendard/variable.css";
+
+@theme {
+  /* Colors */
+  --color-primary: #de3624;
+  --color-secondary: #59625d;
+
+  /* Typography - Font Family */
+  --font-family-sans:
+    "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
+
+  /* Typography Tokens */
+  /* Headings */
+  --text-h1: 32px;
+  --text-h1--font-weight: 700;
+
+  --text-h2: 24px;
+  --text-h2--font-weight: 700;
+
+  --text-h3: 20px;
+  --text-h3--font-weight: 600;
+
+  --text-h4: 18px;
+  --text-h4--font-weight: 600;
+
+  /* Body Text */
+  --text-body: 16px;
+  --text-body--font-weight: 400;
+
+  --text-body-bold: 16px;
+  --text-body-bold--font-weight: 600;
+
+  --text-body-large: 18px;
+  --text-body-large--font-weight: 400;
+
+  /* Small Text */
+  --text-caption: 14px;
+  --text-caption--font-weight: 400;
+
+  --text-caption-bold: 14px;
+  --text-caption-bold--font-weight: 600;
+
+  --text-small: 12px;
+  --text-small--font-weight: 400;
+
+  /* Navigation */
+  --text-nav: 14px;
+  --text-nav--font-weight: 500;
+
+  /* Buttons */
+  --text-button: 16px;
+  --text-button--font-weight: 600;
+
+  --text-button-large: 18px;
+  --text-button-large--font-weight: 600;
+
+  /* Logo */
+  --text-logo: 24px;
+  --text-logo--font-weight: 700;
+}
+
+/* Apply font family globally */
+body {
+  font-family: var(--font-family-sans);
+}
+
+/* Apply typography tokens to default HTML elements */
+h1 {
+  font-size: var(--text-h1);
+  font-weight: var(--text-h1--font-weight);
+}
+
+h2 {
+  font-size: var(--text-h2);
+  font-weight: var(--text-h2--font-weight);
+}
+
+h3 {
+  font-size: var(--text-h3);
+  font-weight: var(--text-h3--font-weight);
+}
+
+h4 {
+  font-size: var(--text-h4);
+  font-weight: var(--text-h4--font-weight);
+}
+
+body,
+p {
+  font-size: var(--text-body);
+  font-weight: var(--text-body--font-weight);
+}

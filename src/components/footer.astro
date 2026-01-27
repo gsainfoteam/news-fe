@@ -9,19 +9,21 @@ import IconButton from "./icon-button.astro";
         <img src="/logo.png" alt="지스트신문" class="h-8" />
       </div>
 
-      <div>
-        <h3 class="mb-4 text-lg font-bold uppercase">About Us</h3>
-        <div class="space-y-2 text-sm">
+      <div class="flex flex-col gap-4">
+        <h4 class="uppercase">About Us</h4>
+        <div class="flex flex-col gap-2 text-caption">
           <p>광주광역시 북구 첨단과기로123 제1학생회관 3층 GIST신문사</p>
           <p>Email: editor@gist.ac.kr</p>
           <p>편집장: 김민석 | 웹관리: 최경민</p>
-          <p class="mt-4">Copyright ⓒ지스트신문. All rights reserved.</p>
-          <p class="mt-2 underline">이메일무단수집거부</p>
+        </div>
+        <div class="flex flex-col gap-2 text-caption">
+          <p>Copyright ⓒ지스트신문. All rights reserved.</p>
+          <p class="underline">이메일무단수집거부</p>
         </div>
       </div>
 
-      <div>
-        <h3 class="mb-4 text-lg font-bold uppercase">Follow Us</h3>
+      <div class="flex flex-col gap-4">
+        <h4 class="uppercase">Follow Us</h4>
         <div class="flex gap-3">
           <IconButton
             icon="tabler:brand-facebook"
