@@ -1,6 +1,10 @@
 @import "tailwindcss";
 @import "@fontsource/pretendard";
 
+/* Drive Tailwind's `dark:` variant from a `data-theme="dark"` attribute
+   (toggled by the Storybook theme toolbar / a future app-level switch). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *, .dark, .dark *));
+
 @theme {
   /* Colors */
   --color-primary: #de3624;

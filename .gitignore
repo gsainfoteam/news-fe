@@ -2,6 +2,10 @@
 dist/
 # generated types
 .astro/
+# generated api schema & i18n resource types
+src/@types/*.ts
+# storybook
+storybook-static/
 
 # dependencies
 node_modules/

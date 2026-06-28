@@ -1,6 +1,6 @@
 ---
-import Layout from "../layouts/layout.astro";
-import { CATEGORIES, CATEGORIES_MAP } from "../lib/constants";
+import { CATEGORIES, CATEGORIES_MAP } from "@/features/category";
+import Layout from "@/layouts/layout.astro";
 
 export function getStaticPaths() {
   return CATEGORIES.map((category) => ({
