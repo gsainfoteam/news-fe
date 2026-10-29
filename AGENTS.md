@@ -35,7 +35,7 @@ This project follows the MVVM (Model-View-ViewModel) pattern and a feature-based
   - Each feature contains: `models/`, `viewmodels/`, `views/`, `index.ts`
 - **Common**: `src/common/` — Shared code across features
   - `components/` — Reusable UI components (`ui/` primitives + `layout/` frame)
-  - `lib/` — Library configurations: `cn`/`cv` (styling), `api` (hey-api client runtime config), `i18n` (i18next + react-i18next), `dayjs`, `languages`, `query-client` (TanStack Query)
+  - `lib/` — Library configurations: `cn`/`cv` (styling; `cn` is the `cn` package's `createCn` with the typography tokens registered as font sizes), `api` (hey-api client runtime config), `i18n` (i18next + react-i18next), `dayjs`, `languages`, `query-client` (TanStack Query)
   - `utils/` — Utility functions
   - `const/` — Shared constants
 - **Locales**: `public/locales/{lng}/{ns}.json` — translation resources (committed; managed by `gen:i18n`).
@@ -101,7 +101,7 @@ Enforced by `eslint-plugin-check-file`:
 - All files and folders under `src/` must use **kebab-case**.
   - Examples: `article-list-card/`, `category-badge.ts`, `badge-variant.ts`
 - Exception: `src/pages/` is exempt — Astro routing requires its own file naming convention (e.g. `[category].astro`, `index.astro`).
-- React component files are `index.tsx`; Astro component files are `index.astro` (see Component Folder below).
+- React component files are `index.tsx`; Astro component files are `index.astro` (see Component Folder below). shadcn primitives in `ui/` are `ui/<name>.tsx`.
 
 ## Import Conventions
 
@@ -124,12 +124,34 @@ Enforced by `eslint-plugin-import-x`:
 
 Split into **`ui/`** (primitives) and **`layout/`** (frame):
 
-#### `ui/` — Primitive components (React)
+#### `ui/` — Primitive components (shadcn/ui, Base UI)
 
+- Added with the shadcn CLI, not written by hand. Each primitive is `ui/<name>.tsx` as `shadcn add` writes it, with its story next to it (`ui/<name>.stories.tsx`).
 - No feature/domain imports: do not import from `@/features/*`.
 - Do not use feature viewmodels, domain logic, or `useTranslation` — primitives stay content-agnostic; pass translated text in as props.
 - Single-purpose building blocks mapping to one element or a small generic pattern.
-- Authored in React (`.tsx`) and covered by Storybook.
+
+Add or update a primitive:
+
+```bash
+bunx shadcn@latest add <name>   # add -o to pull an update over an existing file
+bun run ui:fix
+```
+
+`ui:fix` points the generated `cn` import at `@/common/lib/cn` and sorts imports with `eslint --fix`. Don't edit generated files beyond that, so `shadcn add -o` and `shadcn add --diff` keep working. To restyle or compose a primitive, wrap it in a component under `layout/` or `features/*/views/`.
+
+`components.json`:
+
+| Key | Value | Why |
+|---|---|---|
+| `style` | `base-nova` | Base UI primitives (`@base-ui/react`). Fixed after init. |
+| `tailwind.css` | `src/styles/global.css` | The CLI writes theme variables here (`@theme inline`, `:root`, `.dark`). |
+| `tailwind.cssVariables` | `true` | Semantic tokens (`bg-primary`, `text-muted-foreground`). |
+| `iconLibrary` | `lucide` | Registry icons become `lucide-react` imports. |
+| `aliases.ui` | `@/common/components/ui` | Where `add` writes files. |
+| `aliases.utils` | `@/common/lib/cn` | Registry files import `cn` from the `cn` package directly, so `ui:fix` rewrites that import. |
+| `aliases.components` / `lib` / `hooks` | `@/common/components` / `@/common/lib` / `@/common/hooks` | Generated imports resolve inside `src/common`. |
+| `rsc` | `false` | No React Server Components in Astro. |
 
 #### `layout/` — Frame components (React composites)
 
@@ -147,7 +169,7 @@ Split into **`ui/`** (primitives) and **`layout/`** (frame):
 
 ### Component Type Conventions
 
-- **React** components: use namespace merging for component-related types such as props and state.
+- **React** components you write: use namespace merging for component-related types such as props and state. shadcn primitives in `ui/` keep their generated inline prop types.
 
 ```tsx
 export function Button({ label, variant }: Button.Props) { ... }
@@ -164,7 +186,7 @@ export namespace Button {
 
 ### Component Folder & Storybook
 
-- Each component lives in a **folder named after the component** (kebab-case).
+- Each component you write (`layout/`, `features/*/views/components/`) lives in a **folder named after the component** (kebab-case). `ui/` follows the shadcn layout instead (see `ui/` above).
 - **Implementation**: `index.tsx` (React) or `index.astro` (Astro) inside that folder.
 - **Storybook** (React only): `index.stories.tsx` in the same folder.
 - Story `title` uses a domain prefix for sidebar grouping:
@@ -174,7 +196,7 @@ export namespace Button {
 ### Storybook Setup
 
 - Stories are picked up from `src/**/*.stories.tsx` via `@storybook/react-vite`. The global stylesheet (`src/styles/global.css`) and Tailwind theme tokens are loaded in `.storybook/preview.tsx` so stories render with project styling.
-- **Dark / Light mode**: toolbar toggle via `@storybook/addon-themes` (`withThemeByDataAttribute`), which sets `data-theme="dark"`/`"light"`. Tailwind's `dark:` variant responds to it (configured by `@custom-variant dark` in `global.css`).
+- **Dark / Light mode**: toolbar toggle via `@storybook/addon-themes` (`withThemeByClassName`), which puts the `dark` class on `<html>`. The class matches where shadcn writes its dark theme variables (`.dark` in `global.css`) and drives Tailwind's `dark:` variant (`@custom-variant dark`). An app-level theme switch should toggle the same class.
 - **i18n locale**: toolbar toggle (`ko`/`en`) wired by the `withLocale` decorator (`.storybook/decorators.tsx`) — it calls `i18n.changeLanguage` and wraps stories in `I18nextProvider`; dayjs locale syncs automatically. `public/` is served via `staticDirs` so the HTTP backend can load `/locales/*`.
 
 ## Commits & PRs

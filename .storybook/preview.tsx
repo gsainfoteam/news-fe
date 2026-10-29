@@ -1,4 +1,4 @@
-import { withThemeByDataAttribute } from "@storybook/addon-themes";
+import { withThemeByClassName } from "@storybook/addon-themes";
 import { type Preview } from "@storybook/react-vite";
 
 import { withLocale } from "./decorators";
@@ -31,21 +31,14 @@ const preview: Preview = {
     },
   },
   decorators: [
-    // Light / dark via `data-theme` (Tailwind `dark:` variant responds to it).
-    withThemeByDataAttribute({
-      themes: { light: "light", dark: "dark" },
+    // Light / dark via the `.dark` class on <html>; body colors come from the
+    // shadcn theme variables in global.css.
+    withThemeByClassName({
+      themes: { light: "", dark: "dark" },
       defaultTheme: "light",
-      attributeName: "data-theme",
     }),
     // i18n locale toolbar.
     withLocale,
-    // Themed canvas so the theme toggle is visible even on components that
-    // don't yet define their own `dark:` styles.
-    (Story) => (
-      <div className="bg-neutral-100 p-6 text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100">
-        <Story />
-      </div>
-    ),
   ],
 };
 
