@@ -1,31 +1,20 @@
-import { clsx, type ClassValue } from "clsx";
-import { extendTailwindMerge } from "tailwind-merge";
+import { createCn } from "cn/config";
 import { createTV } from "tailwind-variants";
 
-const tokens = [
-  "text-h1",
-  "text-h2",
-  "text-h3",
-  "text-h4",
-  "text-body",
-  "text-caption",
-  "text-nav",
-  "text-button",
-] as const;
-
+// Without this, `text-h1` reads as a text color: it would drop `text-primary`
+// and keep `text-sm`. Registering it as a font-size fixes both.
 const twMergeConfig = {
-  override: {
+  extend: {
     classGroups: {
-      "font-size": tokens,
-      "font-weight": tokens,
+      "font-size": [
+        {
+          text: ["h1", "h2", "h3", "h4", "body", "caption", "nav", "button"],
+        },
+      ],
     },
   },
 };
 
-const twMerge = extendTailwindMerge(twMergeConfig);
-
-export function cn(...classes: ClassValue[]) {
-  return twMerge(clsx(classes));
-}
+export const cn = createCn(twMergeConfig);
 
 export const cv = createTV({ twMerge: true, twMergeConfig });
