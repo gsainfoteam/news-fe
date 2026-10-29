@@ -173,6 +173,22 @@ export namespace Button {
   - `chore`: Maintenance tasks that don't affect runtime behavior.
   - `ci`: Changes to CI/CD configuration.
 
+## Parallel Sessions (GitButler)
+
+- One session = one Linear issue = one GitButler worktree. Sessions sharing the main checkout see each other's half-done edits and break `bun run check`/`build` for everyone.
+- Start: `but worktree new <linear-gitBranchName>` (e.g. `rhseung/nef-2`), which checks out under `~/.gitbutler-worktrees/news-fe/<slug>`. Run `bun install` there; `.env` is copied via `.worktreeinclude`.
+- Work and commit inside that directory: `but commit -m "..."` puts that worktree's changes on its branch. `but status` from any checkout shows every worktree as its own lane.
+- When done: `but pr new <branch> --draft`, then `but worktree remove <slug>` (the branch is kept).
+
+### Stacked PRs
+
+Linear `blocked by` maps to a stack: the blocked issue's branch sits on top of its blocker's branch, so each PR shows only its own diff.
+
+- Start a dependent issue on the blocker's latest commit: `but worktree new rhseung/nef-4 -A <commit-id>`, taking the commit ID from `but status`. `but status` then shows the new lane nested on the blocker's lane.
+- `but pr new <top-branch> --draft` pushes the branch and everything it rests on, and opens the missing PRs from the bottom up with the right bases. Don't use `gh pr create` for stacked branches.
+- Never `but move <branch> --above <blocker>` while the blocker is still checked out in a worktree: GitButler then switches the blocker's worktree to your branch and leaves yours detached. To pick up newer blocker commits, wait until the blocker's worktree is removed and then move, or wait until the blocker merges and run `but pull`.
+- Use `but worktree`, not the Claude desktop app's worktree toggle, so GitButler tracks the lane and `but pull` rebases it.
+
 ## LLM Guidance
 
 - Responses must be in Korean.
