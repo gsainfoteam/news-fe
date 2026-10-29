@@ -2,67 +2,18 @@
 import "@/styles/global.css";
 // Initialize i18next + dayjs locale sync once for every page (server render).
 import "@/common/lib/dayjs";
-import { Footer } from "@/common/components/layout/footer";
-import { Header } from "@/common/components/layout/header";
 ---
 
 <html lang="ko">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>지스트신문</title>
   </head>
   <body class="bg-neutral-100">
-    <Header currentPath={Astro.url.pathname} />
     <main class="mx-auto max-w-7xl p-6">
       <slot />
     </main>
-    <Footer />
-
-    <script>
-      // Sticky header: hide on scroll-down, reveal on scroll-up. The header is
-      // rendered (zero-JS) by React; this vanilla script drives it by id, so no
-      // hydration is needed.
-      const header = document.getElementById("site-header");
-      if (header) {
-        let lastY = window.scrollY;
-        let ticking = false;
-        const main = header.querySelector(
-          "[data-header-main]",
-        ) as HTMLElement | null;
-        const hideOffsetPx = main?.offsetHeight ?? 72;
-        const thresholdPx = 6;
-
-        const update = () => {
-          const y = window.scrollY;
-          const delta = y - lastY;
-
-          if (y <= 0) {
-            header.style.transform = "translateY(0)";
-          } else if (delta > thresholdPx) {
-            header.style.transform = `translateY(-${hideOffsetPx}px)`;
-          } else if (delta < -thresholdPx) {
-            header.style.transform = "translateY(0)";
-          }
-
-          lastY = y;
-          ticking = false;
-        };
-
-        window.addEventListener(
-          "scroll",
-          () => {
-            if (!ticking) {
-              window.requestAnimationFrame(update);
-              ticking = true;
-            }
-          },
-          { passive: true },
-        );
-      }
-    </script>
   </body>
 </html>
