@@ -1,15 +1,31 @@
 ---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
 import "@/styles/global.css";
 // Initialize i18next + dayjs locale sync once for every page (server render).
 import "@/common/lib/dayjs";
+import { getPageI18n } from "@/common/lib/i18n";
+import { LANGUAGES } from "@/common/lib/languages";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("site.name", "지스트신문");
 ---
 
-<html lang="ko">
+<html lang={Astro.currentLocale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
-    <title>지스트신문</title>
+    <title>{title}</title>
+    {
+      LANGUAGES.map((lng) => (
+        <link
+          rel="alternate"
+          hreflang={lng}
+          href={getRelativeLocaleUrl(lng, Astro.url.pathname)}
+        />
+      ))
+    }
   </head>
   <body class="bg-neutral-100">
     <main class="mx-auto max-w-7xl p-6">

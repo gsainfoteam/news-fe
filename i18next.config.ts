@@ -6,7 +6,7 @@ export default defineConfig({
   locales: [...LANGUAGES],
 
   extract: {
-    input: ["src/**/*.{ts,tsx}"],
+    input: ["src/**/*.{ts,tsx,astro}"],
     output: "public/locales/{{language}}/{{namespace}}.json",
 
     defaultNS: "_",
@@ -28,6 +28,17 @@ export default defineConfig({
 
     extractFromComments: true,
   },
+
+  plugins: [
+    {
+      // SWC can't parse .astro markup; extract from the frontmatter only.
+      name: "astro-frontmatter",
+      onLoad: (code, path) =>
+        path.endsWith(".astro")
+          ? (/^---\n([\s\S]*?)\n---/.exec(code)?.[1] ?? "")
+          : undefined,
+    },
+  ],
 
   lint: {
     ignoredAttributes: ["data-testid", "aria-label"],
