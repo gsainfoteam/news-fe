@@ -21,7 +21,8 @@
 - **Rebuild triggers**: push to `main`, manual `workflow_dispatch`, and `repository_dispatch` with event type `article-changed` (the backend sends it when an article is created, updated, or deleted). No cron.
 - **CSR islands**: search, comments, login, reports, and `/admin` run in the browser as React islands (`client:only="react"`, `client:visible`, …) and call the API directly.
 - **Dynamic ids**: every path param (`[id]`, `[slug]`) must be known at build time. Ids that only exist after the build (CMS pages) go in the query string: `/admin/articles/edit?id=…`, not `/admin/articles/[id]`.
-- **Language by URL**: `/` is Korean and `/en/` is English. Every static page is built in both languages.
+- **Language by URL**: `/` is Korean and `/en/` is English. Every static page is built in both languages. Put pages only under `src/pages/` (no `en/` copies): the i18n `fallback` with `fallbackType: "rewrite"` (`astro.config.mjs`) builds each one again under `/en/`, where `Astro.currentLocale` is `"en"`.
+- **Shared query cache**: each island is its own React root, so wrap every island in `QueryProvider` from `@/common/lib/query-client`. It provides one module-level `QueryClient`, so islands on a page share one cache and request each query once.
 
 ## Project Structure
 
@@ -33,7 +34,7 @@ This project follows the MVVM (Model-View-ViewModel) pattern and a feature-based
   - Each feature contains: `models/`, `viewmodels/`, `views/`, `index.ts`
 - **Common**: `src/common/` — Shared code across features
   - `components/` — Reusable UI components (`ui/` primitives + `layout/` frame)
-  - `lib/` — Library configurations: `cn`/`cv` (styling), `api` (openapi-fetch client), `i18n` (i18next + react-i18next), `dayjs`, `languages`
+  - `lib/` — Library configurations: `cn`/`cv` (styling), `api` (openapi-fetch client), `i18n` (i18next + react-i18next), `dayjs`, `languages`, `query-client` (TanStack Query)
   - `utils/` — Utility functions
   - `const/` — Shared constants
 - **Locales**: `public/locales/{lng}/{ns}.json` — translation resources (committed; managed by `gen:i18n`).
@@ -75,10 +76,13 @@ Enforced by `eslint-plugin-boundaries`:
 
 ### Internationalization & Dates
 
-- Translate UI strings with `react-i18next` (`useTranslation`) in **React** views; in `.astro` frontmatter use the `i18n.t` instance from `@/common/lib/i18n`. Always pass a default value so static (server) renders are meaningful.
-- Keys use `ns:key` (`nsSeparator: ":"`) with the `_` default namespace. Run `bun run gen:i18n` after adding/removing `t()` calls.
-- Because Astro renders statically, the i18next HTTP backend loads `public/locales` **on the client**; the server render falls back to the inline default values. (`i18n.init` is fire-and-forget with `react.useSuspense: false` so the static build never blocks on a network fetch.)
-- Use `dayjs` from `@/common/lib/dayjs` for date formatting — its locale stays in sync with the active i18next language.
+- Translate UI strings with `react-i18next` (`useTranslation`) in **React** views. Always pass a default value (the Korean text).
+- **Build (static HTML)**: the build bundles `public/locales/*/*.json`, so pages are rendered with real translations, not defaults. Each page gets its own instance from `getPageI18n(Astro.currentLocale)` (`@/common/lib/i18n`, an `i18n.cloneInstance`); never call `i18n.changeLanguage` during the build.
+  - In `.astro`, call `t` from that instance **in the frontmatter**: `gen:i18n` reads only the frontmatter of `.astro` files.
+  - React Views do not inherit context from Astro, so pass the instance to the page's root React View (`i18n` prop), which wraps itself in `<I18nextProvider i18n={i18n}>`.
+- **Islands (browser)**: the i18next HTTP backend loads `public/locales` on the client, and the language comes from `<html lang>`, which the layout sets from the URL. Until the JSON arrives, `t()` returns the Korean defaults, so on `/en/` an island shows Korean briefly, then English.
+- Keys use `ns:key` (`nsSeparator: ":"`) with the `_` default namespace. Run `bun run gen:i18n` after adding/removing `t()` calls. Untranslated (`""`) values fall back to Korean.
+- Format dates with `useDayjs()` from `@/common/lib/dayjs` in React views. It follows the page language, both in the build and in islands. The global `dayjs` locale follows only the shared instance, which stays Korean during the build.
 
 ### Cross-Layer / Cross-Feature Imports
 

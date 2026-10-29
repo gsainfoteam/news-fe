@@ -9,6 +9,15 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   integrations: [react()],
 
+  i18n: {
+    locales: ["ko", "en"],
+    defaultLocale: "ko",
+    // Pages live only under src/pages/ (ko). The rewrite fallback builds each
+    // one again at /en/… with Astro.currentLocale = "en", so no en/ copies.
+    routing: { prefixDefaultLocale: false, fallbackType: "rewrite" },
+    fallback: { en: "ko" },
+  },
+
   env: {
     schema: {
       // Read only while building pages; never shipped to the browser.
