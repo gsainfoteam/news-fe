@@ -1,9 +1,13 @@
 import { defineConfig } from "@hey-api/openapi-ts";
 
-const { SWAGGER_URL, SWAGGER_USER, SWAGGER_PASSWORD } = process.env;
+const {
+  SWAGGER_URL = "https://api.stg.news.gistory.me/api-json",
+  SWAGGER_USER,
+  SWAGGER_PASSWORD,
+} = process.env;
 
-if (!SWAGGER_URL || !SWAGGER_USER || !SWAGGER_PASSWORD) {
-  throw new Error("SWAGGER_URL, SWAGGER_USER, SWAGGER_PASSWORD must be set");
+if (!SWAGGER_USER || !SWAGGER_PASSWORD) {
+  throw new Error("SWAGGER_USER and SWAGGER_PASSWORD must be set in .env");
 }
 
 export default defineConfig({
