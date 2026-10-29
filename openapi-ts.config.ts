@@ -59,6 +59,18 @@ export default defineConfig({
           required: ["message", "error", "statusCode"],
         };
       },
+      schemas: {
+        // news-be counts articles with raw `count(*)`, so Postgres' bigint
+        // arrives as a string. Accept both until the backend returns a number,
+        // otherwise response validation fails every article list.
+        ArticleListDto: (schema) => {
+          if ("properties" in schema && schema.properties) {
+            schema.properties.count = {
+              anyOf: [{ type: "number" }, { type: "string" }],
+            };
+          }
+        },
+      },
     },
   },
   plugins: [
@@ -66,9 +78,19 @@ export default defineConfig({
       name: "@hey-api/client-fetch",
       runtimeConfigPath: "./src/common/lib/api",
     },
-    { name: "@hey-api/sdk", transformer: true },
+    {
+      name: "@hey-api/sdk",
+      transformer: true,
+      // Responses that drift from the spec come back as `error`; build-time
+      // callers pass `throwOnError: true` so a drift fails the build.
+      validator: { response: "zod" },
+    },
     "@hey-api/transformers",
     "zod",
     "@tanstack/react-query",
+    // shortcut: handlers have no default data, so stories pass bodies by hand.
+    // The faker plugin (0.99.0) would fill them but emits date strings typed
+    // as `Date` under transformers and fails type-checking; revisit on upgrade.
+    "msw",
   ],
 });

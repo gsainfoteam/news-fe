@@ -73,6 +73,8 @@ Enforced by `eslint-plugin-boundaries`:
 - **Do NOT** import from `@/@types/api` (hey-api output) outside of model files.
 - **DO** import types from each feature's `models/index.ts` (re-exported through the feature `index.ts`).
 - Only `src/features/*/models/**` may import `@/@types/api` (enforced by `eslint-plugin-boundaries`). Models re-export the generated SDK functions, query options, and zod schemas under domain names (e.g. `export { articleControllerGetArticles as fetchArticles }`), so a backend rename only touches the model.
+- The SDK validates every response with the generated zod schemas. A response that drifts from the spec comes back as `error`; build-time callers pass `throwOnError: true` so the build fails instead of publishing broken pages.
+- `bun run gen:api` also emits typed MSW v2 handlers (`handleGetArticles`, … in `@/@types/api/msw.gen`) for stories and tests. Re-export the ones a feature needs from its `models/mocks.ts`, which only stories and tests import, and pass the response body in.
 - `src/common/lib/api.ts` exports `createClientConfig`, which the generated client calls (`runtimeConfigPath`). It picks the base URL: `API_BASE_URL` while building, `/api` (Vite proxy to `PUBLIC_API_BASE_URL`) in dev browsers, `PUBLIC_API_BASE_URL` otherwise. It must not import the generated code, so `bun run check` passes before `gen:api` has run.
 
 ### Internationalization & Dates
