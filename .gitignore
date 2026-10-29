@@ -4,6 +4,7 @@ dist/
 .astro/
 # generated api schema & i18n resource types
 src/@types/*.ts
+src/@types/api/
 # storybook
 storybook-static/
 
@@ -17,9 +18,9 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables (public values are committed as .env.<mode>)
 .env
-.env.production
+*.local
 
 # macOS-specific files
 .DS_Store

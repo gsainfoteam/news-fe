@@ -28,6 +28,8 @@ const boundariesElements = [
   { type: "common-lib", pattern: "src/common/lib/**", mode: "full" },
   { type: "common-utils", pattern: "src/common/utils/**", mode: "full" },
   { type: "common-const", pattern: "src/common/const/**", mode: "full" },
+  // hey-api output (`bun run gen:api`); only feature models may import it.
+  { type: "api-gen", pattern: "src/@types/api/**", mode: "full" },
   {
     type: "feature-index",
     pattern: "src/features/*/index.ts",
@@ -304,6 +306,7 @@ export default defineConfig([
                 {
                   to: { type: ["common-lib", "common-utils", "common-const"] },
                 },
+                { to: { type: "api-gen" } },
               ],
             },
           ],

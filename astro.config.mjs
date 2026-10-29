@@ -4,6 +4,13 @@ import { defineConfig, envField } from "astro/config";
 import react from "@astrojs/react";
 
 import tailwindcss from "@tailwindcss/vite";
+import { loadEnv } from "vite";
+
+const { PUBLIC_API_BASE_URL } = loadEnv(
+  process.env.NODE_ENV ?? "development",
+  process.cwd(),
+  "",
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -31,5 +38,15 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    // Browser islands call `/api` in dev to avoid CORS (see common/lib/api.ts).
+    server: {
+      proxy: {
+        "/api": {
+          target: PUBLIC_API_BASE_URL,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
+        },
+      },
+    },
   },
 });
