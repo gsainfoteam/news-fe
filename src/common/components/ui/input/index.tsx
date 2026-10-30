@@ -5,7 +5,7 @@ import { Input as InputPrimitive } from "@base-ui/react/input";
 import { cn } from "@/common/lib/cn";
 
 export const inputClassName =
-  "h-10 w-full min-w-0 rounded-md border border-input bg-background px-3 text-sm text-foreground transition-colors outline-none placeholder:text-subtle-foreground focus-visible:border-ring focus-visible:outline-3 focus-visible:outline-ring/22 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive-text";
+  "h-10 w-full min-w-0 rounded-md border border-input bg-background px-3 text-sm text-foreground transition-colors outline-none placeholder:text-subtle-foreground focus-visible:border-ring focus-visible:outline-3 focus-visible:outline-ring/22 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive-text [&::-webkit-search-cancel-button]:appearance-none";
 
 export function Input({ className, icon, ...props }: Input.Props) {
   const input = (
