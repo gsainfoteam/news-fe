@@ -7,10 +7,7 @@ import { cn } from "@/common/lib/cn";
 
 // A native <select> works in static HTML without hydration and opens the OS
 // picker on phones.
-export function NativeSelect({
-  className,
-  ...props
-}: React.ComponentProps<"select">) {
+export function NativeSelect({ className, ...props }: NativeSelect.Props) {
   return (
     <span
       data-slot="native-select-wrapper"
@@ -36,6 +33,10 @@ export function NativeSelect({
 }
 
 // Canvas colors keep the OS dropdown list readable in both themes.
+export namespace NativeSelect {
+  export type Props = React.ComponentProps<"select">;
+}
+
 export function NativeSelectOption({
   className,
   ...props

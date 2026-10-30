@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/common/lib/cn";
 
-export function Label({ className, ...props }: React.ComponentProps<"label">) {
+export function Label({ className, ...props }: Label.Props) {
   return (
     <label
       data-slot="label"
@@ -13,4 +13,8 @@ export function Label({ className, ...props }: React.ComponentProps<"label">) {
       {...props}
     />
   );
+}
+
+export namespace Label {
+  export type Props = React.ComponentProps<"label">;
 }

@@ -31,7 +31,7 @@ export namespace Avatar {
 export function AvatarImage({
   className,
   ...props
-}: AvatarPrimitive.Image.Props) {
+}: AvatarPrimitive.Image.Props & { alt: string }) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"

@@ -8,7 +8,7 @@ import { cn } from "@/common/lib/cn";
 export const dialogOverlayClass =
   "fixed inset-0 isolate z-50 bg-overlay duration-100 data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0";
 export const dialogPopupClass =
-  "fixed top-1/2 left-1/2 z-50 flex w-[420px] max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 rounded-xl border border-border bg-popover p-5 text-popover-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95";
+  "fixed top-1/2 left-1/2 z-50 flex w-[420px] max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 flex-col gap-3 overflow-y-auto max-h-[calc(100dvh-2rem)] rounded-xl border border-border bg-popover p-5 text-popover-foreground shadow-lg duration-100 outline-none data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95";
 export const dialogTitleClass = "text-h3";
 export const dialogDescriptionClass = "text-sm text-muted-foreground";
 export const dialogFooterClass = "mt-2 flex flex-wrap justify-end gap-2";

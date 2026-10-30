@@ -6,7 +6,7 @@ export function Separator({
   className,
   orientation = "horizontal",
   ...props
-}: SeparatorPrimitive.Props) {
+}: Separator.Props) {
   return (
     <SeparatorPrimitive
       data-slot="separator"
@@ -18,4 +18,8 @@ export function Separator({
       {...props}
     />
   );
+}
+
+export namespace Separator {
+  export type Props = SeparatorPrimitive.Props;
 }

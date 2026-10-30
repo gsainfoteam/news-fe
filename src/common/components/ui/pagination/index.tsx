@@ -61,8 +61,12 @@ export namespace PaginationLink {
   export type Props = React.ComponentProps<"a"> & { isActive?: boolean };
 }
 
-// Icon-only; the caller passes `aria-label` ("이전 페이지").
-export function PaginationPrevious(props: PaginationLink.Props) {
+export namespace PaginationIconLink {
+  export type Props = PaginationLink.Props & { "aria-label": string };
+}
+
+// Icon-only, so the translated `aria-label` ("이전 페이지") is required.
+export function PaginationPrevious(props: PaginationIconLink.Props) {
   return (
     <PaginationLink {...props}>
       <ChevronLeftIcon aria-hidden="true" />
@@ -70,7 +74,7 @@ export function PaginationPrevious(props: PaginationLink.Props) {
   );
 }
 
-export function PaginationNext(props: PaginationLink.Props) {
+export function PaginationNext(props: PaginationIconLink.Props) {
   return (
     <PaginationLink {...props}>
       <ChevronRightIcon aria-hidden="true" />

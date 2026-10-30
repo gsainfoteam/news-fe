@@ -11,7 +11,7 @@ import { Toaster as Sonner, type ToasterProps } from "sonner";
 
 // Sonner injects unlayered CSS that beats Tailwind utilities, so toasts are
 // `unstyled` and drawn entirely by these classes.
-export function Toaster(props: ToasterProps) {
+export function Toaster({ style, toastOptions, ...props }: ToasterProps) {
   return (
     <Sonner
       icons={{
@@ -23,8 +23,10 @@ export function Toaster(props: ToasterProps) {
           <Loader2Icon className="size-4.5 animate-spin text-subtle-foreground" />
         ),
       }}
-      style={{ "--width": "360px" } as React.CSSProperties}
+      {...props}
+      style={{ "--width": "360px", ...style } as React.CSSProperties}
       toastOptions={{
+        ...toastOptions,
         unstyled: true,
         classNames: {
           toast:
@@ -35,9 +37,9 @@ export function Toaster(props: ToasterProps) {
             "ml-auto shrink-0 text-sm font-semibold text-brand-text",
           cancelButton:
             "ml-auto shrink-0 text-sm font-semibold text-subtle-foreground",
+          ...toastOptions?.classNames,
         },
       }}
-      {...props}
     />
   );
 }

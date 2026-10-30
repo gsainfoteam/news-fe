@@ -237,7 +237,7 @@
     /* Korean wraps between words; a word longer than the line (URL, email)
        is the only thing that breaks mid-word. Never use break-all. */
     word-break: keep-all;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
   /* Tailwind v4 preflight resets buttons to cursor: default. */
   :is(

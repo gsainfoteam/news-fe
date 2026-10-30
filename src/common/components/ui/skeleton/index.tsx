@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { cn } from "@/common/lib/cn";
 
-export function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
+export function Skeleton({ className, ...props }: Skeleton.Props) {
   return (
     <div
       data-slot="skeleton"
@@ -10,4 +10,8 @@ export function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
       {...props}
     />
   );
+}
+
+export namespace Skeleton {
+  export type Props = React.ComponentProps<"div">;
 }
