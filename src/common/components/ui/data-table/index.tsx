@@ -3,6 +3,7 @@ import * as React from "react";
 import {
   type ColumnDef,
   flexRender,
+  type Header,
   metaHelper,
   type OnChangeFn,
   type Row,
@@ -59,6 +60,10 @@ export function DataTable<TData extends RowData>({
     onSortingChange,
   });
   const rows = table.getRowModel().rows;
+  // The header row is hidden on mobile, so the card list gets its own sort row.
+  const sortHeaders = table
+    .getLeafHeaders()
+    .filter((header) => header.column.getCanSort());
 
   return (
     <>
@@ -90,23 +95,7 @@ export function DataTable<TData extends RowData>({
                       }
                     >
                       {column.getCanSort() ? (
-                        <button
-                          type="button"
-                          onClick={column.getToggleSortingHandler()}
-                          className={cn(
-                            "-mx-1 inline-flex items-center gap-1 rounded-sm px-1 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring",
-                            sorted && "text-foreground",
-                          )}
-                        >
-                          {content}
-                          {sorted === "asc" ? (
-                            <ArrowUpIcon className="size-3.5" />
-                          ) : sorted === "desc" ? (
-                            <ArrowDownIcon className="size-3.5" />
-                          ) : (
-                            <ChevronsUpDownIcon className="size-3.5 opacity-60" />
-                          )}
-                        </button>
+                        <SortButton header={header} />
                       ) : (
                         content
                       )}
@@ -148,27 +137,64 @@ export function DataTable<TData extends RowData>({
       </div>
 
       {renderMobileItem && (
-        <ul className="hidden flex-col rounded-lg border border-border bg-card mobile:flex">
-          {rows.length ? (
-            rows.map((row) => (
-              <li
-                key={row.id}
-                className={cn(
-                  "flex flex-col gap-2 border-b border-border p-4 last:border-b-0",
-                  rowClassName?.(row),
-                )}
-              >
-                {renderMobileItem(row)}
-              </li>
-            ))
-          ) : (
-            <li className="px-4 py-12 text-center text-sm text-muted-foreground">
-              {empty}
-            </li>
+        <div className="hidden flex-col gap-2 mobile:flex">
+          {sortHeaders.length > 0 && (
+            <div className="flex flex-wrap gap-x-4 gap-y-1 px-1 text-xs font-medium text-muted-foreground">
+              {sortHeaders.map((header) => (
+                <SortButton key={header.id} header={header} />
+              ))}
+            </div>
           )}
-        </ul>
+          <ul className="flex flex-col rounded-lg border border-border bg-card">
+            {rows.length ? (
+              rows.map((row) => (
+                <li
+                  key={row.id}
+                  className={cn(
+                    "flex flex-col gap-2 border-b border-border p-4 last:border-b-0",
+                    rowClassName?.(row),
+                  )}
+                >
+                  {renderMobileItem(row)}
+                </li>
+              ))
+            ) : (
+              <li className="px-4 py-12 text-center text-sm text-muted-foreground">
+                {empty}
+              </li>
+            )}
+          </ul>
+        </div>
       )}
     </>
+  );
+}
+
+function SortButton<TData extends RowData>({
+  header,
+}: {
+  header: Header<Features, TData, unknown>;
+}) {
+  const { column } = header;
+  const sorted = column.getIsSorted();
+  return (
+    <button
+      type="button"
+      onClick={column.getToggleSortingHandler()}
+      className={cn(
+        "-mx-1 inline-flex items-center gap-1 rounded-sm px-1 outline-none hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring",
+        sorted && "text-foreground",
+      )}
+    >
+      {flexRender(column.columnDef.header, header.getContext())}
+      {sorted === "asc" ? (
+        <ArrowUpIcon className="size-3.5" />
+      ) : sorted === "desc" ? (
+        <ArrowDownIcon className="size-3.5" />
+      ) : (
+        <ChevronsUpDownIcon className="size-3.5 opacity-60" />
+      )}
+    </button>
   );
 }
 
