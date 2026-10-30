@@ -25,6 +25,9 @@
     "viewAll": "View all"
   },
   "footer": {
+    "address": "GIST Newspaper, 3F Student Union Building 1, 123 Cheomdangwagi-ro, Buk-gu, Gwangju, Korea",
+    "newTab": "(opens in a new tab)",
+    "staff": "Editor-in-chief {{editor}}, Web manager {{webManager}}",
     "staffLogin": "Staff login"
   },
   "header": {

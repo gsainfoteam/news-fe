@@ -25,6 +25,9 @@
     "viewAll": "전체 보기"
   },
   "footer": {
+    "address": "광주광역시 북구 첨단과기로 123 제1학생회관 3층 GIST신문사",
+    "newTab": "(새 탭에서 열림)",
+    "staff": "편집장 {{editor}}, 웹관리 {{webManager}}",
     "staffLogin": "기자 로그인"
   },
   "header": {
