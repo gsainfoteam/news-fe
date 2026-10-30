@@ -174,7 +174,10 @@ export function DataTable<TData extends RowData>({
 
 export namespace DataTable {
   export type Props<TData extends RowData> = {
-    columns: ColumnDef<Features, TData, unknown>[];
+    // `unknown` rejects plain arrays of accessor columns (string, number, …):
+    // ColumnDef is invariant in its value type. TanStack's own helper uses `any`.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    columns: ColumnDef<Features, TData, any>[];
     data: TData[];
     getRowId?: (row: TData, index: number) => string;
     sorting?: SortingState;
