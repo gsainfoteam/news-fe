@@ -1,12 +1,13 @@
-import { withThemeByClassName } from "@storybook/addon-themes";
 import { type Preview } from "@storybook/react-vite";
 
-import { withLocale } from "./decorators";
+import { withLocale, withTheme } from "./decorators";
 
 import "../src/styles/global.css";
 
 const preview: Preview = {
   globalTypes: {
+    // Toggled by the toolbar button in manager.tsx.
+    theme: { description: "Color theme" },
     locale: {
       description: "i18n locale",
       toolbar: {
@@ -20,9 +21,21 @@ const preview: Preview = {
     },
   },
   initialGlobals: {
+    theme: "light",
     locale: "ko",
   },
   parameters: {
+    // Every component story has Default and Mobile variants; Mobile picks this
+    // viewport through story `globals`. Light/dark is the toolbar toggle.
+    viewport: {
+      options: {
+        mobile: {
+          name: "Mobile 390",
+          styles: { width: "390px", height: "844px" },
+          type: "mobile",
+        },
+      },
+    },
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -31,12 +44,7 @@ const preview: Preview = {
     },
   },
   decorators: [
-    // Light / dark via the `.dark` class on <html>; body colors come from the
-    // shadcn theme variables in global.css.
-    withThemeByClassName({
-      themes: { light: "", dark: "dark" },
-      defaultTheme: "light",
-    }),
+    withTheme,
     // i18n locale toolbar.
     withLocale,
   ],

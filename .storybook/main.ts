@@ -7,7 +7,7 @@ const srcDir = fileURLToPath(new URL("../src", import.meta.url));
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(ts|tsx)"],
-  addons: ["@storybook/addon-themes"],
+  addons: [],
   staticDirs: ["../public"],
   framework: {
     name: "@storybook/react-vite",
