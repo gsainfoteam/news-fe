@@ -1,5 +1,43 @@
 {
+  "category": {
+    "ACADEMIC": "Academics",
+    "ACADEMIC_RESEARCH": "Academics & Research",
+    "CAMPUS": "Campus",
+    "CARTOON": "Cartoons",
+    "CULTURE": "Culture",
+    "description": {
+      "ACADEMIC_RESEARCH": "Academic events and news from the lab",
+      "OPINION": "Columns, the readers' committee, and cartoons",
+      "PLANNING_SPECIAL": "Feature stories, specials, and reportage"
+    },
+    "EXTERNAL_COLUMN": "Guest Columns",
+    "INTERNAL_COLUMN": "Staff Columns",
+    "navLabel": "Categories",
+    "NOTICE": "Notices",
+    "OPINION": "Opinion",
+    "PLANNING": "Features",
+    "PLANNING_SPECIAL": "Features & Specials",
+    "READERS_COMMITTEE": "Readers' Committee",
+    "REPORTAGE": "Reportage",
+    "RESEARCH": "Research",
+    "SOCIETY": "Society",
+    "SPECIAL": "Specials",
+    "viewAll": "View all"
+  },
+  "footer": {
+    "address": "GIST Newspaper, 3F Student Union Building 1, 123 Cheomdangwagi-ro, Buk-gu, Gwangju, Korea",
+    "newTab": "(opens in a new tab)",
+    "staff": "Editor-in-chief {{editor}}, Web manager {{webManager}}"
+  },
+  "header": {
+    "closeMenu": "Close menu",
+    "home": "GIST Newspaper home",
+    "openMenu": "Open menu",
+    "report": "Send a tip",
+    "search": "Search articles"
+  },
   "site": {
+    "description": "The student newspaper of the Gwangju Institute of Science and Technology (GIST).",
     "name": "GIST Newspaper"
   }
 }
