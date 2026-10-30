@@ -174,9 +174,7 @@ export function DataTable<TData extends RowData>({
 
 export namespace DataTable {
   export type Props<TData extends RowData> = {
-    // `any`: each column keeps its own value type (string, number, …).
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    columns: ColumnDef<Features, TData, any>[];
+    columns: ColumnDef<Features, TData, unknown>[];
     data: TData[];
     getRowId?: (row: TData, index: number) => string;
     sorting?: SortingState;
