@@ -239,6 +239,9 @@
     word-break: keep-all;
     overflow-wrap: break-word;
   }
+  :is(h1, h2, h3, h4, h5, h6, [data-slot$="-title"]) {
+    text-wrap: balance;
+  }
   /* Tailwind v4 preflight resets buttons to cursor: default. */
   :is(
     button,
