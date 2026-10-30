@@ -50,7 +50,7 @@ export function Input({
           type="button"
           aria-label={clearLabel}
           onClick={(event) => clearInput(event.currentTarget)}
-          className="absolute top-1/2 right-1.5 grid size-7 -translate-y-1/2 place-items-center rounded-sm text-subtle-foreground outline-none peer-placeholder-shown:hidden peer-disabled:hidden hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
+          className="absolute top-1/2 right-1.5 grid size-7 -translate-y-1/2 place-items-center rounded-sm text-subtle-foreground outline-none peer-placeholder-shown:hidden peer-read-only:hidden hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
         >
           <XIcon className="size-4" />
         </button>
