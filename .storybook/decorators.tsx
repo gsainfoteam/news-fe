@@ -7,6 +7,16 @@ import { i18n } from "../src/common/lib/i18n";
 
 import "../src/common/lib/dayjs";
 
+export const withTheme: Decorator = (Story, context) => {
+  const dark = context.globals.theme === "dark";
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", dark);
+  }, [dark]);
+
+  return <Story />;
+};
+
 /** Syncs the active i18next language (and dayjs locale) with the toolbar. */
 export const withLocale: Decorator = (Story, context) => {
   const locale = (context.globals.locale as string) ?? "ko";

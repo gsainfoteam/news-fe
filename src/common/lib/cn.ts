@@ -7,9 +7,7 @@ const twMergeConfig = {
   extend: {
     classGroups: {
       "font-size": [
-        {
-          text: ["h1", "h2", "h3", "h4", "body", "caption", "nav", "button"],
-        },
+        { text: ["2xs", "body-lg", "h4", "h3", "h2", "h1", "display"] },
       ],
     },
   },
