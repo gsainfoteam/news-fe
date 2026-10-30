@@ -253,7 +253,7 @@ export function FieldError({
       {...props}
     >
       <CircleAlertIcon aria-hidden="true" className="mt-px size-3.5 shrink-0" />
-      <div>{content}</div>
+      <div className="min-w-0">{content}</div>
     </div>
   );
 }
