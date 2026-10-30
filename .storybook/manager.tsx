@@ -3,7 +3,6 @@ import { MoonIcon, SunIcon } from "lucide-react";
 import { IconButton } from "storybook/internal/components";
 import { addons, types, useGlobals } from "storybook/manager-api";
 
-// One-click light/dark toggle; @storybook/addon-themes only offers a dropdown.
 function ThemeToggle() {
   const [globals, updateGlobals] = useGlobals();
   const dark = globals.theme === "dark";

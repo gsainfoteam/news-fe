@@ -159,7 +159,6 @@ function ArticlesTable({ data }: { data: Article[] }) {
     { id: "created", desc: true },
   ]);
 
-  // Stands in for the API, which returns rows already sorted.
   const sorted = useMemo(() => {
     const [s] = sorting;
     if (!s) return data;
@@ -204,8 +203,6 @@ function ArticlesTable({ data }: { data: Article[] }) {
     />
   );
 }
-
-// Members: permission follows the role; one row is being edited.
 
 type Permission = "EDITORSHIP" | "EDITOR" | "NONE";
 

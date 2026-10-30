@@ -7,7 +7,6 @@ import { i18n } from "../src/common/lib/i18n";
 
 import "../src/common/lib/dayjs";
 
-// The `.dark` class on <html> is what global.css and Tailwind's `dark:` key on.
 export const withTheme: Decorator = (Story, context) => {
   const dark = context.globals.theme === "dark";
 

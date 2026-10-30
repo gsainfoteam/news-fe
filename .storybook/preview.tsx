@@ -6,7 +6,6 @@ import "../src/styles/global.css";
 
 const preview: Preview = {
   globalTypes: {
-    // Toggled by the toolbar button in manager.tsx.
     theme: { description: "Color theme" },
     locale: {
       description: "i18n locale",
@@ -25,8 +24,6 @@ const preview: Preview = {
     locale: "ko",
   },
   parameters: {
-    // Every component story has Default and Mobile variants; Mobile picks this
-    // viewport through story `globals`. Light/dark is the toolbar toggle.
     viewport: {
       options: {
         mobile: {

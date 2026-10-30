@@ -8,7 +8,6 @@ import {
 
 import { cn } from "@/common/lib/cn";
 
-// The caller passes `aria-label`: ui/ can't translate.
 export function Pagination({
   className,
   ...props
@@ -65,7 +64,6 @@ export namespace PaginationIconLink {
   export type Props = PaginationLink.Props & { "aria-label": string };
 }
 
-// Icon-only, so the translated `aria-label` ("이전 페이지") is required.
 export function PaginationPrevious(props: PaginationIconLink.Props) {
   return (
     <PaginationLink {...props}>

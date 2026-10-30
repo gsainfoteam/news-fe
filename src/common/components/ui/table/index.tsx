@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { cn } from "@/common/lib/cn";
 
-// Wide tables keep their scrollbar (unlike nav and tab rows).
 export function Table({ className, ...props }: React.ComponentProps<"table">) {
   return (
     <div

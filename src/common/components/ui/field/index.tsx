@@ -144,7 +144,6 @@ export function FieldLabel({
 export namespace FieldLabel {
   export type Props = React.ComponentProps<typeof Label> & {
     required?: boolean;
-    // ui/ can't translate, so the caller passes the text, e.g. "(선택)".
     optional?: React.ReactNode;
   };
 }

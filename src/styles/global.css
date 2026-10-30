@@ -5,11 +5,8 @@
 
 /* `.dark` because shadcn writes its dark theme variables under `.dark`. */
 @custom-variant dark (&:where(.dark, .dark *));
-/* The design switches to the mobile layout at 720px and below. */
 @custom-variant mobile (@media (width <= 720px));
 
-/* Horizontal swipe rows (nav, tabs, card strips) hide the scrollbar: the cut-off
-   item is the scroll cue. Wide tables keep theirs. */
 @utility scrollbar-none {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -24,8 +21,7 @@
     "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
     sans-serif;
 
-  /* Typography. The UI scale overrides Tailwind's own xs/sm/base. Register any
-     new name in `@/common/lib/cn` too. */
+  /* Register any new name in `@/common/lib/cn` too. */
   --text-2xs: 12px;
   --text-2xs--line-height: 1.4;
   --text-xs: 13px;
@@ -113,7 +109,6 @@
   --color-inverse: var(--inverse);
   --color-inverse-foreground: var(--inverse-foreground);
 
-  /* Rounder than the NEF-1 design (4/6/10/14) at the user's request. */
   --radius-sm: 6px;
   --radius-md: var(--radius);
   --radius-lg: 14px;

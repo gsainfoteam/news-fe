@@ -25,11 +25,8 @@ import {
 } from "@/common/components/ui/table";
 import { cn } from "@/common/lib/cn";
 
-// Build columns with `createColumnHelper<typeof dataTableFeatures, Row>()`.
-// No sorted row model: sorting is done by the API (see `manualSorting`).
 export const dataTableFeatures = tableFeatures({
   rowSortingFeature,
-  // Applied to both the header and the cells, e.g. `text-right` for numbers.
   columnMeta: metaHelper<{ className?: string }>(),
 });
 
@@ -56,7 +53,6 @@ export function DataTable<TData extends RowData>({
     // Admin lists are paged by the API; sorting one page in the browser would
     // be wrong, so the caller refetches with the new `sorting`.
     manualSorting: true,
-    // Opt-in per column (`enableSorting: true`), and only with a handler.
     enableSorting: !!onSortingChange,
     defaultColumn: { enableSorting: false },
     state: { sorting: sorting ?? NO_SORTING },
@@ -183,12 +179,9 @@ export namespace DataTable {
     columns: ColumnDef<Features, TData, any>[];
     data: TData[];
     getRowId?: (row: TData, index: number) => string;
-    /** Controlled, server-side sorting. Omit both to disable sorting. */
     sorting?: SortingState;
     onSortingChange?: OnChangeFn<SortingState>;
-    /** e.g. `text-subtle-foreground` for departed members. */
     rowClassName?: (row: Row<Features, TData>) => string | undefined;
-    /** Below 720px the table becomes a card list rendered by this. */
     renderMobileItem?: (row: Row<Features, TData>) => React.ReactNode;
     empty?: React.ReactNode;
     caption?: string;
