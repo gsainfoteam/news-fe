@@ -17,6 +17,9 @@ const title = t("site.name", "지스트신문");
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {
       LANGUAGES.map((lng) => (
         <link
@@ -27,7 +30,7 @@ const title = t("site.name", "지스트신문");
       ))
     }
   </head>
-  <body class="bg-neutral-100">
+  <body>
     <main class="mx-auto max-w-7xl p-6">
       <slot />
     </main>
