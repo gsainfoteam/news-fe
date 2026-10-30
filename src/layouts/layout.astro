@@ -82,6 +82,7 @@ const imageUrl = new URL(image, Astro.site).href;
       <MobileMenu
         slot="menu"
         client:media="(max-width: 720px)"
+        lng={locale}
         currentCategory={category}
       />
     </Header>

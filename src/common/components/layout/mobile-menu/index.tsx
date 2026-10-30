@@ -1,5 +1,7 @@
+import { useMemo } from "react";
+
 import { MenuIcon, SearchIcon, XIcon } from "lucide-react";
-import { useTranslation } from "react-i18next";
+import { I18nextProvider, useTranslation } from "react-i18next";
 
 import { Button, buttonVariants } from "@/common/components/ui/button";
 import { Input } from "@/common/components/ui/input";
@@ -14,10 +16,23 @@ import {
   SheetTrigger,
 } from "@/common/components/ui/sheet";
 import { cn } from "@/common/lib/cn";
+import { i18n as appI18n, getPageI18n } from "@/common/lib/i18n";
 import { localizePath } from "@/common/lib/languages";
 import { getCategoryNav, type Category } from "@/features/category";
 
-export function MobileMenu({ currentCategory, defaultOpen }: MobileMenu.Props) {
+// An island can't receive the page's i18n instance (props are serialized),
+// so it takes the page language and builds its own; otherwise the build
+// renders it with the shared Korean instance on /en/ pages too.
+export function MobileMenu({ lng, ...props }: MobileMenu.Props) {
+  const i18n = useMemo(() => (lng ? getPageI18n(lng) : appI18n), [lng]);
+  return (
+    <I18nextProvider i18n={i18n}>
+      <MobileMenuContent {...props} />
+    </I18nextProvider>
+  );
+}
+
+function MobileMenuContent({ currentCategory, defaultOpen }: MobileMenu.Props) {
   const { t, i18n } = useTranslation();
   const { groups, notice } = getCategoryNav(t, i18n.language, currentCategory);
   const path = (to: string) => localizePath(i18n.language, to);
@@ -114,6 +129,7 @@ export function MobileMenu({ currentCategory, defaultOpen }: MobileMenu.Props) {
 
 export namespace MobileMenu {
   export type Props = {
+    lng?: string;
     currentCategory?: Category;
     defaultOpen?: boolean;
   };

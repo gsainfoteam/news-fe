@@ -4,6 +4,8 @@ import { localizePath } from "@/common/lib/languages";
 
 import { CATEGORIES, type Category } from "../models";
 
+export { CATEGORIES };
+
 export type CategoryGroup = {
   category: Category;
   children: readonly Category[];

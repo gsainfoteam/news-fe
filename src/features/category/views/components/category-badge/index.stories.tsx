@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from "@storybook/react-vite";
 
 import { CategoryBadge } from ".";
-import { CATEGORIES } from "../../../models";
+import { CATEGORIES } from "../../../viewmodels/category";
 
 const meta = {
   title: "Category/CategoryBadge",
