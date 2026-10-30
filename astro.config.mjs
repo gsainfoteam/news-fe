@@ -14,6 +14,9 @@ const { PUBLIC_API_BASE_URL } = loadEnv(
 
 // https://astro.build/config
 export default defineConfig({
+  // OG tags, canonical, and hreflang need absolute URLs.
+  site: "https://news.gistory.me",
+
   integrations: [react()],
 
   i18n: {

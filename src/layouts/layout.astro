@@ -1,22 +1,61 @@
 ---
-import { getRelativeLocaleUrl } from "astro:i18n";
+import { getAbsoluteLocaleUrl } from "astro:i18n";
 
 import "@/styles/global.css";
+import { Footer } from "@/common/components/layout/footer";
+import { Header } from "@/common/components/layout/header";
+import { MobileMenu } from "@/common/components/layout/mobile-menu";
 // Initialize i18next + dayjs locale sync once for every page (server render).
 import "@/common/lib/dayjs";
 import { getPageI18n } from "@/common/lib/i18n";
 import { LANGUAGES } from "@/common/lib/languages";
+import { type Category } from "@/features/category";
 
-const { t } = getPageI18n(Astro.currentLocale);
-const title = t("site.name", "지스트신문");
+interface Props {
+  /** Page title; the site name is appended. Omit on the home page. */
+  title?: string;
+  description?: string;
+  /** Absolute URL or a path under `public/`. */
+  image?: string;
+  type?: "website" | "article";
+  /** Highlights this category in the navigation. */
+  category?: Category;
+}
+
+const locale = Astro.currentLocale ?? "ko";
+const i18n = getPageI18n(locale);
+const { t } = i18n;
+const siteName = t("site.name", "지스트신문");
+const {
+  title,
+  description = t(
+    "site.description",
+    "광주과학기술원(GIST) 학생들이 만드는 신문입니다.",
+  ),
+  image = "/logo.png",
+  type = "website",
+  category,
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${siteName}` : siteName;
+// The /en/ fallback rewrite keeps the prefix in the pathname; strip it so
+// each hreflang link points at its own language.
+const basePath =
+  locale === "ko"
+    ? Astro.url.pathname
+    : Astro.url.pathname.slice(`/${locale}`.length) || "/";
+const canonical = getAbsoluteLocaleUrl(locale, basePath);
+const imageUrl = new URL(image, Astro.site).href;
 ---
 
-<html lang={Astro.currentLocale}>
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -25,14 +64,30 @@ const title = t("site.name", "지스트신문");
         <link
           rel="alternate"
           hreflang={lng}
-          href={getRelativeLocaleUrl(lng, Astro.url.pathname)}
+          href={getAbsoluteLocaleUrl(lng, basePath)}
         />
       ))
     }
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title ?? siteName} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:locale" content={locale === "ko" ? "ko_KR" : "en_US"} />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
-  <body>
-    <main class="mx-auto max-w-7xl p-6">
+  <body class="flex min-h-dvh flex-col">
+    <Header i18n={i18n} currentCategory={category}>
+      <MobileMenu
+        slot="menu"
+        client:media="(max-width: 720px)"
+        currentCategory={category}
+      />
+    </Header>
+    <main class="page-container flex-1">
       <slot />
     </main>
+    <Footer i18n={i18n} />
   </body>
 </html>
