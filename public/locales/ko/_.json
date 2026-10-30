@@ -1,5 +1,41 @@
 {
+  "category": {
+    "ACADEMIC": "학술",
+    "ACADEMIC_RESEARCH": "학술·연구",
+    "CAMPUS": "대학",
+    "CARTOON": "4컷 만화/만평",
+    "CULTURE": "문화",
+    "description": {
+      "ACADEMIC_RESEARCH": "학술 행사와 연구 현장 소식",
+      "OPINION": "칼럼과 독자자문위원회, 만평",
+      "PLANNING_SPECIAL": "기획 기사와 특집, 현장르포"
+    },
+    "EXTERNAL_COLUMN": "외부 칼럼",
+    "INTERNAL_COLUMN": "내부 칼럼",
+    "navLabel": "카테고리",
+    "NOTICE": "공지사항",
+    "OPINION": "오피니언",
+    "PLANNING": "기획",
+    "PLANNING_SPECIAL": "기획·특집",
+    "READERS_COMMITTEE": "독자자문위원회",
+    "REPORTAGE": "현장르포",
+    "RESEARCH": "연구",
+    "SOCIETY": "사회",
+    "SPECIAL": "특집",
+    "viewAll": "전체 보기"
+  },
+  "footer": {
+    "staffLogin": "기자 로그인"
+  },
+  "header": {
+    "closeMenu": "메뉴 닫기",
+    "home": "지스트신문 홈",
+    "openMenu": "메뉴 열기",
+    "report": "제보하기",
+    "search": "기사 검색"
+  },
   "site": {
+    "description": "광주과학기술원(GIST) 학생들이 만드는 신문입니다.",
     "name": "지스트신문"
   }
 }

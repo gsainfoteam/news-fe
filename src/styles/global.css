@@ -14,6 +14,17 @@
   }
 }
 
+/* Page column shared by header, main, and footer. */
+@utility page-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1264px;
+  padding-inline: 32px;
+  @media (width <= 720px) {
+    padding-inline: 16px;
+  }
+}
+
 @theme {
   --font-family-sans:
     "Pretendard GOV Variable", -apple-system, BlinkMacSystemFont, system-ui,
