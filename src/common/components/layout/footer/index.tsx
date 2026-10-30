@@ -106,9 +106,6 @@ function FooterContent() {
             <a href={path("/report")} className="hover:text-foreground">
               {t("header.report", "제보하기")}
             </a>
-            <a href={path("/admin")} className="hover:text-foreground">
-              {t("footer.staffLogin", "기자 로그인")}
-            </a>
             {SOCIAL_LINKS.map(({ label, href }) => (
               <a
                 key={label}
