@@ -41,8 +41,8 @@ export function CategoryNav({ current, className }: CategoryNav.Props) {
           </a>
           {group.children.length > 0 && (
             <div className="invisible absolute top-full left-0 z-40 pt-1 opacity-0 transition-opacity group-focus-within/item:visible group-focus-within/item:opacity-100 group-hover/item:visible group-hover/item:opacity-100 mobile:hidden">
-              <div className="grid w-[520px] grid-cols-[160px_1fr] gap-5 rounded-lg border border-border bg-popover p-5 text-popover-foreground shadow-md">
-                <div className="flex flex-col items-start gap-2">
+              <div className="grid w-max grid-cols-[160px_minmax(8rem,max-content)] gap-4 rounded-lg border border-border bg-popover p-3 text-popover-foreground shadow-md">
+                <div className="flex flex-col items-start gap-2 p-1">
                   <p className="text-xs font-bold text-brand-text">
                     {group.label}
                   </p>
@@ -55,6 +55,7 @@ export function CategoryNav({ current, className }: CategoryNav.Props) {
                     href={group.href}
                     className={cn(
                       buttonVariants({ variant: "outline", size: "sm" }),
+                      "mt-auto",
                     )}
                   >
                     {t("category.viewAll", "전체 보기")}
