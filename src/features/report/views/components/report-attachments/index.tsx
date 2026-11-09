@@ -15,7 +15,6 @@ import {
 import { Trans, useTranslation } from "react-i18next";
 
 import { Button } from "@/common/components/ui/button";
-import { cn } from "@/common/lib/cn";
 
 import { MAX_REPORT_FILES } from "../../../models";
 import {
@@ -153,12 +152,7 @@ function AttachmentItem({
             : undefined;
 
   return (
-    <li
-      className={cn(
-        "flex items-center gap-3 rounded-md border border-border bg-background px-3 py-2.5",
-        error && "border-destructive-text",
-      )}
-    >
+    <li className="flex items-center gap-3 rounded-md border border-border bg-background px-3 py-2.5">
       <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground [&>svg]:size-4.5">
         {KIND_ICONS[item.kind]}
       </span>
