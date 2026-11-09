@@ -66,6 +66,7 @@
     "globals": "^17.7.0",
     "i18next-cli": "^1.64.2",
     "msw": "2.15.0",
+    "msw-storybook-addon": "3.0.3",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "storybook": "^10.4.6",
@@ -77,5 +78,10 @@
     "esbuild",
     "sharp",
     "unrs-resolver"
-  ]
+  ],
+  "msw": {
+    "workerDirectory": [
+      ".storybook/public"
+    ]
+  }
 }

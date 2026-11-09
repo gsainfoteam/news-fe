@@ -1,10 +1,23 @@
 import { type Preview } from "@storybook/react-vite";
+import { mswLoader } from "msw-storybook-addon/csf3";
+
+import { queryClient } from "../src/common/lib/query-client";
 
 import { withLocale, withTheme } from "./decorators";
 
 import "../src/styles/global.css";
 
 const preview: Preview = {
+  loaders: [
+    // Stories mock the API with `parameters.msw.handlers`, built from each
+    // feature's `models/mocks.ts`.
+    mswLoader(),
+    // Islands share one module-level QueryClient; without this, the next
+    // story would show the previous story's cached responses.
+    () => {
+      queryClient.clear();
+    },
+  ],
   globalTypes: {
     theme: { description: "Color theme" },
     locale: {
