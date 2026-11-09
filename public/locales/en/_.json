@@ -37,7 +37,6 @@
       "next": "Next page",
       "pages": "Pages",
       "previous": "Previous page",
-      "retry": "Try again",
       "search": "Search titles and text",
       "sort": "Sort",
       "sortLatest": "Latest",
@@ -49,8 +48,6 @@
     "cms": "CMS",
     "guard": {
       "error": {
-        "description": "Please try again in a moment.",
-        "retry": "Try again",
         "title": "Couldn't load your account"
       },
       "forbidden": {

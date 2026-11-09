@@ -8,12 +8,10 @@ import {
   PlusIcon,
   SearchIcon,
   Trash2Icon,
-  TriangleAlertIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
-import { Alert, AlertContent, AlertTitle } from "@/common/components/ui/alert";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,6 +35,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/common/components/ui/dropdown-menu";
+import { ErrorState } from "@/common/components/ui/error-state";
 import { Input } from "@/common/components/ui/input";
 import {
   NativeSelect,
@@ -324,21 +323,15 @@ export function AdminArticleList() {
       {list.status === "pending" ? (
         <ListSkeleton />
       ) : list.status === "error" ? (
-        // NEF-12 replaces this with the shared error screen.
-        <Alert variant="warning">
-          <TriangleAlertIcon />
-          <AlertContent>
-            <AlertTitle>
-              {t(
-                "admin.articles.loadFailed",
-                "기사 목록을 불러오지 못했습니다",
-              )}
-            </AlertTitle>
-          </AlertContent>
-          <Button variant="outline" size="sm" onClick={list.retry}>
-            {t("admin.articles.retry", "다시 시도")}
-          </Button>
-        </Alert>
+        <ErrorState
+          title={t(
+            "admin.articles.loadFailed",
+            "기사 목록을 불러오지 못했습니다",
+          )}
+          description={t("error.description", "잠시 후 다시 시도해 주세요.")}
+          retryLabel={t("error.retry", "다시 시도")}
+          onRetry={list.retry}
+        />
       ) : (
         <div
           aria-busy={list.isFetching}

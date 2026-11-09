@@ -148,3 +148,16 @@ export function handleAdminArticles(initial: AdminArticle[]) {
     }),
   ];
 }
+
+export function handleAdminArticlesError() {
+  return handleGetArticles(() =>
+    HttpResponse.json(
+      {
+        message: "Internal Server Error",
+        error: "Internal Server Error",
+        statusCode: 500,
+      },
+      { status: 500 },
+    ),
+  );
+}

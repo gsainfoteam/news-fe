@@ -5,11 +5,11 @@ import {
   LockKeyholeIcon,
   LogInIcon,
   ShieldAlertIcon,
-  TriangleAlertIcon,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { Button, buttonVariants } from "@/common/components/ui/button";
+import { ErrorState } from "@/common/components/ui/error-state";
 import { Toaster } from "@/common/components/ui/sonner";
 import { cn } from "@/common/lib/cn";
 import { localizePath } from "@/common/lib/languages";
@@ -58,25 +58,19 @@ function AdminGuardContent({ section, children }: AdminGuard.Props) {
           </div>
         </StandaloneScreen>
       );
-    // NEF-12 replaces this with the shared error screen.
     case "error":
       return (
         <StandaloneScreen>
-          <StateMessage
-            icon={<TriangleAlertIcon />}
+          <ErrorState
             title={t(
               "admin.guard.error.title",
               "계정 정보를 불러오지 못했습니다",
             )}
-            description={t(
-              "admin.guard.error.description",
-              "잠시 뒤 다시 시도해 주세요.",
-            )}
-          >
-            <Button onClick={session.retry}>
-              {t("admin.guard.error.retry", "다시 시도")}
-            </Button>
-          </StateMessage>
+            description={t("error.description", "잠시 후 다시 시도해 주세요.")}
+            retryLabel={t("error.retry", "다시 시도")}
+            onRetry={session.retry}
+            className="w-full max-w-[420px] self-start"
+          />
         </StandaloneScreen>
       );
     case "anonymous":

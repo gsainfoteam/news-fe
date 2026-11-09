@@ -40,3 +40,16 @@ export function handleMeAnonymous() {
     ),
   );
 }
+
+export function handleMeError() {
+  return handleGetMe(() =>
+    HttpResponse.json(
+      {
+        message: "Internal Server Error",
+        error: "Internal Server Error",
+        statusCode: 500,
+      },
+      { status: 500 },
+    ),
+  );
+}

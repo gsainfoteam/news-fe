@@ -36,7 +36,6 @@
       "next": "다음 페이지",
       "pages": "페이지",
       "previous": "이전 페이지",
-      "retry": "다시 시도",
       "search": "제목과 본문 검색",
       "sort": "정렬",
       "sortLatest": "최신순",
@@ -48,8 +47,6 @@
     "cms": "CMS",
     "guard": {
       "error": {
-        "description": "잠시 뒤 다시 시도해 주세요.",
-        "retry": "다시 시도",
         "title": "계정 정보를 불러오지 못했습니다"
       },
       "forbidden": {

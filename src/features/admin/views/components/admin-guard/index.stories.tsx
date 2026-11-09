@@ -5,6 +5,7 @@ import { EmptyState } from "@/common/components/ui/empty-state";
 import {
   handleMe,
   handleMeAnonymous,
+  handleMeError,
   mockUser,
 } from "@/features/auth/models/mocks";
 
@@ -47,6 +48,9 @@ export const Reporter: Story = {
 
 /** 401: asks for a login. */
 export const LoggedOut: Story = { parameters: msw(handleMeAnonymous()) };
+
+/** Any other failure: the shared error screen with a retry. */
+export const AccountError: Story = { parameters: msw(handleMeError()) };
 
 /** Logged in but not on the member list. */
 export const NotMember: Story = {
