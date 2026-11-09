@@ -36,6 +36,70 @@
     "report": "Send a tip",
     "search": "Search articles"
   },
+  "report": {
+    "attachments": {
+      "blocked": "Remove the files that failed, or try them again",
+      "cancel": "Cancel uploading {{name}}",
+      "done": "{{size}}, uploaded",
+      "dropzone": "Drag files here or <action>browse</action>",
+      "empty": "Empty files can't be uploaded",
+      "failed": "Upload failed",
+      "invalidType": "This file type isn't supported",
+      "limits_one": "Up to {{count}} file, {{size}} each.",
+      "limits_other": "Up to {{count}} files, {{size}} each.",
+      "overflow_one": "You can attach up to {{count}} file",
+      "overflow_other": "You can attach up to {{count}} files",
+      "pending": "Wait for the uploads to finish, then send",
+      "progress": "Uploading {{name}}",
+      "remove": "Remove {{name}}",
+      "retry": "Try again",
+      "tooLarge": "Files over {{size}} can't be uploaded",
+      "types": "Images, PDF, video, audio, documents (hwp, docx, xlsx, pptx), txt, zip"
+    },
+    "complete": {
+      "again": "Send another tip",
+      "description": "Thank you for the tip. A reporter will review it and may reach out using the contact details you left.",
+      "home": "Go home",
+      "title": "We've received your tip"
+    },
+    "error": {
+      "descriptionRequired": "Enter the details",
+      "descriptionTooLong": "Keep the details to 10,000 characters or fewer",
+      "emailInvalid": "Check the email address",
+      "emailRequired": "Enter your email",
+      "nameRequired": "Enter your name",
+      "nameTooLong": "Keep your name to 50 characters or fewer",
+      "phoneInvalid": "Check the phone number",
+      "phoneRequired": "Enter your phone number",
+      "rateLimit": "You've sent tips too often. Please try again in a moment.",
+      "submit": "We couldn't send your tip. Please try again in a moment.",
+      "titleTooLong": "Keep the title to 200 characters or fewer"
+    },
+    "form": {
+      "content": "Your tip",
+      "description": "Details",
+      "descriptionHelp": "Include the date and place so we can check the facts.",
+      "descriptionPlaceholder": "Tell us when, where, and what happened",
+      "email": "Email",
+      "files": "Attachments",
+      "name": "Name",
+      "optional": "(optional)",
+      "phone": "Phone",
+      "privacy": "We collect your name, email, and phone number to review your tip and contact you. They are used only to handle the tip.",
+      "reporter": "About you",
+      "requiredNote": "marks a required field",
+      "submit": "Send tip",
+      "submitting": "Sending",
+      "title": "Title",
+      "titlePlaceholder": "Sum up your tip in one line"
+    },
+    "page": {
+      "heading": "Send a tip to the GIST Newspaper",
+      "kicker": "Tips",
+      "lead": "Tell us about something worth reporting. A reporter will review it and may contact you using the details you leave.",
+      "title": "Send a tip"
+    }
+  },
   "site": {
     "description": "The student newspaper of the Gwangju Institute of Science and Technology (GIST).",
     "name": "GIST Newspaper"
