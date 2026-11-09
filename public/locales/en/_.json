@@ -24,6 +24,11 @@
     "SPECIAL": "Specials",
     "viewAll": "View all"
   },
+  "error": {
+    "description": "Please try again in a moment.",
+    "retry": "Try again",
+    "title": "Couldn't load this content"
+  },
   "footer": {
     "address": "GIST Newspaper, 3F Student Union Building 1, 123 Cheomdangwagi-ro, Buk-gu, Gwangju, Korea",
     "newTab": "(opens in a new tab)",
