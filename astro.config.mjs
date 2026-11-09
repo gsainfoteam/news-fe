@@ -19,6 +19,13 @@ export default defineConfig({
 
   integrations: [react()],
 
+  // Article photos are converted to webp at build time (common/lib/image.ts).
+  // news-be serves uploads path-style from S3 (`s3.<region>.amazonaws.com/
+  // <bucket>/…`); narrow this once the bucket is fixed.
+  image: {
+    remotePatterns: [{ protocol: "https", hostname: "**.amazonaws.com" }],
+  },
+
   i18n: {
     locales: ["ko", "en"],
     defaultLocale: "ko",
