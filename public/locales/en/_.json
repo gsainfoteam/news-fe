@@ -41,6 +41,11 @@
     "report": "Send a tip",
     "search": "Search articles"
   },
+  "notFound": {
+    "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
+    "home": "Go home",
+    "title": "Page not found"
+  },
   "site": {
     "description": "The student newspaper of the Gwangju Institute of Science and Technology (GIST).",
     "name": "GIST Newspaper"

@@ -20,6 +20,8 @@ interface Props {
   type?: "website" | "article";
   /** Highlights this category in the navigation. */
   category?: Category;
+  /** For pages served at any URL (404): no canonical, hreflang, or og:url. */
+  noindex?: boolean;
 }
 
 const locale = Astro.currentLocale ?? "ko";
@@ -35,6 +37,7 @@ const {
   image = "/logo.png",
   type = "website",
   category,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${siteName}` : siteName;
@@ -55,24 +58,30 @@ const imageUrl = new URL(image, Astro.site).href;
     <meta name="generator" content={Astro.generator} />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     {
-      LANGUAGES.map((lng) => (
-        <link
-          rel="alternate"
-          hreflang={lng}
-          href={getAbsoluteLocaleUrl(lng, basePath)}
-        />
-      ))
+      noindex ? (
+        <meta name="robots" content="noindex" />
+      ) : (
+        <>
+          <link rel="canonical" href={canonical} />
+          {LANGUAGES.map((lng) => (
+            <link
+              rel="alternate"
+              hreflang={lng}
+              href={getAbsoluteLocaleUrl(lng, basePath)}
+            />
+          ))}
+          <meta property="og:url" content={canonical} />
+        </>
+      )
     }
     <meta property="og:site_name" content={siteName} />
     <meta property="og:type" content={type} />
     <meta property="og:title" content={title ?? siteName} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonical} />
     <meta property="og:image" content={imageUrl} />
     <meta property="og:locale" content={locale === "ko" ? "ko_KR" : "en_US"} />
     <meta name="twitter:card" content="summary_large_image" />
