@@ -46,6 +46,7 @@ export namespace ToggleGroup {
 
 export function ToggleGroupItem({
   className,
+  children,
   ...props
 }: TogglePrimitive.Props) {
   const size = React.useContext(ToggleGroupContext);
@@ -54,6 +55,12 @@ export function ToggleGroupItem({
       data-slot="toggle-group-item"
       className={cn(toggleGroupItemVariants({ size }), className)}
       {...props}
-    />
+    >
+      {/* Centering the line box leaves Hangul about 1.5px high, because the
+          font's ascent is far larger than its descent. Trimming to cap height
+          and baseline centers the glyphs. text-box needs a block container, so
+          it goes on this span (a flex item), not on the button. */}
+      <span className="[text-box:trim-both_cap_alphabetic]">{children}</span>
+    </TogglePrimitive>
   );
 }
