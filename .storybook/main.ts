@@ -18,7 +18,15 @@ const config: StorybookConfig = {
     return mergeConfig(config, {
       plugins: [tailwindcss()],
       resolve: {
-        alias: [{ find: /^@\//, replacement: `${srcDir}/` }],
+        alias: [
+          { find: /^@\//, replacement: `${srcDir}/` },
+          {
+            find: /^astro:env\/client$/,
+            replacement: fileURLToPath(
+              new URL("./astro-env-client.ts", import.meta.url),
+            ),
+          },
+        ],
       },
     });
   },
