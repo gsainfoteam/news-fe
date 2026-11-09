@@ -43,11 +43,13 @@ function CategoryArticlesContent({
 
   return (
     <div className="pt-10 pb-24 mobile:pt-6 mobile:pb-16">
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-4 pt-2">
-        <h1 className="text-[56px] leading-none font-extrabold tracking-[-0.045em] mobile:text-[36px]">
+      {/* No wrap: a long heading (English) wraps inside its own box, so the
+          count stays at its bottom right in every language. */}
+      <div className="mb-5 flex items-end justify-between gap-4 pt-2">
+        <h1 className="min-w-0 text-[56px] leading-none font-extrabold tracking-[-0.045em] mobile:text-[36px]">
           {heading}
         </h1>
-        <p className="text-sm text-subtle-foreground tabular-nums">
+        <p className="shrink-0 text-sm text-subtle-foreground tabular-nums">
           {t("article.count", "기사 {{count}}건", { count: total })}
         </p>
       </div>
