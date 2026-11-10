@@ -15,8 +15,14 @@ export function useEditableArticle() {
     ...articleQuery({ path: { id: id ?? 0 }, query: { increaseView: false } }),
     enabled: id !== undefined,
     retry: (count, error) => !isNotFound(error) && count < 2,
+    // The editor copies the article into its draft once. A refetch can't
+    // change what it shows, and a failed one must not swap it for an error
+    // screen and drop unsaved edits.
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   });
 
+  if (query.data) return { status: "ready" as const, article: query.data };
   if (id === undefined || (query.isError && isNotFound(query.error))) {
     return { status: "not-found" as const };
   }
@@ -28,7 +34,7 @@ export function useEditableArticle() {
       retrying: query.isFetching,
     };
   }
-  return { status: "ready" as const, article: query.data };
+  return { status: "loading" as const };
 }
 
 function isNotFound(error: unknown) {

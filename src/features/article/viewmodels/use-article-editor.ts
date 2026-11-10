@@ -92,11 +92,18 @@ export function useArticleEditor(article?: Article) {
       void queryClient.invalidateQueries({
         queryKey: [{ _id: articlesQueryKey()[0]._id }],
       });
-      void queryClient.invalidateQueries({
-        queryKey: [
-          { _id: articleQueryKey({ path: { id: result.id } })[0]._id },
-        ],
-      });
+      // Not invalidate: that refetches the query the edit page is reading.
+      queryClient.setQueriesData<Article>(
+        {
+          queryKey: [
+            {
+              _id: articleQueryKey({ path: { id: result.id } })[0]._id,
+              path: { id: result.id },
+            },
+          ],
+        },
+        result,
+      );
       return { status: "saved", article: result, created: !saved };
     } catch {
       return { status: "failed" };
