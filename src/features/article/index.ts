@@ -38,3 +38,4 @@ export { ArticleList } from "./views/components/article-list";
 export { ArticlePagination } from "./views/components/article-pagination";
 export { CategoryArticles } from "./views/components/category-articles";
 export { PopularArticles } from "./views/components/popular-articles";
+export { SearchPage } from "./views/components/search-page";

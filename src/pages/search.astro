@@ -1,0 +1,28 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { SearchPage } from "@/features/article";
+import Layout from "@/layouts/layout.astro";
+
+// Queries can't be known at build time, so the results render in the
+// browser. The shell is the same for every query and stays out of search
+// engines (`noindex`).
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("search.page.title", "검색");
+const heading = t("search.page.heading", "기사 검색");
+---
+
+<Layout title={title} noindex>
+  <div
+    class="mx-auto w-full max-w-[904px] pt-10 pb-24 mobile:pt-6 mobile:pb-16"
+  >
+    <h1 class="sr-only">{heading}</h1>
+    <SearchPage client:only="react">
+      <div
+        slot="fallback"
+        aria-hidden="true"
+        class="h-[50px] rounded-[10px] border border-input bg-background"
+      >
+      </div>
+    </SearchPage>
+  </div>
+</Layout>

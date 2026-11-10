@@ -217,6 +217,35 @@
     "REPORTING_SENIOR_REPORTER": "취재부 책임기자",
     "SENIOR_DESIGNER": "책임 디자이너"
   },
+  "search": {
+    "allCategories": "전체 카테고리",
+    "category": "카테고리 필터",
+    "clear": "검색어 지우기",
+    "documentTitle": "‘{{query}}’ 검색 결과",
+    "empty": {
+      "description": "검색어의 철자를 확인하거나 더 짧은 단어로 검색해 보세요.",
+      "title": "‘{{query}}’에 대한 검색 결과가 없습니다"
+    },
+    "idle": {
+      "description": "기사 제목과 본문에서 찾습니다.",
+      "title": "검색어를 입력해 주세요"
+    },
+    "label": "검색어",
+    "latest": "최신 기사",
+    "loading": "검색하는 중",
+    "loadMore": "더 보기",
+    "loadMoreFailed": "더 불러오지 못했습니다. 다시 시도",
+    "page": {
+      "heading": "기사 검색",
+      "title": "검색"
+    },
+    "progress": "{{total}}건 중 {{shown}}건",
+    "sort": "정렬",
+    "sortLatest": "최신순",
+    "sortPopular": "인기순",
+    "submit": "검색",
+    "summary_other": "<query/> 검색 결과 <total/>건"
+  },
   "site": {
     "description": "광주과학기술원(GIST) 학생들이 만드는 신문입니다.",
     "name": "지스트신문"
