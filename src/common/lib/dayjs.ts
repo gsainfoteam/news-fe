@@ -1,5 +1,7 @@
 import dayjs, { type ConfigType } from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 import { useTranslation } from "react-i18next";
 
 import { i18n } from "./i18n";
@@ -9,6 +11,14 @@ import { i18n } from "./i18n";
 import "dayjs/locale/ko";
 
 dayjs.extend(localizedFormat);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+// Readers are in Korea, but the build runs in UTC (GitHub Actions, Cloudflare):
+// formatting in the process time zone would print the day before for anything
+// published 00:00-09:00 KST, and islands (browser time zone) would disagree
+// with the static HTML.
+const TIME_ZONE = "Asia/Seoul";
 
 // Keep dayjs's locale in sync with the active i18next language.
 i18n.on("languageChanged", (lng) => dayjs.locale(lng));
@@ -21,7 +31,7 @@ dayjs.locale(i18n.language);
 export function useDayjs() {
   const { i18n: i18nInstance, ready } = useTranslation();
   const lng = ready ? i18nInstance.language : "ko";
-  return (date?: ConfigType) => dayjs(date).locale(lng);
+  return (date?: ConfigType) => dayjs(date).tz(TIME_ZONE).locale(lng);
 }
 
 export { dayjs };
