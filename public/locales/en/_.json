@@ -135,6 +135,19 @@
     "report": "Send a tip",
     "search": "Search articles"
   },
+  "home": {
+    "featured": "Top stories",
+    "headline": "Headline",
+    "latest": "Latest",
+    "more": "More",
+    "moreIn": "More in {{category}}",
+    "popular": "Most read now",
+    "report": {
+      "description": "Send photos or documents with it, and a reporter will check and get back to you.",
+      "kicker": "Tips",
+      "title": "Know something we should cover?"
+    }
+  },
   "notFound": {
     "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
     "home": "Go home",

@@ -22,6 +22,8 @@ interface Props {
   category?: Category;
   /** For pages served at any URL (404): no canonical, hreflang, or og:url. */
   noindex?: boolean;
+  /** Drop the page column so sections can run edge to edge (home hero). */
+  fullWidth?: boolean;
 }
 
 const locale = Astro.currentLocale ?? "ko";
@@ -38,6 +40,7 @@ const {
   type = "website",
   category,
   noindex = false,
+  fullWidth = false,
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${siteName}` : siteName;
@@ -95,7 +98,7 @@ const imageUrl = new URL(image, Astro.site).href;
         currentCategory={category}
       />
     </Header>
-    <main class="page-container flex-1">
+    <main class:list={["flex-1", !fullWidth && "page-container"]}>
       <slot />
     </main>
     <Footer i18n={i18n} />

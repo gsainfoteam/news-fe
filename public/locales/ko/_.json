@@ -133,6 +133,19 @@
     "report": "제보하기",
     "search": "기사 검색"
   },
+  "home": {
+    "featured": "주요 기사",
+    "headline": "머리기사",
+    "latest": "최신 기사",
+    "more": "더 보기",
+    "moreIn": "{{category}} 더 보기",
+    "popular": "지금 많이 읽는 기사",
+    "report": {
+      "description": "사진이나 문서를 함께 보내주시면 기자가 확인 후 연락드립니다.",
+      "kicker": "제보",
+      "title": "취재가 필요한 소식을 알고 계신가요?"
+    }
+  },
   "notFound": {
     "description": "주소가 바뀌었거나 삭제된 기사일 수 있습니다. 방금 발행된 기사는 사이트에 반영되기까지 1~2분 걸립니다.",
     "home": "홈으로 가기",
