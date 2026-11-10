@@ -75,6 +75,49 @@
       "members": "멤버 관리",
       "reports": "제보함"
     },
+    "reports": {
+      "backToList": "제보 목록",
+      "content": "내용",
+      "count": "전체 {{count}}건, 최신순",
+      "detailFailed": "제보를 불러오지 못했습니다",
+      "download": "{{name}} 받기",
+      "downloadShort": "받기",
+      "email": "이메일",
+      "empty": {
+        "description": "독자가 제보 페이지에서 보낸 제보가 여기에 쌓입니다.",
+        "title": "아직 들어온 제보가 없습니다"
+      },
+      "emptyPage": "이 페이지에는 제보가 없습니다.",
+      "fileCount": "첨부 {{count}}개",
+      "files": "첨부 파일 {{count}}",
+      "filesHelp": "다운로드 링크는 10분 동안만 유효합니다",
+      "linksExpired": {
+        "action": "새 링크 받기",
+        "description": "링크는 10분 동안만 유효합니다. 새 링크를 받은 뒤 다시 내려받아 주세요.",
+        "title": "다운로드 링크가 만료되었습니다"
+      },
+      "listLabel": "제보 목록",
+      "loadFailed": "제보 목록을 불러오지 못했습니다",
+      "name": "이름",
+      "next": "다음 페이지",
+      "notFound": {
+        "description": "주소가 잘못되었거나 지워진 제보입니다.",
+        "title": "제보를 찾을 수 없습니다"
+      },
+      "pages": "페이지",
+      "phone": "전화번호",
+      "pick": "목록에서 제보를 고르면 내용이 여기에 나옵니다.",
+      "previous": "이전 페이지",
+      "received": "#{{id}}, {{date}} 접수",
+      "refreshFailed": "새 링크를 받지 못했습니다",
+      "reply": "이메일로 답장",
+      "replySubject": "지스트신문 제보 답변",
+      "replySubjectWithTitle": "지스트신문 제보 답변: {{title}}",
+      "reporter": "제보자",
+      "title": "제보함",
+      "untitled": "(제목 없음)",
+      "writeArticle": "새 기사 쓰기"
+    },
     "site": "사이트",
     "siteHome": "지스트신문 사이트"
   },
