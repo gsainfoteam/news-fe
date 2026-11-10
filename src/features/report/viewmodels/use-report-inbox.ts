@@ -39,7 +39,12 @@ export function useReportInbox(lng: string, initial?: InboxLocation) {
     (next: InboxLocation, { replace = false } = {}) => {
       if (!inMemory) {
         const href = getInboxHref(lng, next);
-        if (replace) history.replaceState(null, "", href);
+        // Clicking the open report or the current page again would stack a
+        // duplicate entry, and Back would then seem to do nothing. Compared
+        // parsed, since Pages may serve `/view/` with a trailing slash.
+        const current = readLocation();
+        const same = current.id === next.id && current.page === next.page;
+        if (replace || same) history.replaceState(null, "", href);
         else history.pushState(null, "", href);
       }
       setLocation(next);
