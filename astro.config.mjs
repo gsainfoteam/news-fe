@@ -1,4 +1,6 @@
 // @ts-check
+import { rename, rm } from "node:fs/promises";
+
 import { defineConfig, envField } from "astro/config";
 
 import react from "@astrojs/react";
@@ -12,6 +14,23 @@ const { PUBLIC_API_BASE_URL } = loadEnv(
   "",
 );
 
+// Cloudflare Pages answers a missing path with the nearest `404.html` up the
+// tree, but the i18n fallback writes `/en/404/index.html`. Without this move,
+// `/en/…` misses fall through to the Korean `/404.html`.
+/** @type {import("astro").AstroIntegration} */
+const localizedNotFound = {
+  name: "localized-404",
+  hooks: {
+    "astro:build:done": async ({ dir }) => {
+      for (const lng of ["en"]) {
+        const from = new URL(`${lng}/404/index.html`, dir);
+        await rename(from, new URL(`${lng}/404.html`, dir));
+        await rm(new URL(`${lng}/404/`, dir), { recursive: true });
+      }
+    },
+  },
+};
+
 // https://astro.build/config
 export default defineConfig({
   // OG tags, canonical, and hreflang need absolute URLs.
@@ -20,7 +39,7 @@ export default defineConfig({
   // Staging news-be and its S3 bucket allow only this origin through CORS.
   server: { port: 5173 },
 
-  integrations: [react()],
+  integrations: [react(), localizedNotFound],
 
   i18n: {
     locales: ["ko", "en"],

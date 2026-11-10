@@ -24,6 +24,11 @@
     "SPECIAL": "특집",
     "viewAll": "전체 보기"
   },
+  "error": {
+    "description": "잠시 후 다시 시도해 주세요.",
+    "retry": "다시 시도",
+    "title": "내용을 불러오지 못했습니다"
+  },
   "footer": {
     "address": "광주광역시 북구 첨단과기로 123 제1학생회관 3층 GIST신문사",
     "newTab": "(새 탭에서 열림)",
@@ -35,6 +40,11 @@
     "openMenu": "메뉴 열기",
     "report": "제보하기",
     "search": "기사 검색"
+  },
+  "notFound": {
+    "description": "주소가 바뀌었거나 삭제된 기사일 수 있습니다. 방금 발행된 기사는 사이트에 반영되기까지 1~2분 걸립니다.",
+    "home": "홈으로 가기",
+    "title": "페이지를 찾을 수 없습니다"
   },
   "report": {
     "attachments": {

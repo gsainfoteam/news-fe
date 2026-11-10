@@ -1,0 +1,5 @@
+# Claude 리뷰(.github/workflows/review.yml)로 바꿨다. CodeRabbit 앱은 조직 전체에 설치돼 있어서 저장소 설정으로 끈다.
+reviews:
+  auto_review:
+    enabled: false
+  review_status: false
