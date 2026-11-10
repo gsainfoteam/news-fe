@@ -194,24 +194,27 @@ export async function optimizeHomeThumbnails(
     ...article,
     thumbnail: await optimize(article.thumbnail, width),
   });
-  const resizeSection =
-    (width: number, leadWidth = width) =>
-    async (section: HomeCategorySection) => ({
+  const resizeAll =
+    (width: number) => async (section: HomeCategorySection) => ({
       ...section,
-      articles: await Promise.all(
-        section.articles.map((article, i) =>
-          resize(i === 0 ? leadWidth : width)(article),
-        ),
-      ),
+      articles: await Promise.all(section.articles.map(resize(width))),
+    });
+  // The spotlight and category boxes show a photo for their lead only; the
+  // rest are title links, so converting their photos would only bloat dist/.
+  const resizeLead =
+    (width: number) =>
+    async ({ articles: [lead, ...rest], ...section }: HomeCategorySection) => ({
+      ...section,
+      articles: [await resize(width)(lead), ...rest],
     });
   const [headline, featured, latest, spotlight, categories, opinion] =
     await Promise.all([
       sections.headline && resize(1920)(sections.headline),
       Promise.all(sections.featured.map(resize(208))),
       Promise.all(sections.latest.map(resize(600))),
-      sections.spotlight && resizeSection(400, 1400)(sections.spotlight),
-      Promise.all(sections.categories.map(resizeSection(600))),
-      sections.opinion && resizeSection(600)(sections.opinion),
+      sections.spotlight && resizeLead(1400)(sections.spotlight),
+      Promise.all(sections.categories.map(resizeLead(600))),
+      sections.opinion && resizeAll(600)(sections.opinion),
     ]);
   return {
     ...sections,

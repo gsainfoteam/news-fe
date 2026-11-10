@@ -1,8 +1,11 @@
 import { describe, expect, test } from "bun:test";
 
+import { type Category } from "@/features/category";
+
 import {
   buildHomeSections,
   HEADLINE_WINDOW_DAYS,
+  optimizeHomeThumbnails,
   selectHeadline,
 } from "./home";
 import { createMockArticle } from "../models/mocks";
@@ -151,5 +154,41 @@ describe("buildHomeSections", () => {
     expect(sections.headline).toBeUndefined();
     expect(sections.featured).toEqual([]);
     expect(sections.categories).toEqual([]);
+  });
+});
+
+describe("optimizeHomeThumbnails", () => {
+  test("converts only the photos a section shows", async () => {
+    const article = (index: number, category: Category) =>
+      createMockArticle(index, {
+        categories: [category],
+        thumbnailUrl: `https://img.test/${index}.jpg`,
+      });
+    const sections = buildHomeSections(
+      {
+        latest: [],
+        popular: [],
+        categories: {
+          CAMPUS: [article(0, "CAMPUS"), article(1, "CAMPUS")],
+          OPINION: [article(2, "CARTOON"), article(3, "CARTOON")],
+        },
+      },
+      NOW,
+    );
+    const optimized = await optimizeHomeThumbnails(
+      sections,
+      async (src, width) => src && `${src}?w=${width}`,
+    );
+    const thumbs = (list?: { thumbnail?: string }[]) =>
+      list?.map((a) => a.thumbnail);
+
+    expect(thumbs(optimized.categories[0].articles)).toEqual([
+      "https://img.test/0.jpg?w=600",
+      "https://img.test/1.jpg",
+    ]);
+    expect(thumbs(optimized.opinion?.articles)).toEqual([
+      "https://img.test/2.jpg?w=600",
+      "https://img.test/3.jpg?w=600",
+    ]);
   });
 });
