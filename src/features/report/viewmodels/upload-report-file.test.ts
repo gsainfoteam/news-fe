@@ -1,12 +1,7 @@
 import { afterAll, afterEach, beforeAll, expect, mock, test } from "bun:test";
 import { setupServer } from "msw/node";
 
-// The generated client reads its base URL from astro:env, which only exists
-// inside Astro. Bun has no XMLHttpRequest, so the S3 PUT (putReportFile) is
-// stubbed here.
-mock.module("astro:env/client", () => ({
-  PUBLIC_API_BASE_URL: "https://api.test",
-}));
+// Bun has no XMLHttpRequest, so the S3 PUT (putReportFile) is stubbed here.
 const put = mock(async (...args: unknown[]) => void args);
 mock.module("../models/upload", () => ({
   putReportFile: put,
