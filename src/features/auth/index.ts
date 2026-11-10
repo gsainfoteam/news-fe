@@ -1,5 +1,6 @@
 export {
   MEMBER_ROLES,
+  meQuery,
   PERMISSIONS,
   type MemberRole,
   type Permission,

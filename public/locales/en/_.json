@@ -135,6 +135,95 @@
     "report": "Send a tip",
     "search": "Search articles"
   },
+  "member": {
+    "access": {
+      "ALUMNI": "No access",
+      "EDITOR": "Editor",
+      "EDITORSHIP": "Full control",
+      "NONE": "No permission"
+    },
+    "can": {
+      "allEditor": "Everything editors can do",
+      "changeRole": "Change positions",
+      "delete": "Delete members",
+      "deleteComment": "Delete others' comments",
+      "editArticle": "Edit and delete articles",
+      "noCms": "Cannot use the CMS",
+      "readReports": "Read reports",
+      "register": "Register members",
+      "stayListed": "Stays on the member list",
+      "writeArticle": "Write articles"
+    },
+    "count_one": "{{count}} member",
+    "count_other": "{{count}} members",
+    "delete": {
+      "description": "They leave the list and can no longer use the CMS. Their name stays on the articles they wrote. To keep a former member on the list, change their position to Alumni instead of deleting them.",
+      "title": "Delete {{name}}?"
+    },
+    "error": {
+      "emailDuplicated": "This email is already in an earlier row",
+      "emailInvalid": "Check the email format",
+      "emailRegistered": "Already a member",
+      "emailRequired": "Enter an email",
+      "nameRequired": "Enter a name",
+      "nameTooLong": "Use 50 characters or fewer"
+    },
+    "handover": {
+      "action": "Hand over",
+      "description": "Your position becomes Cub Reporter, and you lose member management and editing. Only the new editor-in-chief can hand it back.",
+      "title": "Hand the editor-in-chief role to {{name}}?"
+    },
+    "loadFailed": "Couldn't load the member list",
+    "permissions": {
+      "description": "Permission follows each position automatically",
+      "title": "Permissions"
+    },
+    "register": {
+      "addRow": "Add another",
+      "description": "You can register several people at once",
+      "email": "Email",
+      "help": "You can't make someone editor-in-chief here. To hand the role over, change another member's position to Editor-in-Chief in the list below.",
+      "name": "Name",
+      "namePlaceholder": "Name",
+      "remove": "Remove",
+      "removeRow": "Remove {{row}}",
+      "role": "Position",
+      "roleOption": "{{role}} ({{access}})",
+      "row": "Member {{n}}",
+      "submit_one": "Register {{count}}",
+      "submit_other": "Register {{count}}",
+      "title": "Register members"
+    },
+    "table": {
+      "access": "Permission",
+      "accessAfter": "After saving, permission becomes:",
+      "actions": "Actions",
+      "cancel": "Cancel",
+      "caption": "Members",
+      "changeRole": "Change position",
+      "createdAt": "Registered",
+      "delete": "Delete",
+      "empty": "No members yet",
+      "me": "You",
+      "member": "Member",
+      "menu": "Actions for {{name}}",
+      "role": "Position",
+      "roleOf": "Position of {{name}}",
+      "save": "Save"
+    },
+    "title": "Members",
+    "toast": {
+      "deleted": "Deleted {{name}}",
+      "deleteFailed": "Couldn't delete the member",
+      "handedOver": "Handed the editor-in-chief role to {{name}}",
+      "registered_one": "Registered {{count}} member",
+      "registered_other": "Registered {{count}} members",
+      "registerFailed": "Couldn't register the members",
+      "registerFailedDescription": "Check that none of the emails is already registered, then try again.",
+      "roleChanged": "Changed {{name}}'s position",
+      "roleFailed": "Couldn't change the position"
+    }
+  },
   "notFound": {
     "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
     "home": "Go home",
