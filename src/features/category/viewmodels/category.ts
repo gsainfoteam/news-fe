@@ -124,3 +124,33 @@ export function getCategoryNav(
     notice: item("NOTICE"),
   };
 }
+
+export function getCategoryGroup(category: Category) {
+  return CATEGORY_GROUPS.find(
+    (g) => g.category === category || g.children.includes(category),
+  );
+}
+
+export type CategoryTab = CategoryNavItem & { all: boolean };
+
+// A section page and its sub-category pages share one tab bar: "전체" is the
+// section itself. Sections without sub-categories get no tabs.
+export function getCategoryTabs(
+  t: TFunction,
+  lng: string,
+  current: Category,
+): CategoryTab[] {
+  const group = getCategoryGroup(current);
+  if (!group || group.children.length === 0) return [];
+  const labels = getCategoryLabels(t);
+  return [group.category, ...group.children].map((category) => ({
+    category,
+    all: category === group.category,
+    label:
+      category === group.category
+        ? t("category.all", "전체")
+        : labels[category],
+    href: localizePath(lng, getCategoryPath(category)),
+    current: category === current,
+  }));
+}

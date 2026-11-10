@@ -1,7 +1,18 @@
 {
+  "article": {
+    "count_one": "{{count}} article",
+    "count_other": "{{count}} articles",
+    "empty": {
+      "description": "Articles will appear here once they are published.",
+      "title": "No articles yet"
+    },
+    "popularIn": "Most read in {{category}}",
+    "views": "{{views}} views"
+  },
   "category": {
     "ACADEMIC": "Academics",
     "ACADEMIC_RESEARCH": "Academics & Research",
+    "all": "All",
     "CAMPUS": "Campus",
     "CARTOON": "Cartoons",
     "CULTURE": "Culture",
@@ -15,6 +26,8 @@
     "navLabel": "Categories",
     "NOTICE": "Notices",
     "OPINION": "Opinion",
+    "pageDescription": "{{category}} articles from the GIST Newspaper",
+    "pageTitle": "{{category}}, page {{page}}",
     "PLANNING": "Features",
     "PLANNING_SPECIAL": "Features & Specials",
     "READERS_COMMITTEE": "Readers' Committee",
@@ -22,6 +35,7 @@
     "RESEARCH": "Research",
     "SOCIETY": "Society",
     "SPECIAL": "Specials",
+    "tabsLabel": "Subcategories",
     "viewAll": "View all"
   },
   "error": {
@@ -45,6 +59,11 @@
     "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
     "home": "Go home",
     "title": "Page not found"
+  },
+  "pagination": {
+    "label": "Pages",
+    "next": "Next page",
+    "previous": "Previous page"
   },
   "site": {
     "description": "The student newspaper of the Gwangju Institute of Science and Technology (GIST).",
