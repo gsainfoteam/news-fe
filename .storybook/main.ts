@@ -21,7 +21,7 @@ const config: StorybookConfig = {
         alias: [
           { find: /^@\//, replacement: `${srcDir}/` },
           {
-            find: /^astro:env\/client$/,
+            find: "astro:env/client",
             replacement: fileURLToPath(
               new URL("./astro-env-client.ts", import.meta.url),
             ),

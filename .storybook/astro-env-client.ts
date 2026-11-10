@@ -1,3 +1,3 @@
-// Storybook runs on plain Vite, which has no `astro:env` virtual modules.
-// Views that reach the generated API client import this instead.
+// Storybook has no Astro runtime. Views that import a feature's index pull in
+// the generated API client, which reads this module through common/lib/api.
 export const PUBLIC_API_BASE_URL = "/api";

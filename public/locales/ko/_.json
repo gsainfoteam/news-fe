@@ -1,7 +1,17 @@
 {
+  "article": {
+    "count": "기사 {{count}}건",
+    "empty": {
+      "description": "기사가 올라오면 이곳에 보입니다.",
+      "title": "아직 기사가 없습니다"
+    },
+    "popularIn": "{{category}} 많이 본 기사",
+    "views": "조회 {{views}}"
+  },
   "category": {
     "ACADEMIC": "학술",
     "ACADEMIC_RESEARCH": "학술·연구",
+    "all": "전체",
     "CAMPUS": "대학",
     "CARTOON": "4컷 만화/만평",
     "CULTURE": "문화",
@@ -15,6 +25,8 @@
     "navLabel": "카테고리",
     "NOTICE": "공지사항",
     "OPINION": "오피니언",
+    "pageDescription": "지스트신문 {{category}} 기사",
+    "pageTitle": "{{category}} {{page}}쪽",
     "PLANNING": "기획",
     "PLANNING_SPECIAL": "기획·특집",
     "READERS_COMMITTEE": "독자자문위원회",
@@ -22,6 +34,7 @@
     "RESEARCH": "연구",
     "SOCIETY": "사회",
     "SPECIAL": "특집",
+    "tabsLabel": "하위 카테고리",
     "viewAll": "전체 보기"
   },
   "error": {
@@ -45,6 +58,11 @@
     "description": "주소가 바뀌었거나 삭제된 기사일 수 있습니다. 방금 발행된 기사는 사이트에 반영되기까지 1~2분 걸립니다.",
     "home": "홈으로 가기",
     "title": "페이지를 찾을 수 없습니다"
+  },
+  "pagination": {
+    "label": "페이지",
+    "next": "다음 페이지",
+    "previous": "이전 페이지"
   },
   "report": {
     "attachments": {
