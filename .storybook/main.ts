@@ -4,7 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { type StorybookConfig } from "@storybook/react-vite";
 
 const srcDir = fileURLToPath(new URL("../src", import.meta.url));
-const astroEnv = fileURLToPath(new URL("./astro-env.ts", import.meta.url));
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(ts|tsx)"],
@@ -22,8 +21,14 @@ const config: StorybookConfig = {
       resolve: {
         alias: [
           { find: /^@\//, replacement: `${srcDir}/` },
-          // The API client config (`common/lib/api.ts`) reads these.
-          { find: /^astro:env\/(client|server)$/, replacement: astroEnv },
+          {
+            // Vite resolves api.ts's `astro:env/server` import even though
+            // only the SSR build runs it, so the server module needs the stub too.
+            find: /^astro:env\/(client|server)$/,
+            replacement: fileURLToPath(
+              new URL("./astro-env-client.ts", import.meta.url),
+            ),
+          },
         ],
       },
     });

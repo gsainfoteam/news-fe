@@ -1,0 +1,78 @@
+---
+import { type GetStaticPaths, type InferGetStaticPropsType } from "astro";
+
+import { getPageI18n } from "@/common/lib/i18n";
+import { optimizeImage } from "@/common/lib/image";
+import {
+  ARTICLES_PER_PAGE,
+  CategoryArticles,
+  fetchAllArticles,
+  filterByCategory,
+  getPopularArticles,
+  toArticlePreview,
+} from "@/features/article";
+import {
+  CATEGORIES,
+  getCategoryLabels,
+  toCategorySlug,
+} from "@/features/category";
+import Layout from "@/layouts/layout.astro";
+
+// Every category gets at least page 1, so an empty one shows its empty
+// state; an unknown slug has no page and falls to 404.
+export const getStaticPaths = (async ({ paginate }) => {
+  const articles = await fetchAllArticles();
+  return CATEGORIES.flatMap((category) => {
+    const list = filterByCategory(articles, category);
+    return paginate(list, {
+      pageSize: ARTICLES_PER_PAGE,
+      params: { slug: toCategorySlug(category) },
+      props: { category, popular: getPopularArticles(list) },
+    });
+  });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { page, category, popular } = Astro.props;
+const i18n = getPageI18n(Astro.currentLocale);
+const { t } = i18n;
+const label = getCategoryLabels(t)[category];
+const title =
+  page.currentPage > 1
+    ? t("category.pageTitle", "{{category}} {{page}}쪽", {
+        category: label,
+        page: page.currentPage,
+      })
+    : label;
+const description = t(
+  "category.pageDescription",
+  "지스트신문 {{category}} 기사",
+  {
+    category: label,
+  },
+);
+
+const lead = page.currentPage === 1;
+const articles = await Promise.all(
+  page.data.map(async (article, i) => {
+    const preview = toArticlePreview(article, { category });
+    const width = lead && i === 0 ? 960 : 400;
+    return {
+      ...preview,
+      thumbnail: await optimizeImage(preview.thumbnail, width),
+    };
+  }),
+);
+---
+
+<Layout title={title} description={description} category={category}>
+  <CategoryArticles
+    i18n={i18n}
+    category={category}
+    total={page.total}
+    articles={articles}
+    popular={popular.map((article) => toArticlePreview(article, { category }))}
+    page={{ current: page.currentPage, last: page.lastPage }}
+  />
+</Layout>

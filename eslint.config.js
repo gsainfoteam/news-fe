@@ -19,6 +19,7 @@ import tseslint from "typescript-eslint";
 const boundariesElements = [
   // Listed first: an element takes the first pattern it matches.
   { type: "stories", pattern: "src/**/*.stories.tsx", mode: "full" },
+  { type: "tests", pattern: "src/**/*.test.{ts,tsx}", mode: "full" },
   // MSW handlers and fixtures (`models/mocks.ts`), for stories and tests only.
   {
     type: "feature-mocks",
@@ -306,8 +307,8 @@ export default defineConfig([
               ],
             },
             {
-              // A story renders a view with any feature's API mocks.
-              from: { type: "stories" },
+              // Stories and tests exercise any layer with the API mocks.
+              from: { type: ["stories", "tests"] },
               allow: [
                 {
                   to: {
