@@ -1,0 +1,13 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AdminArticleEditor } from "@/features/article";
+import AdminLayout from "@/layouts/admin-layout.astro";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("admin.editor.editTitle", "기사 수정");
+---
+
+<!-- The article id comes from `?id=`: ids created after the build have no page. -->
+<AdminLayout title={title}>
+  <AdminArticleEditor mode="edit" client:only="react" />
+</AdminLayout>

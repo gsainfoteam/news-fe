@@ -33,6 +33,10 @@ export {
   AdminArticleList,
   AdminArticles,
 } from "./views/components/admin-article-list";
+export {
+  AdminArticleEditor,
+  ArticleEditor,
+} from "./views/components/article-editor";
 export { ArticleCard } from "./views/components/article-card";
 export { ArticleList } from "./views/components/article-list";
 export { ArticlePagination } from "./views/components/article-pagination";
