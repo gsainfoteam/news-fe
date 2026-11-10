@@ -446,26 +446,30 @@ function PageNav({
   const { t } = useTranslation();
   // Real links so a page opens in a new tab too; a plain click stays in place.
   const { page } = filters;
-  const link = (to: number) => ({
-    href:
-      writeAdminArticleFilters(window.location.search, {
-        ...filters,
-        page: to,
-      }) || window.location.pathname,
-    onClick: (e: MouseEvent) => {
-      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-      e.preventDefault();
-      onChange(to);
-      window.scrollTo({ top: 0 });
-    },
-  });
+  const link = (to: number) =>
+    to < 1 || to > pageCount
+      ? // Without href the anchor leaves the tab order, so Enter can't reach
+        // an out-of-range page; aria-disabled alone only blocks the mouse.
+        { "aria-disabled": true as const }
+      : {
+          href:
+            writeAdminArticleFilters(window.location.search, {
+              ...filters,
+              page: to,
+            }) || window.location.pathname,
+          onClick: (e: MouseEvent) => {
+            if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+            e.preventDefault();
+            onChange(to);
+            window.scrollTo({ top: 0 });
+          },
+        };
   return (
     <Pagination aria-label={t("admin.articles.pages", "페이지")}>
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
             aria-label={t("admin.articles.previous", "이전 페이지")}
-            aria-disabled={page <= 1 || undefined}
             {...link(page - 1)}
           />
         </PaginationItem>
@@ -479,7 +483,6 @@ function PageNav({
         <PaginationItem>
           <PaginationNext
             aria-label={t("admin.articles.next", "다음 페이지")}
-            aria-disabled={page >= pageCount || undefined}
             {...link(page + 1)}
           />
         </PaginationItem>
