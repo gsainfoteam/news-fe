@@ -15,10 +15,10 @@ import {
   writeAdminArticleFilters,
 } from "./admin-article-list";
 import {
-  adminArticlesQuery,
-  adminArticlesQueryKey,
+  articlesQuery,
+  articlesQueryKey,
   deleteArticleMutation,
-} from "../models/admin";
+} from "../models";
 
 const SEARCH_DELAY_MS = 300;
 
@@ -45,7 +45,7 @@ export function useAdminArticles() {
   }, [searchInput, filters.search]);
 
   const query = useQuery({
-    ...adminArticlesQuery({ query: toArticlesQuery(filters) }),
+    ...articlesQuery({ query: toArticlesQuery(filters) }),
     // Keep the current rows on screen while the next page or filter loads.
     placeholderData: keepPreviousData,
   });
@@ -65,7 +65,7 @@ export function useAdminArticles() {
     ...deleteArticleMutation(),
     onSuccess: () =>
       queryClient.invalidateQueries({
-        queryKey: [{ _id: adminArticlesQueryKey()[0]._id }],
+        queryKey: [{ _id: articlesQueryKey()[0]._id }],
       }),
   });
 

@@ -2,13 +2,11 @@ import { HttpResponse } from "msw";
 
 import { handleDeleteArticle, handleGetArticles } from "@/@types/api/msw.gen";
 
-import { type AdminArticle } from "./admin";
+import { type Article } from ".";
 
 let nextId = 1;
 
-export function mockArticle(
-  overrides: Partial<AdminArticle> = {},
-): AdminArticle {
+export function mockArticle(overrides: Partial<Article> = {}): Article {
   const id = overrides.id ?? nextId++;
   const createdAt = overrides.createdAt ?? new Date("2026-10-28T09:00:00Z");
   return {
@@ -29,7 +27,7 @@ export function mockArticle(
 
 const day = (d: number, h = 9) => new Date(Date.UTC(2026, 9, d, h));
 
-export const MOCK_ADMIN_ARTICLES: AdminArticle[] = [
+export const MOCK_ADMIN_ARTICLES: Article[] = [
   mockArticle({
     id: 42,
     title: "연구실 안전 점검 항목 개편, 현장에서는 무엇이 달라졌나",
@@ -118,14 +116,14 @@ export const MOCK_ADMIN_ARTICLES: AdminArticle[] = [
 
 // Filters, sorts and pages like `GET /article`, and `DELETE /article/:id`
 // removes from the same list, so a story can delete and see the row go.
-export function handleAdminArticles(initial: AdminArticle[]) {
+export function handleAdminArticles(initial: Article[]) {
   let articles = [...initial];
   return [
     handleGetArticles(({ request }) => {
       const params = new URL(request.url).searchParams;
       const search = params.get("search")?.trim();
       const category = params.get("category") as
-        AdminArticle["categories"][number] | null;
+        Article["categories"][number] | null;
       const offset = Number(params.get("offset") ?? 0);
       const limit = Number(params.get("limit") ?? 10);
       let list = articles.filter(

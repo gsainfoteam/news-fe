@@ -65,7 +65,7 @@ import {
   getCategoryLabels,
 } from "@/features/category";
 
-import { type AdminArticle } from "../../../models/admin";
+import { type Article } from "../../../models";
 import {
   type AdminArticleFilters,
   type AdminArticleSort,
@@ -85,20 +85,20 @@ export function AdminArticles() {
   );
 }
 
-const col = createColumnHelper<typeof dataTableFeatures, AdminArticle>();
+const col = createColumnHelper<typeof dataTableFeatures, Article>();
 
 export function AdminArticleList() {
   const { t, i18n } = useTranslation();
   const dayjs = useDayjs();
   const list = useAdminArticles();
-  const [target, setTarget] = useState<AdminArticle>();
+  const [target, setTarget] = useState<Article>();
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const lng = i18n.language;
   const labels = getCategoryLabels(t);
   const path = (to: string) => localizePath(lng, to);
-  const editHref = (a: AdminArticle) => path(`/admin/articles/edit?id=${a.id}`);
-  const siteHref = (a: AdminArticle) => path(`/article/${a.id}`);
+  const editHref = (a: Article) => path(`/admin/articles/edit?id=${a.id}`);
+  const siteHref = (a: Article) => path(`/article/${a.id}`);
   const date = (d: Date) => dayjs(d).format("YYYY.MM.DD");
   const views = (n: number) => n.toLocaleString(lng);
   const actionLabels = {
@@ -107,7 +107,7 @@ export function AdminArticleList() {
     delete: t("admin.articles.delete", "삭제"),
   };
 
-  const askDelete = (article: AdminArticle) => {
+  const askDelete = (article: Article) => {
     setTarget(article);
     setConfirmOpen(true);
   };
@@ -136,7 +136,7 @@ export function AdminArticleList() {
     }
   };
 
-  const categories = (a: AdminArticle) => (
+  const categories = (a: Article) => (
     <span className="flex flex-wrap gap-1">
       {a.categories.map((c) => (
         <Badge key={c}>{labels[c]}</Badge>

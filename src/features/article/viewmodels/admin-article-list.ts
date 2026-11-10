@@ -1,6 +1,6 @@
 import { CATEGORIES, type Category } from "@/features/category";
 
-import { type AdminArticle, type ArticleSort } from "../models/admin";
+import { type Article, type ArticleSort } from "../models";
 
 export const ADMIN_PAGE_SIZE = 20;
 
@@ -75,14 +75,12 @@ export function getPageWindow(page: number, pageCount: number, size = 5) {
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
 }
 
-export function getAuthorNames(article: Pick<AdminArticle, "authors">) {
+export function getAuthorNames(article: Pick<Article, "authors">) {
   return article.authors.map((a) => a.name).join(", ");
 }
 
 // The backend sets updatedAt on create too; a save within a minute of
 // creation is the same edit session, not a later revision.
-export function isEdited(
-  article: Pick<AdminArticle, "createdAt" | "updatedAt">,
-) {
+export function isEdited(article: Pick<Article, "createdAt" | "updatedAt">) {
   return article.updatedAt.getTime() - article.createdAt.getTime() > 60_000;
 }
