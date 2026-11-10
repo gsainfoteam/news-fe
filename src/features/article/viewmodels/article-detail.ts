@@ -151,7 +151,8 @@ export async function toArticleDetail(
 
 export type ArticleMeta = {
   title: string;
-  description: string;
+  /** Undefined lets the layout use the site description. */
+  description?: string;
   /** Absolute http(s) URL, or undefined for the site default. */
   image?: string;
   publishedTime: string;
@@ -168,7 +169,9 @@ export function getArticleMeta(
   const kicker = detail.breadcrumb.at(-1);
   return {
     title: detail.title,
-    description: detail.subtitle ?? extractSummary(detail.html, 120),
+    // A photo-only article has no text to summarize.
+    description:
+      detail.subtitle ?? (extractSummary(detail.html, 120) || undefined),
     image: detail.image,
     publishedTime: detail.publishedAt.toISOString(),
     modifiedTime: (detail.updatedAt ?? detail.publishedAt).toISOString(),

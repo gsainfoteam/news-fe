@@ -166,6 +166,16 @@ describe("getArticleMeta", () => {
     expect(meta.description).toBe("첫 문단입니다. 둘째 문단.");
   });
 
+  test("a photo-only article leaves the description to the site", async () => {
+    const meta = await metaOf(
+      createMockArticle(0, {
+        subtitle: null,
+        content: '<figure><img src="https://cdn.test/1.jpg" alt=""></figure>',
+      }),
+    );
+    expect(meta.description).toBeUndefined();
+  });
+
   test("uses the first body image for og:image", async () => {
     const meta = await metaOf(
       createMockArticle(0, {
