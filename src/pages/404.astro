@@ -1,0 +1,12 @@
+---
+import { NotFound } from "@/common/components/layout/not-found";
+import { getPageI18n } from "@/common/lib/i18n";
+import Layout from "@/layouts/layout.astro";
+
+const i18n = getPageI18n(Astro.currentLocale);
+const title = i18n.t("notFound.title", "페이지를 찾을 수 없습니다");
+---
+
+<Layout title={title} noindex>
+  <NotFound i18n={i18n} />
+</Layout>

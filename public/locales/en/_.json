@@ -24,6 +24,11 @@
     "SPECIAL": "Specials",
     "viewAll": "View all"
   },
+  "error": {
+    "description": "Please try again in a moment.",
+    "retry": "Try again",
+    "title": "Couldn't load this content"
+  },
   "footer": {
     "address": "GIST Newspaper, 3F Student Union Building 1, 123 Cheomdangwagi-ro, Buk-gu, Gwangju, Korea",
     "newTab": "(opens in a new tab)",
@@ -35,6 +40,11 @@
     "openMenu": "Open menu",
     "report": "Send a tip",
     "search": "Search articles"
+  },
+  "notFound": {
+    "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
+    "home": "Go home",
+    "title": "Page not found"
   },
   "site": {
     "description": "The student newspaper of the Gwangju Institute of Science and Technology (GIST).",
