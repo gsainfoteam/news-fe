@@ -1,0 +1,39 @@
+import { type ReportUploadUrlDto } from "@/@types/api/types.gen";
+
+export class ReportFileUploadError extends Error {
+  constructor(readonly status: number) {
+    super(`Report file upload failed with status ${status}`);
+    this.name = "ReportFileUploadError";
+  }
+}
+
+// XMLHttpRequest, not fetch: fetch reports no upload progress. The browser
+// sets Content-Length from the Blob, and the presigned URL is signed for the
+// size we sent as `contentLength`, so the body must be the same file.
+export function putReportFile(
+  upload: ReportUploadUrlDto,
+  file: Blob,
+  {
+    onProgress,
+    signal,
+  }: { onProgress?: (ratio: number) => void; signal?: AbortSignal } = {},
+) {
+  return new Promise<void>((resolve, reject) => {
+    if (signal?.aborted) return reject(signal.reason);
+    const xhr = new XMLHttpRequest();
+    xhr.open("PUT", upload.uploadUrl);
+    // S3 signs the Content-Type too; anything else is rejected.
+    xhr.setRequestHeader("Content-Type", upload.contentType);
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) onProgress?.(event.loaded / event.total);
+    };
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) resolve();
+      else reject(new ReportFileUploadError(xhr.status));
+    };
+    xhr.onerror = () => reject(new ReportFileUploadError(0));
+    xhr.onabort = () => reject(signal?.reason);
+    signal?.addEventListener("abort", () => xhr.abort(), { once: true });
+    xhr.send(file);
+  });
+}

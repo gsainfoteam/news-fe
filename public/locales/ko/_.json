@@ -64,6 +64,68 @@
     "next": "다음 페이지",
     "previous": "이전 페이지"
   },
+  "report": {
+    "attachments": {
+      "blocked": "올리지 못한 파일을 지우거나 다시 시도해 주세요",
+      "cancel": "{{name}} 업로드 취소",
+      "done": "{{size}}, 업로드 완료",
+      "dropzone": "파일을 끌어다 놓거나 <action>선택</action>하세요",
+      "empty": "빈 파일은 올릴 수 없습니다",
+      "failed": "업로드하지 못했습니다",
+      "invalidType": "지원하지 않는 파일 형식입니다",
+      "limits": "최대 {{count}}개, 파일당 {{size}}까지 올릴 수 있습니다.",
+      "overflow": "파일은 {{count}}개까지 첨부할 수 있습니다",
+      "pending": "파일 업로드가 끝난 뒤 보내 주세요",
+      "progress": "{{name}} 업로드",
+      "remove": "{{name}} 삭제",
+      "retry": "다시 시도",
+      "tooLarge": "{{size}}보다 큰 파일은 올릴 수 없습니다",
+      "types": "이미지, PDF, 영상, 음성, 문서(hwp, docx, xlsx, pptx), txt, zip"
+    },
+    "complete": {
+      "again": "새 제보 작성",
+      "description": "소중한 제보 감사합니다. 기자가 확인한 뒤 필요하면 남겨주신 연락처로 연락드리겠습니다.",
+      "home": "홈으로",
+      "title": "제보가 접수되었습니다"
+    },
+    "error": {
+      "descriptionRequired": "내용을 입력해 주세요",
+      "descriptionTooLong": "내용은 10,000자 이하로 입력해 주세요",
+      "emailInvalid": "이메일 형식을 확인해 주세요",
+      "emailRequired": "이메일을 입력해 주세요",
+      "nameRequired": "이름을 입력해 주세요",
+      "nameTooLong": "이름은 50자 이하로 입력해 주세요",
+      "phoneInvalid": "전화번호 형식을 확인해 주세요",
+      "phoneRequired": "전화번호를 입력해 주세요",
+      "rateLimit": "제보를 너무 자주 보냈습니다. 잠시 뒤 다시 보내 주세요.",
+      "submit": "제보를 보내지 못했습니다. 잠시 뒤 다시 보내 주세요.",
+      "titleTooLong": "제목은 200자 이하로 입력해 주세요"
+    },
+    "form": {
+      "content": "제보 내용",
+      "description": "내용",
+      "descriptionHelp": "사실 관계를 확인할 수 있도록 날짜와 장소를 함께 적어주세요.",
+      "descriptionPlaceholder": "언제, 어디서, 무슨 일이 있었는지 적어주세요",
+      "email": "이메일",
+      "files": "첨부파일",
+      "name": "이름",
+      "optional": "(선택)",
+      "phone": "전화번호",
+      "privacy": "제보 내용을 확인하고 연락드리기 위해 이름, 이메일, 전화번호를 수집합니다. 수집한 정보는 제보 처리에만 씁니다.",
+      "reporter": "제보자 정보",
+      "requiredNote": "표시는 필수 항목입니다",
+      "submit": "제보 보내기",
+      "submitting": "보내는 중",
+      "title": "제목",
+      "titlePlaceholder": "제보 내용을 한 줄로 요약해 주세요"
+    },
+    "page": {
+      "heading": "지스트신문에 제보하기",
+      "kicker": "제보",
+      "lead": "취재가 필요한 소식을 알려주세요. 기자가 내용을 확인한 뒤 남겨주신 연락처로 연락드릴 수 있습니다.",
+      "title": "제보하기"
+    }
+  },
   "site": {
     "description": "광주과학기술원(GIST) 학생들이 만드는 신문입니다.",
     "name": "지스트신문"

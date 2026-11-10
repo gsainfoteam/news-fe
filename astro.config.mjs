@@ -36,6 +36,9 @@ export default defineConfig({
   // OG tags, canonical, and hreflang need absolute URLs.
   site: "https://news.gistory.me",
 
+  // Staging news-be and its S3 bucket allow only this origin through CORS.
+  server: { port: 5173 },
+
   integrations: [react(), localizedNotFound],
 
   // Article photos are converted to webp at build time (common/lib/image.ts).
@@ -69,6 +72,8 @@ export default defineConfig({
     plugins: [tailwindcss()],
     // Browser islands call `/api` in dev to avoid CORS (see common/lib/api.ts).
     server: {
+      // Moving to the next free port would break CORS; fail loudly instead.
+      strictPort: true,
       proxy: {
         "/api": {
           target: PUBLIC_API_BASE_URL,
