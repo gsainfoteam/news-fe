@@ -369,6 +369,9 @@ function LoadMore({
             className="w-[240px]"
             onClick={onLoadMore}
             disabled={loading}
+            // A natively disabled button drops focus to <body>; keyboard
+            // users would lose their place while the next page loads.
+            focusableWhenDisabled
           >
             {loading && <LoaderCircleIcon className="animate-spin" />}
             {t("search.loadMore", "더 보기")}
@@ -387,7 +390,7 @@ function LoadMore({
 
 function NoResults({ query }: { query: string }) {
   const { t } = useTranslation();
-  const latest = useLatestArticles(true);
+  const latest = useLatestArticles();
 
   return (
     <>

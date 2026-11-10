@@ -93,10 +93,9 @@ export function useSearchResults(state: SearchState) {
           : ("success" as const),
     total: total ?? 0,
     articles,
-    hasMore:
-      total !== undefined &&
-      shown.length === pages.length &&
-      shown.length < getSearchPageCount(total),
+    // Stays true while the next page loads, so "더 보기" keeps its place
+    // (and keyboard focus) as a disabled spinner instead of unmounting.
+    hasMore: total !== undefined && shown.length < getSearchPageCount(total),
     isLoadingMore: more.some((page) => page.isPending),
     isMoreError: failed.length > 0,
     isRetrying: first.isFetching,
@@ -108,11 +107,10 @@ export function useSearchResults(state: SearchState) {
 const LATEST_COUNT = 3;
 
 // Shown under "no results", so the page still leads somewhere.
-export function useLatestArticles(enabled: boolean) {
-  const query = useQuery({
-    ...articlesQuery({ query: { limit: LATEST_COUNT, sort: "LATEST" } }),
-    enabled,
-  });
+export function useLatestArticles() {
+  const query = useQuery(
+    articlesQuery({ query: { limit: LATEST_COUNT, sort: "LATEST" } }),
+  );
   return useMemo(
     () => (query.data?.articles ?? []).map((a) => toArticlePreview(a)),
     [query.data],
