@@ -1,4 +1,83 @@
 {
+  "admin": {
+    "accountMenu": "내 계정 메뉴",
+    "articles": {
+      "actions": "작업 메뉴",
+      "allCategories": "전체 카테고리",
+      "caption": "기사 목록",
+      "categoryFilter": "카테고리 필터",
+      "clearSearch": "검색어 지우기",
+      "column": {
+        "actions": "작업",
+        "authors": "작성자",
+        "category": "카테고리",
+        "createdAt": "작성일",
+        "title": "제목",
+        "updatedAt": "수정일",
+        "views": "조회수"
+      },
+      "confirm": {
+        "action": "삭제",
+        "cancel": "취소",
+        "description": "‘{{title}}’ 기사를 삭제하면 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
+        "title": "이 기사를 삭제할까요?"
+      },
+      "count": "전체 {{count}}건",
+      "delete": "삭제",
+      "deleted": "기사를 삭제했습니다",
+      "deletedDescription": "사이트에서는 1~2분 뒤 사라집니다.",
+      "deleteFailed": "기사를 삭제하지 못했습니다",
+      "deleteFailedDescription": "잠시 뒤 다시 시도해 주세요.",
+      "edit": "수정",
+      "empty": "조건에 맞는 기사가 없습니다",
+      "groupAll": "{{category}} 전체",
+      "loadFailed": "기사 목록을 불러오지 못했습니다",
+      "new": "새 기사 작성",
+      "next": "다음 페이지",
+      "pages": "페이지",
+      "previous": "이전 페이지",
+      "search": "제목과 본문 검색",
+      "sort": "정렬",
+      "sortLatest": "최신순",
+      "sortViews": "조회순",
+      "title": "기사",
+      "view": "사이트에서 보기",
+      "viewsShort": "조회 {{views}}"
+    },
+    "cms": "CMS",
+    "guard": {
+      "error": {
+        "title": "계정 정보를 불러오지 못했습니다"
+      },
+      "forbidden": {
+        "action": "{{menu}} 열기",
+        "editor": "이 메뉴는 편집 권한이 있는 멤버만 쓸 수 있습니다. 권한은 직책에 따라 정해지며, 편집장이 바꿀 수 있습니다.",
+        "editorship": "이 메뉴는 편집장만 쓸 수 있습니다.",
+        "title": "접근 권한이 없습니다"
+      },
+      "loading": "불러오는 중",
+      "login": {
+        "action": "인포팀 계정으로 로그인",
+        "description": "CMS는 지스트신문 멤버만 쓸 수 있습니다. 인포팀 계정으로 로그인해 주세요.",
+        "title": "기자 로그인이 필요합니다"
+      },
+      "notMember": {
+        "description": "{{email}} 계정은 지스트신문 멤버로 등록되어 있지 않습니다. 멤버 등록은 편집장에게 요청해 주세요.",
+        "title": "CMS를 쓸 수 없는 계정입니다"
+      },
+      "toSite": "사이트로 돌아가기"
+    },
+    "logout": "로그아웃",
+    "nav": {
+      "articles": "기사",
+      "editorshipOnly": "편집장 전용",
+      "label": "CMS 메뉴",
+      "members": "멤버 관리",
+      "reports": "제보함"
+    },
+    "site": "사이트",
+    "siteHome": "지스트신문 사이트"
+  },
   "article": {
     "count": "기사 {{count}}건",
     "empty": {
@@ -125,6 +204,18 @@
       "lead": "취재가 필요한 소식을 알려주세요. 기자가 내용을 확인한 뒤 남겨주신 연락처로 연락드릴 수 있습니다.",
       "title": "제보하기"
     }
+  },
+  "role": {
+    "ALUMNI": "거쳐간 사람",
+    "CUB_REPORTER": "수습기자",
+    "DEPUTY_EDITOR_IN_CHIEF": "부편집장",
+    "DESIGNER": "디자이너",
+    "DIGITAL_REPORTER": "디지털콘텐츠부 정기자",
+    "DIGITAL_SENIOR_REPORTER": "디지털콘텐츠부 책임기자",
+    "EDITOR_IN_CHIEF": "편집장",
+    "REPORTING_REPORTER": "취재부 정기자",
+    "REPORTING_SENIOR_REPORTER": "취재부 책임기자",
+    "SENIOR_DESIGNER": "책임 디자이너"
   },
   "site": {
     "description": "광주과학기술원(GIST) 학생들이 만드는 신문입니다.",

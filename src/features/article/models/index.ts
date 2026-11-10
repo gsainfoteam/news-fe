@@ -11,9 +11,11 @@ export {
   getArticles as fetchArticles,
 } from "@/@types/api/sdk.gen";
 export {
+  deleteArticleMutation,
   getArticleOptions as articleQuery,
   getArticlesInfiniteOptions as articlesInfiniteQuery,
   getArticlesOptions as articlesQuery,
+  getArticlesQueryKey as articlesQueryKey,
 } from "@/@types/api/@tanstack/react-query.gen";
 
 export type Article = ArticleDto;

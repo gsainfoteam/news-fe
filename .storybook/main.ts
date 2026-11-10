@@ -7,8 +7,9 @@ const srcDir = fileURLToPath(new URL("../src", import.meta.url));
 
 const config: StorybookConfig = {
   stories: ["../src/**/*.stories.@(ts|tsx)"],
-  addons: [],
-  staticDirs: ["../public"],
+  addons: ["msw-storybook-addon"],
+  // `./public` holds MSW's service worker, kept out of the site's `public/`.
+  staticDirs: ["../public", "./public"],
   framework: {
     name: "@storybook/react-vite",
     options: {},
@@ -21,7 +22,9 @@ const config: StorybookConfig = {
         alias: [
           { find: /^@\//, replacement: `${srcDir}/` },
           {
-            find: "astro:env/client",
+            // Vite resolves api.ts's `astro:env/server` import even though
+            // only the SSR build runs it, so the server module needs the stub too.
+            find: /^astro:env\/(client|server)$/,
             replacement: fileURLToPath(
               new URL("./astro-env-client.ts", import.meta.url),
             ),

@@ -1,10 +1,45 @@
 import { type Preview } from "@storybook/react-vite";
+import { isCommonAssetRequest } from "msw";
+import { setupWorker } from "msw/browser";
+import { mswLoader } from "msw-storybook-addon/csf3";
+
+import { queryClient } from "../src/common/lib/query-client";
 
 import { withLocale, withTheme } from "./decorators";
 
 import "../src/styles/global.css";
 
+// The addon's default setup throws when the browser refuses service workers
+// (embedded browsers, some privacy modes), and that error replaces every
+// story. Without the worker, stories still render; only API calls go unmocked.
+async function startWorker() {
+  const worker = setupWorker();
+  try {
+    await worker.start({
+      quiet: true,
+      onUnhandledRequest(request, print) {
+        if (isCommonAssetRequest(request) || !request.url.includes("/api/"))
+          return;
+        print.warning();
+      },
+    });
+  } catch (error) {
+    console.warn("[msw] API mocks are off in this browser.", error);
+  }
+  return worker;
+}
+
 const preview: Preview = {
+  loaders: [
+    // Stories mock the API with `parameters.msw.handlers`, built from each
+    // feature's `models/mocks.ts`.
+    mswLoader(startWorker),
+    // Islands share one module-level QueryClient; without this, the next
+    // story would show the previous story's cached responses.
+    () => {
+      queryClient.clear();
+    },
+  ],
   globalTypes: {
     theme: { description: "Color theme" },
     locale: {

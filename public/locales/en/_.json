@@ -1,4 +1,84 @@
 {
+  "admin": {
+    "accountMenu": "Account menu",
+    "articles": {
+      "actions": "Actions",
+      "allCategories": "All categories",
+      "caption": "Articles",
+      "categoryFilter": "Filter by category",
+      "clearSearch": "Clear search",
+      "column": {
+        "actions": "Actions",
+        "authors": "Authors",
+        "category": "Category",
+        "createdAt": "Created",
+        "title": "Title",
+        "updatedAt": "Updated",
+        "views": "Views"
+      },
+      "confirm": {
+        "action": "Delete",
+        "cancel": "Cancel",
+        "description": "Deleting “{{title}}” can't be undone. It disappears from the site in a minute or two.",
+        "title": "Delete this article?"
+      },
+      "count_one": "전체 {{count}}건",
+      "count_other": "전체 {{count}}건",
+      "delete": "Delete",
+      "deleted": "Article deleted",
+      "deletedDescription": "It disappears from the site in a minute or two.",
+      "deleteFailed": "Couldn't delete the article",
+      "deleteFailedDescription": "Please try again in a moment.",
+      "edit": "Edit",
+      "empty": "No articles match these filters",
+      "groupAll": "All of {{category}}",
+      "loadFailed": "Couldn't load the articles",
+      "new": "New article",
+      "next": "Next page",
+      "pages": "Pages",
+      "previous": "Previous page",
+      "search": "Search titles and text",
+      "sort": "Sort",
+      "sortLatest": "Latest",
+      "sortViews": "Most viewed",
+      "title": "Articles",
+      "view": "View on site",
+      "viewsShort": "{{views}} views"
+    },
+    "cms": "CMS",
+    "guard": {
+      "error": {
+        "title": "Couldn't load your account"
+      },
+      "forbidden": {
+        "action": "Open {{menu}}",
+        "editor": "Only members with editing permission can use this menu. Permission follows your position, and the editor-in-chief can change it.",
+        "editorship": "Only the editor-in-chief can use this menu.",
+        "title": "You don't have access"
+      },
+      "loading": "Loading",
+      "login": {
+        "action": "Log in with Infoteam account",
+        "description": "The CMS is for GIST Newspaper members. Log in with your Infoteam account.",
+        "title": "Reporter login required"
+      },
+      "notMember": {
+        "description": "{{email}} isn't registered as a GIST Newspaper member. Ask the editor-in-chief to add you.",
+        "title": "This account can't use the CMS"
+      },
+      "toSite": "Back to the site"
+    },
+    "logout": "Log out",
+    "nav": {
+      "articles": "Articles",
+      "editorshipOnly": "Editor-in-chief only",
+      "label": "CMS menu",
+      "members": "Members",
+      "reports": "Tips"
+    },
+    "site": "Site",
+    "siteHome": "GIST Newspaper site"
+  },
   "article": {
     "count_one": "{{count}} article",
     "count_other": "{{count}} articles",
@@ -128,6 +208,18 @@
       "lead": "Tell us about something worth reporting. A reporter will review it and may contact you using the details you leave.",
       "title": "Send a tip"
     }
+  },
+  "role": {
+    "ALUMNI": "Alumni",
+    "CUB_REPORTER": "Cub Reporter",
+    "DEPUTY_EDITOR_IN_CHIEF": "Deputy Editor-in-Chief",
+    "DESIGNER": "Designer",
+    "DIGITAL_REPORTER": "Digital Content Reporter",
+    "DIGITAL_SENIOR_REPORTER": "Senior Digital Content Reporter",
+    "EDITOR_IN_CHIEF": "Editor-in-Chief",
+    "REPORTING_REPORTER": "Reporter",
+    "REPORTING_SENIOR_REPORTER": "Senior Reporter",
+    "SENIOR_DESIGNER": "Senior Designer"
   },
   "site": {
     "description": "The student newspaper of the Gwangju Institute of Science and Technology (GIST).",

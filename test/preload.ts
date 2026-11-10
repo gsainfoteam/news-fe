@@ -6,3 +6,6 @@ import { mock } from "bun:test";
 mock.module("astro:env/client", () => ({
   PUBLIC_API_BASE_URL: "https://api.test",
 }));
+mock.module("astro:env/server", () => ({
+  API_BASE_URL: "https://api.test",
+}));
