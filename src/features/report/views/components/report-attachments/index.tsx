@@ -16,10 +16,10 @@ import { Trans, useTranslation } from "react-i18next";
 
 import { Button } from "@/common/components/ui/button";
 
-import { MAX_REPORT_FILES } from "../../../models";
 import {
   formatFileSize,
   MAX_REPORT_FILE_SIZE_LABEL,
+  MAX_REPORT_FILES,
   REPORT_FILE_ACCEPT,
   type ReportFileKind,
 } from "../../../viewmodels/report-file";

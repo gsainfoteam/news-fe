@@ -24,7 +24,7 @@ import { Input } from "@/common/components/ui/input";
 import { Separator } from "@/common/components/ui/separator";
 import { Textarea } from "@/common/components/ui/textarea";
 
-import { MAX_REPORT_FILES } from "../../../models";
+import { MAX_REPORT_FILES } from "../../../viewmodels/report-file";
 import { REPORT_LIMITS } from "../../../viewmodels/report-form";
 import { useReportForm } from "../../../viewmodels/use-report-form";
 import { ReportAttachments } from "../report-attachments";

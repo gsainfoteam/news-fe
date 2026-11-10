@@ -4,6 +4,8 @@ import {
   type ReportFileExtension,
 } from "../models";
 
+export { MAX_REPORT_FILES } from "../models";
+
 export type ReportFileIssue = "type" | "size" | "empty";
 export type ReportFileKind =
   "image" | "video" | "audio" | "archive" | "document";
