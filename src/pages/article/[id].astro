@@ -1,0 +1,103 @@
+---
+import { type GetStaticPaths, type InferGetStaticPropsType } from "astro";
+
+import { getPageI18n } from "@/common/lib/i18n";
+import { optimizeImage } from "@/common/lib/image";
+import {
+  ArticlePage,
+  fetchAllArticles,
+  getArticleMeta,
+  getPopularArticles,
+  getRelatedArticles,
+  toArticleDetail,
+  toArticlePreview,
+  type Article,
+} from "@/features/article";
+import { getCategoryLabels } from "@/features/category";
+import Layout from "@/layouts/layout.astro";
+
+// The list already carries each body, so the build never calls the detail
+// API (which counts a view). An article published after the build is a 404
+// until the next one.
+export const getStaticPaths = (async () => {
+  const articles = await fetchAllArticles();
+  return articles.map((article) => ({
+    params: { id: String(article.id) },
+    props: { article },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { article } = Astro.props;
+const i18n = getPageI18n(Astro.currentLocale);
+const detail = await toArticleDetail(article);
+const meta = getArticleMeta(detail, getCategoryLabels(i18n.t));
+
+// Cached: the same list getStaticPaths walked.
+const articles = await fetchAllArticles();
+const { section, latestInSection, continueReading } = getRelatedArticles(
+  articles,
+  article,
+);
+const previews = (list: Article[], width?: number) =>
+  Promise.all(
+    list.map(async (item) => {
+      const preview = toArticlePreview(item);
+      return {
+        ...preview,
+        thumbnail: width
+          ? await optimizeImage(preview.thumbnail, width)
+          : undefined,
+      };
+    }),
+  );
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  image={meta.image}
+  type="article"
+  category={section}
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={meta.publishedTime} />
+    <meta property="article:modified_time" content={meta.modifiedTime} />
+    {meta.section && <meta property="article:section" content={meta.section} />}
+    {meta.tags.map((tag) => <meta property="article:tag" content={tag} />)}
+  </Fragment>
+  <ArticlePage
+    i18n={i18n}
+    article={detail}
+    popular={await previews(getPopularArticles(articles))}
+    section={section}
+    latestInSection={await previews(latestInSection, 144)}
+    continueReading={await previews(continueReading, 400)}
+  />
+</Layout>
+
+<script>
+  for (const button of document.querySelectorAll<HTMLElement>(
+    "[data-copy-link]",
+  )) {
+    const label = button.querySelector("[data-label]");
+    const original = label?.textContent ?? "";
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    button.addEventListener("click", async () => {
+      // The canonical URL drops any tracking query the reader arrived with.
+      const url =
+        document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+          ?.href ?? location.href;
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        return;
+      }
+      if (!label) return;
+      label.textContent = button.dataset.copiedLabel ?? original;
+      clearTimeout(timer);
+      timer = setTimeout(() => (label.textContent = original), 2000);
+    });
+  }
+</script>

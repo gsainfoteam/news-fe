@@ -85,6 +85,7 @@ const imageUrl = new URL(image, Astro.site).href;
     <meta property="og:image" content={imageUrl} />
     <meta property="og:locale" content={locale === "ko" ? "ko_KR" : "en_US"} />
     <meta name="twitter:card" content="summary_large_image" />
+    <slot name="head" />
   </head>
   <body class="flex min-h-dvh flex-col">
     <Header i18n={i18n} currentCategory={category}>
