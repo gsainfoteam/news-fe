@@ -4,8 +4,5 @@ import { mock } from "bun:test";
 // that only exists inside Astro. Registering it here, before any test file
 // loads, keeps tests that import a feature's models runnable on their own.
 mock.module("astro:env/client", () => ({
-  PUBLIC_API_BASE_URL: "https://api.test",
-}));
-mock.module("astro:env/server", () => ({
   API_BASE_URL: "https://api.test",
 }));

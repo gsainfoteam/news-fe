@@ -11,8 +11,7 @@
   - `bun run gen:api` — regenerate `src/@types/api/` (SDK, transformers, zod, TanStack Query options) from the Swagger spec with `@hey-api/openapi-ts` (`openapi-ts.config.ts`). It reads the Swagger basic auth account from `.env`. The version is pinned exactly; read the migration notes before bumping it.
   - `bun run gen:i18n` — extract translation keys to `public/locales/{lng}/{ns}.json` and regenerate i18next types (`i18next-cli`).
 - **Environment variables**: declared in the `astro:env` schema (`astro.config.mjs`). Public values are committed in `.env.development` (`astro dev`), `.env.staging` (`astro build --mode staging`) and `.env.production` (`astro build`); override them locally in `.env.<mode>.local` (git-ignored). Never put secrets in these files; they go in `.env` (git-ignored, see `.env.example`).
-  - `API_BASE_URL` (`context: "server"`): used while building pages. Import from `astro:env/server`.
-  - `PUBLIC_API_BASE_URL` (`context: "client"`): used by browser islands. Import from `astro:env/client`.
+  - `API_BASE_URL` (`context: "client"`): the news-be URL, used both while building pages and by browser islands. Import from `astro:env/client`. The schema's `context` decides what reaches the browser, so the name needs no `PUBLIC_` prefix.
   - `SWAGGER_USER`/`SWAGGER_PASSWORD`: read only by `openapi-ts.config.ts` (`SWAGGER_URL` defaults to staging). The values are in the team resources.
 
 ## Rendering & Deployment (Event-driven SSG)
@@ -76,7 +75,7 @@ Enforced by `eslint-plugin-boundaries`:
 - Only `src/features/*/models/**` may import `@/@types/api` (enforced by `eslint-plugin-boundaries`). Models re-export the generated SDK functions, query options, and zod schemas under domain names (e.g. `export { articleControllerGetArticles as fetchArticles }`), so a backend rename only touches the model.
 - The SDK validates every response with the generated zod schemas. A response that drifts from the spec comes back as `error`; build-time callers pass `throwOnError: true` so the build fails instead of publishing broken pages.
 - `bun run gen:api` also emits typed MSW v2 handlers (`handleGetArticles`, … in `@/@types/api/msw.gen`) for stories and tests. Re-export the ones a feature needs from its `models/mocks.ts`, which only stories and tests import, and pass the response body in.
-- `src/common/lib/api.ts` exports `createClientConfig`, which the generated client calls (`runtimeConfigPath`). It picks the base URL: `API_BASE_URL` while building, `/api` (Vite proxy to `PUBLIC_API_BASE_URL`) in dev browsers, `PUBLIC_API_BASE_URL` otherwise. It must not import the generated code, so `bun run check` passes before `gen:api` has run.
+- `src/common/lib/api.ts` exports `createClientConfig`, which the generated client calls (`runtimeConfigPath`). It picks the base URL: `/api` (Vite proxy to `API_BASE_URL`) in dev browsers, `API_BASE_URL` otherwise. It must not import the generated code, so `bun run check` passes before `gen:api` has run.
 
 ### Internationalization & Dates
 

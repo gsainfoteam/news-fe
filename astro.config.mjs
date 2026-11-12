@@ -8,7 +8,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { loadEnv } from "vite";
 
-const { PUBLIC_API_BASE_URL } = loadEnv(
+const { API_BASE_URL } = loadEnv(
   process.env.NODE_ENV ?? "development",
   process.cwd(),
   "",
@@ -59,12 +59,8 @@ export default defineConfig({
 
   env: {
     schema: {
-      // Read only while building pages; never shipped to the browser.
-      API_BASE_URL: envField.string({ context: "server", access: "public" }),
-      PUBLIC_API_BASE_URL: envField.string({
-        context: "client",
-        access: "public",
-      }),
+      // Used both while building pages and by browser islands.
+      API_BASE_URL: envField.string({ context: "client", access: "public" }),
     },
   },
 
@@ -76,7 +72,7 @@ export default defineConfig({
       strictPort: true,
       proxy: {
         "/api": {
-          target: PUBLIC_API_BASE_URL,
+          target: API_BASE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },
