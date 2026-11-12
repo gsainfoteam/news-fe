@@ -76,6 +76,52 @@
       "members": "Members",
       "reports": "Tips"
     },
+    "reports": {
+      "backToList": "Tips",
+      "content": "Message",
+      "count_one": "{{count}} tip, newest first",
+      "count_other": "{{count}} tips, newest first",
+      "detailFailed": "Couldn’t load this tip",
+      "download": "Download {{name}}",
+      "downloadShort": "Download",
+      "email": "Email",
+      "empty": {
+        "description": "Tips readers send from the tip page show up here.",
+        "title": "No tips yet"
+      },
+      "emptyPage": "No tips on this page.",
+      "fileCount_one": "{{count}} attachment",
+      "fileCount_other": "{{count}} attachments",
+      "files_one": "{{count}} attachment",
+      "files_other": "{{count}} attachments",
+      "filesHelp": "Download links work for 10 minutes",
+      "linksExpired": {
+        "action": "Get new links",
+        "description": "Links work for 10 minutes. Get new links, then download again.",
+        "title": "The download links have expired"
+      },
+      "listLabel": "Tips",
+      "loadFailed": "Couldn’t load tips",
+      "name": "Name",
+      "next": "Next page",
+      "notFound": {
+        "description": "The address is wrong or the tip was deleted.",
+        "title": "Tip not found"
+      },
+      "pages": "Pages",
+      "phone": "Phone",
+      "pick": "Pick a tip from the list to read it here.",
+      "previous": "Previous page",
+      "received": "#{{id}}, received {{date}}",
+      "refreshFailed": "Couldn’t get new links",
+      "reply": "Reply by email",
+      "replySubject": "Re: your tip to GIST Newspaper",
+      "replySubjectWithTitle": "Re: {{title}}",
+      "reporter": "Reporter",
+      "title": "Tips",
+      "untitled": "(No title)",
+      "writeArticle": "Write an article"
+    },
     "site": "Site",
     "siteHome": "GIST Newspaper site"
   },
