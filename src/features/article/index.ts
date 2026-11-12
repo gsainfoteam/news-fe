@@ -17,6 +17,12 @@ export {
   toPlainText,
 } from "./viewmodels/article-content";
 export {
+  getArticleMeta,
+  getRelatedArticles,
+  toArticleDetail,
+  type ArticleDetail,
+} from "./viewmodels/article-detail";
+export {
   ARTICLES_PER_PAGE,
   filterByCategory,
   getArticleCount,
@@ -35,6 +41,7 @@ export {
 } from "./views/components/admin-article-list";
 export { ArticleCard } from "./views/components/article-card";
 export { ArticleList } from "./views/components/article-list";
+export { ArticlePage } from "./views/components/article-page";
 export { ArticlePagination } from "./views/components/article-pagination";
 export { CategoryArticles } from "./views/components/category-articles";
 export { PopularArticles } from "./views/components/popular-articles";

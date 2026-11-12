@@ -80,13 +80,23 @@
     "siteHome": "GIST Newspaper site"
   },
   "article": {
+    "byline": "By {{names}}",
+    "continueReading": "Keep reading",
+    "copyLink": "Copy link",
     "count_one": "{{count}} article",
     "count_other": "{{count}} articles",
     "empty": {
       "description": "Articles will appear here once they are published.",
       "title": "No articles yet"
     },
+    "latestIn": "Latest in {{category}}",
+    "linkCopied": "Copied",
+    "moreIn": "More in {{category}}",
+    "popular": "Most read",
     "popularIn": "Most read in {{category}}",
+    "publishedAt": "Published {{date}}",
+    "related": "Related articles",
+    "updatedAt": "Updated {{date}}",
     "views": "{{views}} views"
   },
   "category": {
@@ -117,6 +127,9 @@
     "SPECIAL": "Specials",
     "tabsLabel": "Subcategories",
     "viewAll": "View all"
+  },
+  "comment": {
+    "title": "Comments"
   },
   "error": {
     "description": "Please try again in a moment.",

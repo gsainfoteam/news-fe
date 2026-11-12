@@ -79,12 +79,22 @@
     "siteHome": "지스트신문 사이트"
   },
   "article": {
+    "byline": "{{names}} 기자",
+    "continueReading": "이어서 읽기",
+    "copyLink": "링크 복사",
     "count": "기사 {{count}}건",
     "empty": {
       "description": "기사가 올라오면 이곳에 보입니다.",
       "title": "아직 기사가 없습니다"
     },
+    "latestIn": "{{category}} 최신 기사",
+    "linkCopied": "복사했습니다",
+    "moreIn": "{{category}} 더 보기",
+    "popular": "많이 본 기사",
     "popularIn": "{{category}} 많이 본 기사",
+    "publishedAt": "입력 {{date}}",
+    "related": "관련 기사",
+    "updatedAt": "수정 {{date}}",
     "views": "조회 {{views}}"
   },
   "category": {
@@ -115,6 +125,9 @@
     "SPECIAL": "특집",
     "tabsLabel": "하위 카테고리",
     "viewAll": "전체 보기"
+  },
+  "comment": {
+    "title": "댓글"
   },
   "error": {
     "description": "잠시 후 다시 시도해 주세요.",
