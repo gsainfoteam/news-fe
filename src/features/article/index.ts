@@ -51,3 +51,4 @@ export { ArticlePagination } from "./views/components/article-pagination";
 export { CategoryArticles } from "./views/components/category-articles";
 export { HomeArticles } from "./views/components/home-articles";
 export { PopularArticles } from "./views/components/popular-articles";
+export { SearchPage } from "./views/components/search-page";
