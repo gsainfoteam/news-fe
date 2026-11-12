@@ -10,16 +10,17 @@
 - **Code generation** (outputs land in `src/@types/`, which is git-ignored):
   - `bun run gen:api` — regenerate `src/@types/api/` (SDK, transformers, zod, TanStack Query options) from the Swagger spec with `@hey-api/openapi-ts` (`openapi-ts.config.ts`). It reads the Swagger basic auth account from `.env`. The version is pinned exactly; read the migration notes before bumping it.
   - `bun run gen:i18n` — extract translation keys to `public/locales/{lng}/{ns}.json` and regenerate i18next types (`i18next-cli`).
-- **Environment variables**: declared in the `astro:env` schema (`astro.config.mjs`). Public values are committed in `.env.development` (`astro dev`) and `.env.production` (`astro build`); override them locally in `.env.<mode>.local` (git-ignored). Never put secrets in these files; they go in `.env` (git-ignored, see `.env.example`).
-  - `API_BASE_URL` (`context: "server"`): used while building pages. Import from `astro:env/server`.
-  - `PUBLIC_API_BASE_URL` (`context: "client"`): used by browser islands. Import from `astro:env/client`.
+- **Environment variables**: declared in the `astro:env` schema (`astro.config.mjs`). Public values are committed in `.env.development` (`astro dev`), `.env.staging` (`astro build --mode staging`) and `.env.production` (`astro build`); override them locally in `.env.<mode>.local` (git-ignored). Never put secrets in these files; they go in `.env` (git-ignored, see `.env.example`).
+  - `API_BASE_URL` (`context: "client"`): the news-be URL, used both while building pages and by browser islands. Import from `astro:env/client`. The schema's `context` decides what reaches the browser, so the name needs no `PUBLIC_` prefix.
   - `SWAGGER_USER`/`SWAGGER_PASSWORD`: read only by `openapi-ts.config.ts` (`SWAGGER_URL` defaults to staging). The values are in the team resources.
 
 ## Rendering & Deployment (Event-driven SSG)
 
 - `output: "static"` (the default) with no adapter. `astro build` writes plain HTML to `dist/`, which is deployed to Cloudflare Pages. There is no server.
+- **Staging**: the `news-fe` Pages project (declared in `gsainfoteam/icarus-infra`, `infra.tf`) builds `main` with `--mode staging` and serves it at `stg.news.gistory.me`.
+- **Production**: `.github/workflows/production.yml` builds the latest GitHub release and uploads it with wrangler to the `news-fe-prod` Pages project (`news.gistory.me`, also declared in icarus-infra). It uses the org secrets `CF_API_TOKEN` and `CF_ACCOUNT_ID`.
 - **Build-time data**: home, category, and article pages load API data while building (`getStaticPaths` and frontmatter call ViewModels). A page shows the data as of the last build.
-- **Rebuild triggers**: push to `main`, manual `workflow_dispatch`, and `repository_dispatch` with event type `article-changed` (the backend sends it when an article is created, updated, or deleted). No cron.
+- **Rebuild triggers**: staging rebuilds on every push to `main`. Production rebuilds on a published release, a manual `workflow_dispatch`, and `repository_dispatch` with event type `article-changed` (the backend sends it when an article is created, updated, or deleted); the last two rebuild the latest release, not `main`. No cron.
 - **CSR islands**: search, comments, login, reports, and `/admin` run in the browser as React islands (`client:only="react"`, `client:visible`, …) and call the API directly.
 - **Dynamic ids**: every path param (`[id]`, `[slug]`) must be known at build time. Ids that only exist after the build (CMS pages) go in the query string: `/admin/articles/edit?id=…`, not `/admin/articles/[id]`.
 - **Language by URL**: `/` is Korean and `/en/` is English. Every static page is built in both languages. Put pages only under `src/pages/` (no `en/` copies): the i18n `fallback` with `fallbackType: "rewrite"` (`astro.config.mjs`) builds each one again under `/en/`, where `Astro.currentLocale` is `"en"`.
@@ -75,7 +76,7 @@ Enforced by `eslint-plugin-boundaries`:
 - Only `src/features/*/models/**` may import `@/@types/api` (enforced by `eslint-plugin-boundaries`). Models re-export the generated SDK functions, query options, and zod schemas under domain names (e.g. `export { articleControllerGetArticles as fetchArticles }`), so a backend rename only touches the model.
 - The SDK validates every response with the generated zod schemas. A response that drifts from the spec comes back as `error`; build-time callers pass `throwOnError: true` so the build fails instead of publishing broken pages.
 - `bun run gen:api` also emits typed MSW v2 handlers (`handleGetArticles`, … in `@/@types/api/msw.gen`) for stories and tests. Re-export the ones a feature needs from its `models/mocks.ts`, which only stories and tests import, and pass the response body in.
-- `src/common/lib/api.ts` exports `createClientConfig`, which the generated client calls (`runtimeConfigPath`). It picks the base URL: `API_BASE_URL` while building, `/api` (Vite proxy to `PUBLIC_API_BASE_URL`) in dev browsers, `PUBLIC_API_BASE_URL` otherwise. It must not import the generated code, so `bun run check` passes before `gen:api` has run.
+- `src/common/lib/api.ts` exports `createClientConfig`, which the generated client calls (`runtimeConfigPath`). It picks the base URL: `/api` (Vite proxy to `API_BASE_URL`) in dev browsers, `API_BASE_URL` otherwise. It must not import the generated code, so `bun run check` passes before `gen:api` has run.
 
 ### Internationalization & Dates
 
