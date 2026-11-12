@@ -34,6 +34,9 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run gen:api
         env:
+          # Staging may already expose fields production doesn't return yet,
+          # and the generated zod schemas would then reject production data.
+          SWAGGER_URL: https://api.news.gistory.me/api-json
           SWAGGER_USER: ${{ secrets.SWAGGER_USER }}
           SWAGGER_PASSWORD: ${{ secrets.SWAGGER_PASSWORD }}
       - run: bun run build
