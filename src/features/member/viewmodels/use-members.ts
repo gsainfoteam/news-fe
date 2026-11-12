@@ -1,3 +1,5 @@
+import { useMemo } from "react";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { meQuery } from "@/features/auth";
@@ -5,6 +7,7 @@ import { meQuery } from "@/features/auth";
 import { isHandover, sortMembers } from "./member-role";
 import {
   deleteMemberMutation,
+  type Member,
   type MemberInput,
   type MemberRole,
   membersQuery,
@@ -13,9 +16,16 @@ import {
   updateMemberMutation,
 } from "../models";
 
+const NO_MEMBERS: Member[] = [];
+
 export function useMembers(lng?: string) {
   const queryClient = useQueryClient();
   const query = useQuery(membersQuery());
+  // A stable array keeps the duplicate-email schema built on it memoized.
+  const members = useMemo(
+    () => (query.data ? sortMembers(query.data, lng) : NO_MEMBERS),
+    [query.data, lng],
+  );
   const refetchList = () =>
     queryClient.invalidateQueries({ queryKey: membersQueryKey() });
 
@@ -39,7 +49,7 @@ export function useMembers(lng?: string) {
   };
 
   return {
-    members: query.data ? sortMembers(query.data, lng) : [],
+    members,
     status: query.status,
     retry: () => void query.refetch(),
     register: (members: MemberInput[]) =>
