@@ -4,11 +4,9 @@ on:
   release:
     types: [released]
   workflow_dispatch:
-  # Sent by news-be when an article is created, updated, or deleted (NEB-21).
   repository_dispatch:
     types: [article-changed]
 
-# Pages are built from API data, so only the newest build matters.
 concurrency:
   group: production
   cancel-in-progress: true
@@ -21,7 +19,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      # A rebuild for changed articles must ship the released code, not main.
+      # Rebuilds must ship the released code, not main.
       - id: latest
         if: github.event_name != 'release'
         run: echo "tag=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)" >> "$GITHUB_OUTPUT"
@@ -34,8 +32,7 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run gen:api
         env:
-          # Staging may already expose fields production doesn't return yet,
-          # and the generated zod schemas would then reject production data.
+          # The staging spec can be ahead of production and fail validation.
           SWAGGER_URL: https://api.news.gistory.me/api-json
           SWAGGER_USER: ${{ secrets.SWAGGER_USER }}
           SWAGGER_PASSWORD: ${{ secrets.SWAGGER_PASSWORD }}

@@ -59,7 +59,6 @@ export default defineConfig({
 
   env: {
     schema: {
-      // Used both while building pages and by browser islands.
       API_BASE_URL: envField.string({ context: "client", access: "public" }),
     },
   },
