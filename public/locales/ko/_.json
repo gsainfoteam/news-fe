@@ -272,6 +272,92 @@
       "title": "취재가 필요한 소식을 알고 계신가요?"
     }
   },
+  "member": {
+    "access": {
+      "ALUMNI": "접근 불가",
+      "EDITOR": "편집",
+      "EDITORSHIP": "전체 관리",
+      "NONE": "권한 없음"
+    },
+    "can": {
+      "allEditor": "편집 권한 전부",
+      "changeRole": "직책 변경",
+      "delete": "멤버 삭제",
+      "deleteComment": "다른 사람 댓글 삭제",
+      "editArticle": "기사 수정과 삭제",
+      "noCms": "CMS 접근 불가",
+      "readReports": "제보 보기",
+      "register": "멤버 등록",
+      "stayListed": "멤버 목록에는 남음",
+      "writeArticle": "기사 작성"
+    },
+    "count": "멤버 {{count}}명",
+    "delete": {
+      "description": "목록에서 사라지고 CMS를 쓸 수 없게 됩니다. 쓴 기사의 작성자 이름은 남습니다. 나간 부원을 목록에 남기려면 삭제하지 말고 직책을 ‘거쳐간 사람’으로 바꾸세요.",
+      "title": "{{name}} 님을 삭제할까요?"
+    },
+    "error": {
+      "emailDuplicated": "위에서 입력한 이메일입니다",
+      "emailInvalid": "이메일 형식을 확인해 주세요",
+      "emailRegistered": "이미 등록된 멤버입니다",
+      "emailRequired": "이메일을 입력해 주세요",
+      "nameRequired": "이름을 입력해 주세요",
+      "nameTooLong": "이름은 50자 이하로 입력해 주세요"
+    },
+    "handover": {
+      "action": "편집장 넘기기",
+      "description": "넘기면 내 직책은 수습기자가 되고, 멤버 관리와 기사 편집 권한을 잃습니다. 되돌리려면 새 편집장이 다시 넘겨줘야 합니다.",
+      "title": "{{name}} 님에게 편집장을 넘길까요?"
+    },
+    "loadFailed": "멤버 목록을 불러오지 못했습니다",
+    "permissions": {
+      "description": "권한은 직책에 따라 자동으로 정해집니다",
+      "title": "권한"
+    },
+    "register": {
+      "addRow": "한 명 더",
+      "description": "여러 명을 한 번에 등록할 수 있습니다",
+      "email": "이메일",
+      "help": "편집장은 여기서 지정할 수 없습니다. 편집장을 넘기려면 아래 목록에서 다른 멤버의 직책을 편집장으로 바꾸세요.",
+      "name": "이름",
+      "namePlaceholder": "이름",
+      "remove": "지우기",
+      "removeRow": "{{row}} 지우기",
+      "role": "직책",
+      "roleOption": "{{role}} ({{access}})",
+      "row": "{{n}}번째 멤버",
+      "submit": "{{count}}명 등록",
+      "title": "멤버 등록"
+    },
+    "table": {
+      "access": "권한",
+      "accessAfter": "저장하면 권한이 바뀝니다:",
+      "actions": "작업",
+      "cancel": "취소",
+      "caption": "멤버 목록",
+      "changeRole": "직책 바꾸기",
+      "createdAt": "등록일",
+      "delete": "삭제",
+      "empty": "등록된 멤버가 없습니다",
+      "me": "나",
+      "member": "멤버",
+      "menu": "{{name}} 작업 메뉴",
+      "role": "직책",
+      "roleOf": "{{name}} 님의 직책",
+      "save": "저장"
+    },
+    "title": "멤버 관리",
+    "toast": {
+      "deleted": "{{name}} 님을 삭제했습니다",
+      "deleteFailed": "멤버를 삭제하지 못했습니다",
+      "handedOver": "편집장을 {{name}} 님에게 넘겼습니다",
+      "registered": "{{count}}명을 등록했습니다",
+      "registerFailed": "멤버를 등록하지 못했습니다",
+      "registerFailedDescription": "이미 등록된 이메일이 없는지 확인하고 다시 시도해 주세요.",
+      "roleChanged": "{{name}} 님의 직책을 바꿨습니다",
+      "roleFailed": "직책을 바꾸지 못했습니다"
+    }
+  },
   "notFound": {
     "description": "주소가 바뀌었거나 삭제된 기사일 수 있습니다. 방금 발행된 기사는 사이트에 반영되기까지 1~2분 걸립니다.",
     "home": "홈으로 가기",

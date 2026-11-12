@@ -1,0 +1,12 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AdminMembers } from "@/features/member";
+import AdminLayout from "@/layouts/admin-layout.astro";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("member.title", "멤버 관리");
+---
+
+<AdminLayout title={title}>
+  <AdminMembers client:only="react" />
+</AdminLayout>
