@@ -1,5 +1,21 @@
 ---
+import { getPageI18n } from "@/common/lib/i18n";
+import { optimizeImage } from "@/common/lib/image";
+import {
+  buildHomeSections,
+  fetchHomeArticles,
+  HomeArticles,
+  optimizeHomeThumbnails,
+} from "@/features/article";
 import Layout from "@/layouts/layout.astro";
+
+const i18n = getPageI18n(Astro.currentLocale);
+const sections = await optimizeHomeThumbnails(
+  buildHomeSections(await fetchHomeArticles()),
+  optimizeImage,
+);
 ---
 
-<Layout />
+<Layout fullWidth>
+  <HomeArticles i18n={i18n} {...sections} />
+</Layout>

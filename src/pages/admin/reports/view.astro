@@ -1,0 +1,14 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AdminReports } from "@/features/report";
+import AdminLayout from "@/layouts/admin-layout.astro";
+
+// The report id is only known in the browser (`?id=`), so this is the same
+// island as the list; it opens the report from the URL.
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("admin.reports.title", "제보함");
+---
+
+<AdminLayout title={title}>
+  <AdminReports client:only="react" />
+</AdminLayout>

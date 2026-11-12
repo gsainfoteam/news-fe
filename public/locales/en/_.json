@@ -148,17 +148,73 @@
       "members": "Members",
       "reports": "Tips"
     },
+    "reports": {
+      "backToList": "Tips",
+      "content": "Message",
+      "count_one": "{{count}} tip, newest first",
+      "count_other": "{{count}} tips, newest first",
+      "detailFailed": "Couldn’t load this tip",
+      "download": "Download {{name}}",
+      "downloadShort": "Download",
+      "email": "Email",
+      "empty": {
+        "description": "Tips readers send from the tip page show up here.",
+        "title": "No tips yet"
+      },
+      "emptyPage": "No tips on this page.",
+      "fileCount_one": "{{count}} attachment",
+      "fileCount_other": "{{count}} attachments",
+      "files_one": "{{count}} attachment",
+      "files_other": "{{count}} attachments",
+      "filesHelp": "Download links work for 10 minutes",
+      "linksExpired": {
+        "action": "Get new links",
+        "description": "Links work for 10 minutes. Get new links, then download again.",
+        "title": "The download links have expired"
+      },
+      "listLabel": "Tips",
+      "loadFailed": "Couldn’t load tips",
+      "name": "Name",
+      "next": "Next page",
+      "notFound": {
+        "description": "The address is wrong or the tip was deleted.",
+        "title": "Tip not found"
+      },
+      "pages": "Pages",
+      "phone": "Phone",
+      "pick": "Pick a tip from the list to read it here.",
+      "previous": "Previous page",
+      "received": "#{{id}}, received {{date}}",
+      "refreshFailed": "Couldn’t get new links",
+      "reply": "Reply by email",
+      "replySubject": "Re: your tip to GIST Newspaper",
+      "replySubjectWithTitle": "Re: {{title}}",
+      "reporter": "Reporter",
+      "title": "Tips",
+      "untitled": "(No title)",
+      "writeArticle": "Write an article"
+    },
     "site": "Site",
     "siteHome": "GIST Newspaper site"
   },
   "article": {
+    "byline": "By {{names}}",
+    "continueReading": "Keep reading",
+    "copyLink": "Copy link",
     "count_one": "{{count}} article",
     "count_other": "{{count}} articles",
     "empty": {
       "description": "Articles will appear here once they are published.",
       "title": "No articles yet"
     },
+    "latestIn": "Latest in {{category}}",
+    "linkCopied": "Copied",
+    "moreIn": "More in {{category}}",
+    "popular": "Most read",
     "popularIn": "Most read in {{category}}",
+    "publishedAt": "Published {{date}}",
+    "related": "Related articles",
+    "updatedAt": "Updated {{date}}",
     "views": "{{views}} views"
   },
   "category": {
@@ -190,6 +246,9 @@
     "tabsLabel": "Subcategories",
     "viewAll": "View all"
   },
+  "comment": {
+    "title": "Comments"
+  },
   "error": {
     "description": "Please try again in a moment.",
     "retry": "Try again",
@@ -206,6 +265,19 @@
     "openMenu": "Open menu",
     "report": "Send a tip",
     "search": "Search articles"
+  },
+  "home": {
+    "featured": "Top stories",
+    "headline": "Headline",
+    "latest": "Latest",
+    "more": "More",
+    "moreIn": "More in {{category}}",
+    "popular": "Most read now",
+    "report": {
+      "description": "Send photos or documents with it, and a reporter will check and get back to you.",
+      "kicker": "Tips",
+      "title": "Know something we should cover?"
+    }
   },
   "notFound": {
     "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
@@ -292,6 +364,36 @@
     "REPORTING_REPORTER": "Reporter",
     "REPORTING_SENIOR_REPORTER": "Senior Reporter",
     "SENIOR_DESIGNER": "Senior Designer"
+  },
+  "search": {
+    "allCategories": "All categories",
+    "category": "Filter by category",
+    "clear": "Clear search",
+    "documentTitle": "Search results for ‘{{query}}’",
+    "empty": {
+      "description": "Check the spelling or try a shorter word.",
+      "title": "No results for ‘{{query}}’"
+    },
+    "idle": {
+      "description": "Searches article titles and text.",
+      "title": "Enter a search term"
+    },
+    "label": "Search term",
+    "latest": "Latest articles",
+    "loading": "Searching",
+    "loadMore": "Load more",
+    "loadMoreFailed": "Couldn't load more. Try again",
+    "page": {
+      "heading": "Search articles",
+      "title": "Search"
+    },
+    "progress": "{{shown}} of {{total}}",
+    "sort": "Sort",
+    "sortLatest": "Latest",
+    "sortPopular": "Most read",
+    "submit": "Search",
+    "summary_one": "<total/> result for <query/>",
+    "summary_other": "<total/> results for <query/>"
   },
   "site": {
     "description": "The student newspaper of the Gwangju Institute of Science and Technology (GIST).",
