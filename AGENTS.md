@@ -10,7 +10,7 @@
 - **Code generation** (outputs land in `src/@types/`, which is git-ignored):
   - `bun run gen:api` — regenerate `src/@types/api/` (SDK, transformers, zod, TanStack Query options) from the Swagger spec with `@hey-api/openapi-ts` (`openapi-ts.config.ts`). It reads the Swagger basic auth account from `.env`. The version is pinned exactly; read the migration notes before bumping it.
   - `bun run gen:i18n` — extract translation keys to `public/locales/{lng}/{ns}.json` and regenerate i18next types (`i18next-cli`).
-- **Environment variables**: declared in the `astro:env` schema (`astro.config.mjs`). Public values are committed in `.env.development` (`astro dev`) and `.env.production` (`astro build`); override them locally in `.env.<mode>.local` (git-ignored). Never put secrets in these files; they go in `.env` (git-ignored, see `.env.example`).
+- **Environment variables**: declared in the `astro:env` schema (`astro.config.mjs`). Public values are committed in `.env.development` (`astro dev`), `.env.staging` (`astro build --mode staging`) and `.env.production` (`astro build`); override them locally in `.env.<mode>.local` (git-ignored). Never put secrets in these files; they go in `.env` (git-ignored, see `.env.example`).
   - `API_BASE_URL` (`context: "server"`): used while building pages. Import from `astro:env/server`.
   - `PUBLIC_API_BASE_URL` (`context: "client"`): used by browser islands. Import from `astro:env/client`.
   - `SWAGGER_USER`/`SWAGGER_PASSWORD`: read only by `openapi-ts.config.ts` (`SWAGGER_URL` defaults to staging). The values are in the team resources.
@@ -18,6 +18,7 @@
 ## Rendering & Deployment (Event-driven SSG)
 
 - `output: "static"` (the default) with no adapter. `astro build` writes plain HTML to `dist/`, which is deployed to Cloudflare Pages. There is no server.
+- **Staging**: the `news-fe` Pages project (declared in `gsainfoteam/icarus-infra`, `infra.tf`) builds `main` with `--mode staging` and serves it at `stg.news.gistory.me`. Production is not wired up yet.
 - **Build-time data**: home, category, and article pages load API data while building (`getStaticPaths` and frontmatter call ViewModels). A page shows the data as of the last build.
 - **Rebuild triggers**: push to `main`, manual `workflow_dispatch`, and `repository_dispatch` with event type `article-changed` (the backend sends it when an article is created, updated, or deleted). No cron.
 - **CSR islands**: search, comments, login, reports, and `/admin` run in the browser as React islands (`client:only="react"`, `client:visible`, …) and call the API directly.
