@@ -3,10 +3,13 @@ import { useId } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Checkbox } from "@/common/components/ui/checkbox";
-import { type Category, getCategoryLabels } from "@/features/category";
+import {
+  CATEGORY_GROUPS,
+  type Category,
+  getCategoryLabels,
+} from "@/features/category";
 
 import {
-  EDITOR_CATEGORY_GROUPS,
   isCategoryLocked,
   toggleCategory,
 } from "../../../viewmodels/article-editor";
@@ -41,7 +44,7 @@ export function CategoryPicker({ value, onChange }: CategoryPicker.Props) {
         aria-label={t("admin.editor.categories", "카테고리")}
         className="flex flex-col gap-2.5"
       >
-        {EDITOR_CATEGORY_GROUPS.map(({ category, children }) => (
+        {CATEGORY_GROUPS.map(({ category, children }) => (
           <div key={category} className="flex flex-col gap-2.5">
             {item(category)}
             {children.length > 0 && (

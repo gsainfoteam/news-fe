@@ -6,7 +6,6 @@ import {
   CATEGORIES,
   CATEGORY_GROUPS,
   type Category,
-  type CategoryGroup,
 } from "@/features/category";
 import { type Member } from "@/features/member";
 
@@ -18,13 +17,6 @@ import {
   zArticleImageRequest,
   zArticleInput,
 } from "../models";
-
-// The reader nav leaves NOTICE out (it sits apart from the sections), but the
-// editor is where notices get their category.
-export const EDITOR_CATEGORY_GROUPS: readonly CategoryGroup[] = [
-  ...CATEGORY_GROUPS,
-  { category: "NOTICE", children: [] },
-];
 
 const PARENTS = new Map<Category, Category>(
   CATEGORY_GROUPS.flatMap((g) =>

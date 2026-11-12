@@ -299,9 +299,6 @@ export function AdminArticleList() {
               </NativeSelectOption>
             ),
           )}
-          <NativeSelectOption value="NOTICE">
-            {labels.NOTICE}
-          </NativeSelectOption>
         </NativeSelect>
         <ToggleGroup
           size="lg"
