@@ -1,0 +1,45 @@
+name: production
+
+on:
+  release:
+    types: [released]
+  workflow_dispatch:
+  # Sent by news-be when an article is created, updated, or deleted (NEB-21).
+  repository_dispatch:
+    types: [article-changed]
+
+# Pages are built from API data, so only the newest build matters.
+concurrency:
+  group: production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # A rebuild for changed articles must ship the released code, not main.
+      - id: latest
+        if: github.event_name != 'release'
+        run: echo "tag=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.release.tag_name || steps.latest.outputs.tag }}
+      - uses: jdx/mise-action@v5
+      - run: bun install --frozen-lockfile
+      - run: bun run gen:api
+        env:
+          SWAGGER_USER: ${{ secrets.SWAGGER_USER }}
+          SWAGGER_PASSWORD: ${{ secrets.SWAGGER_PASSWORD }}
+      - run: bun run build
+      - uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          command: pages deploy dist --project-name news-fe-prod --branch main
+          gitHubToken: ${{ github.token }}
