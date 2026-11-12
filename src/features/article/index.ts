@@ -36,6 +36,11 @@ export {
   type ArticlePreview,
 } from "./viewmodels/article-preview";
 export {
+  buildHomeSections,
+  fetchHomeArticles,
+  optimizeHomeThumbnails,
+} from "./viewmodels/home";
+export {
   AdminArticleList,
   AdminArticles,
 } from "./views/components/admin-article-list";
@@ -44,4 +49,5 @@ export { ArticleList } from "./views/components/article-list";
 export { ArticlePage } from "./views/components/article-page";
 export { ArticlePagination } from "./views/components/article-pagination";
 export { CategoryArticles } from "./views/components/category-articles";
+export { HomeArticles } from "./views/components/home-articles";
 export { PopularArticles } from "./views/components/popular-articles";
