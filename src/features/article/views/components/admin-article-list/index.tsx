@@ -76,7 +76,6 @@ import {
 } from "../../../viewmodels/admin-article-list";
 import { useAdminArticles } from "../../../viewmodels/use-admin-articles";
 
-// The `/admin` island.
 export function AdminArticles() {
   return (
     <AdminGuard section="articles">

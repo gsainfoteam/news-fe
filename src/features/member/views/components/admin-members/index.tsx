@@ -15,7 +15,6 @@ import { MemberPermissions } from "../member-permissions";
 import { MemberRegisterForm } from "../member-register-form";
 import { MemberTable } from "../member-table";
 
-// The `/admin/members` island.
 export function AdminMembers() {
   return (
     <AdminGuard section="members">

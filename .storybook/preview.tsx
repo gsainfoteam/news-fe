@@ -75,11 +75,7 @@ const preview: Preview = {
       },
     },
   },
-  decorators: [
-    withTheme,
-    // i18n locale toolbar.
-    withLocale,
-  ],
+  decorators: [withTheme, withLocale],
 };
 
 export default preview;

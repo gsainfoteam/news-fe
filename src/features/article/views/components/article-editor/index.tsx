@@ -29,7 +29,6 @@ import { ArticleBodyEditor } from "../article-body-editor";
 import { AuthorPicker } from "../author-picker";
 import { CategoryPicker } from "../category-picker";
 
-// The `/admin/articles/new` and `/admin/articles/edit?id=` island.
 export function AdminArticleEditor({ mode }: AdminArticleEditor.Props) {
   return (
     <AdminGuard section="articles">
@@ -365,7 +364,6 @@ export function ArticleEditor({ article }: ArticleEditor.Props) {
 
 export namespace ArticleEditor {
   export type Props = {
-    /** The article to edit; omit to write a new one. */
     article?: Article;
   };
 }

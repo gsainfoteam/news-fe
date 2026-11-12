@@ -7,7 +7,6 @@ import { membersQuery } from "@/features/member";
 import { type Article, articleQuery } from "../models";
 import { getAuthorOptions, parseArticleId } from "./article-editor";
 
-/** The article named by `?id=` on `/admin/articles/edit`. */
 export function useEditableArticle() {
   const [id] = useState(() => parseArticleId(window.location.search));
   const query = useQuery({

@@ -6,7 +6,6 @@ import { localizePath } from "@/common/lib/languages";
 
 import { type ArticlePreview } from "../../../viewmodels/article-preview";
 
-// Sidebar list: title and date, a small photo when there is one.
 export function ArticleMiniList({
   title,
   articles,

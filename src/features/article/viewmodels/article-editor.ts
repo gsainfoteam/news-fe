@@ -90,7 +90,6 @@ export function toArticleImageRequest(file: { name: string; size: number }) {
   });
 }
 
-/** `src` of every `<img>` in Tiptap's HTML, in order. */
 export function getImageSources(html: string) {
   return [...html.matchAll(/<img\b[^>]*?\bsrc="([^"]*)"/g)].map((m) =>
     m[1].replaceAll("&amp;", "&"),
@@ -118,10 +117,8 @@ export function hasPendingImages(html: string) {
   return getImageSources(html).some((src) => src.startsWith("blob:"));
 }
 
-/**
- * Keys of the images still in the body. Images deleted from the body drop
- * out here, so the saved `imageKeys` never lists them.
- */
+// Images deleted from the body drop out here, so the saved `imageKeys`
+// never lists them.
 export function collectImageKeys(
   html: string,
   uploaded: ReadonlyMap<string, string>,
@@ -274,7 +271,6 @@ export function toArticleUpdate(
   };
 }
 
-/** `?id=` of `/admin/articles/edit`, if it names an article. */
 export function parseArticleId(search: string) {
   const raw = new URLSearchParams(search).get("id") ?? "";
   const id = Number(raw);

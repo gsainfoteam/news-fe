@@ -98,9 +98,7 @@ export type ArticleDetail = {
   path: string;
   title: string;
   subtitle?: string;
-  /** Sanitized body, safe to render as HTML. */
   html: string;
-  /** Link preview photo: the backend thumbnail, else the first body image. */
   image?: string;
   /** Section, then sub-category: "학술·연구 › 연구". */
   breadcrumb: Category[];
@@ -109,7 +107,6 @@ export type ArticleDetail = {
   publishedAt: Date;
   /** Only when the article was edited after it was published. */
   updatedAt?: Date;
-  /** As of the build. */
   views: number;
 };
 

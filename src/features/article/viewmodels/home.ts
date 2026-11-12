@@ -35,9 +35,6 @@ type HeadlineCandidate = Pick<
 const byLatest = (a: HeadlineCandidate, b: HeadlineCandidate) =>
   b.publishedAt.getTime() - a.publishedAt.getTime();
 
-// 1. Most viewed article with a photo from the last 14 days (today included).
-// 2. The latest article with a photo.
-// 3. The latest article; the hero then shows only its dark backdrop.
 export function selectHeadline<T extends HeadlineCandidate>(
   articles: readonly T[],
   now: Date = new Date(),
@@ -63,23 +60,17 @@ export type HomeCategorySection = {
 
 export type HomeSections = {
   headline?: ArticlePreview;
-  /** Right under the headline. */
   featured: ArticlePreview[];
   latest: ArticlePreview[];
   popular: ArticlePreview[];
-  /** The 기획·특집 spotlight. */
   spotlight?: HomeCategorySection;
-  /** The four-column grid of the other news sections. */
   categories: HomeCategorySection[];
   opinion?: HomeCategorySection;
 };
 
 export type HomeArticles = {
-  /** `GET /article?sort=LATEST`, newest first. */
   latest: Article[];
-  /** `GET /article?sort=MOST_POPULAR`. */
   popular: Article[];
-  /** Each section with its sub-categories' articles mixed in. */
   categories: Partial<Record<Category, Article[]>>;
 };
 
@@ -184,8 +175,8 @@ type Optimize = (
   width: number,
 ) => Promise<string | undefined>;
 
-// Display widths (CSS px, doubled for high-density screens) per slot. The
-// page passes `optimizeImage`, which only runs inside Astro.
+// Widths are CSS px doubled for high-density screens. The page passes
+// `optimizeImage` in because it only runs inside Astro.
 export async function optimizeHomeThumbnails(
   sections: HomeSections,
   optimize: Optimize,

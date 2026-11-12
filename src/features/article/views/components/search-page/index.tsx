@@ -44,8 +44,8 @@ import {
 } from "../../../viewmodels/use-search";
 import { ArticleList } from "../article-list";
 
-// Island root of /search. Everything it shows comes from the URL, so the
-// back button and a reload land on the same results.
+// Everything it shows comes from the URL, so the back button and a reload
+// land on the same results.
 export function SearchPage() {
   return (
     <QueryProvider>
