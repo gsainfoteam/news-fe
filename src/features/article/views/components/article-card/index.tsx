@@ -19,7 +19,6 @@ const card = cv({
   },
   variants: {
     variant: {
-      // Text first, photo on the right; the list row.
       row: {
         root: "flex items-start gap-6 border-b border-border py-[22px] mobile:gap-3.5 mobile:py-[18px]",
         thumb: "order-last aspect-3/2 w-[184px] mobile:w-[108px]",
@@ -27,14 +26,12 @@ const card = cv({
         title: "text-[20px] leading-[1.4] mobile:text-[17px]",
         excerpt: "mobile:hidden",
       },
-      // Photo on top; grids and sections.
       stack: {
         root: "flex flex-col gap-3",
         thumb: "aspect-3/2 w-full",
         body: "gap-2.5",
         title: "text-[19px] leading-[1.4] mobile:text-[17px]",
       },
-      // First article of a list, photo beside the text.
       lead: {
         root: "grid grid-cols-[minmax(0,7fr)_minmax(0,5fr)] items-center gap-8 border-b border-border py-8 mobile:grid-cols-1 mobile:gap-5 mobile:py-6",
         thumb: "aspect-4/3 w-full",

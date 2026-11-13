@@ -46,7 +46,6 @@ export function useAdminArticles() {
 
   const query = useQuery({
     ...articlesQuery({ query: toArticlesQuery(filters) }),
-    // Keep the current rows on screen while the next page or filter loads.
     placeholderData: keepPreviousData,
   });
   const count = Number(query.data?.count ?? 0);

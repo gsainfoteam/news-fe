@@ -53,8 +53,7 @@ export const MOCK_SEARCH_ARTICLES: Article[] = Array.from(
   },
 );
 
-// Searches, filters, sorts and pages like `GET /article`. Without `search`
-// it answers the "latest articles" request under "no results".
+// Without `search` it answers the "latest articles" request under "no results".
 export function handleSearchArticles(articles = MOCK_SEARCH_ARTICLES) {
   return handleGetArticles(({ request }) => {
     const params = new URL(request.url).searchParams;
