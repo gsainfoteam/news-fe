@@ -8,7 +8,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { loadEnv } from "vite";
 
-const { PUBLIC_API_BASE_URL } = loadEnv(
+const { API_BASE_URL } = loadEnv(
   process.env.NODE_ENV ?? "development",
   process.cwd(),
   "",
@@ -31,6 +31,7 @@ const localizedNotFound = {
   },
 };
 
+// https://astro.build/config
 export default defineConfig({
   // OG tags, canonical, and hreflang need absolute URLs.
   site: "https://news.gistory.me",
@@ -58,11 +59,7 @@ export default defineConfig({
 
   env: {
     schema: {
-      API_BASE_URL: envField.string({ context: "server", access: "public" }),
-      PUBLIC_API_BASE_URL: envField.string({
-        context: "client",
-        access: "public",
-      }),
+      API_BASE_URL: envField.string({ context: "client", access: "public" }),
     },
   },
 
@@ -74,7 +71,7 @@ export default defineConfig({
       strictPort: true,
       proxy: {
         "/api": {
-          target: PUBLIC_API_BASE_URL,
+          target: API_BASE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
         },

@@ -22,9 +22,7 @@ const config: StorybookConfig = {
         alias: [
           { find: /^@\//, replacement: `${srcDir}/` },
           {
-            // Vite resolves api.ts's `astro:env/server` import even though
-            // only the SSR build runs it, so the server module needs the stub too.
-            find: /^astro:env\/(client|server)$/,
+            find: /^astro:env\/client$/,
             replacement: fileURLToPath(
               new URL("./astro-env-client.ts", import.meta.url),
             ),
