@@ -11,7 +11,6 @@ export type ArticlePreview = {
   subtitle?: string;
   summary: string;
   thumbnail?: string;
-  /** Shown as the kicker above the title. */
   category?: Category;
   authors: string[];
   publishedAt: Date;

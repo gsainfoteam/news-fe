@@ -55,9 +55,8 @@ function photo(from: string, to: string) {
 
 const PHOTOS = [photo("#8fa3b5", "#3c4b59"), photo("#c9b394", "#6b5a43")];
 
-// Article images live at `<bucket>/<key>` like news-be's. MSW answers them
-// with an SVG, so stories show photos and edits recover keys from the URLs.
-// (The editor drops data: URLs, as pasted base64 images shouldn't be saved.)
+// `<bucket>/<key>` URLs like news-be's, not data: URLs (the editor drops
+// those), so edits in stories can recover keys from them.
 export function handleMockImages() {
   return http.get(`${MOCK_IMAGE_BUCKET}/*`, ({ request }) => {
     const index = request.url.length % PHOTOS.length;
@@ -93,8 +92,6 @@ export const MOCK_EDIT_ARTICLE: Article = {
 
 let uploadCount = 0;
 
-// `POST /article/image` and the S3 PUT it hands out, plus the images'
-// public URLs.
 export function handleArticleImageUpload({
   putStatus = 200,
   delayMs = 1200,
@@ -118,7 +115,6 @@ export function handleArticleImageUpload({
   ];
 }
 
-// Echoes the saved article back the way news-be does.
 export function handleArticleSave(article: Article = MOCK_EDIT_ARTICLE) {
   const toArticle = (id: number, body: Partial<ArticleInput>): Article => ({
     ...article,

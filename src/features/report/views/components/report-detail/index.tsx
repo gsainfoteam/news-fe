@@ -253,7 +253,6 @@ export namespace ReportDetail {
     linksExpired: boolean;
     refreshingLinks?: boolean;
     onRefreshLinks: () => void;
-    /** Runs before the browser follows a download link. */
     onFileClick?: (event: MouseEvent) => void;
     /** Shown only to members who can write articles. */
     writeArticleHref?: string;

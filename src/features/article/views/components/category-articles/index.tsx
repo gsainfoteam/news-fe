@@ -15,8 +15,7 @@ import { ArticleList } from "../article-list";
 import { ArticlePagination } from "../article-pagination";
 import { PopularArticles } from "../popular-articles";
 
-// Page root of /category/[slug]/[...page]. Astro renders it as its own React
-// root, so the page passes its i18n instance in.
+// Own React root under Astro; see Header for why i18n is a prop.
 export function CategoryArticles({
   i18n = appI18n,
   ...props

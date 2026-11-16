@@ -27,7 +27,6 @@ export type ArticleSaveResult =
   | { status: "uploading" }
   | { status: "failed" };
 
-/** `article` is the one being edited; omit it to write a new one. */
 export function useArticleEditor(article?: Article) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();

@@ -69,7 +69,6 @@ export function getPageCount(count: number) {
   return Math.max(1, Math.ceil(count / REPORTS_PAGE_SIZE));
 }
 
-// Up to `size` consecutive pages around the current one.
 export function getPageWindow(page: number, pageCount: number, size = 5) {
   const start = Math.max(
     1,
