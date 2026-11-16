@@ -27,8 +27,7 @@ import { ArticleCard } from "../article-card";
 const titleLink =
   "font-heading font-bold tracking-[-0.02em] hover:underline hover:underline-offset-3";
 
-// Page root of /. Astro renders it as its own React root, so the page passes
-// its i18n instance in.
+// Own React root under Astro; see Header for why i18n is a prop.
 export function HomeArticles({ i18n = appI18n, ...props }: HomeArticles.Props) {
   return (
     <I18nextProvider i18n={i18n}>
@@ -541,7 +540,6 @@ function SectionHead({
   );
 }
 
-// Four columns on desktop; a swipeable row on phones.
 function Strip({
   wide = false,
   children,

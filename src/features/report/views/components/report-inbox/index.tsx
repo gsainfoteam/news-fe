@@ -42,7 +42,6 @@ import { ReportDetail } from "../report-detail";
 // Tailwind's `max-lg`.
 const ONE_PANE_QUERY = "(width < 64rem)";
 
-// The `/admin/reports` and `/admin/reports/view` island.
 export function AdminReports({ initialLocation }: AdminReports.Props) {
   return (
     <AdminGuard section="reports">

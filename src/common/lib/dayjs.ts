@@ -20,7 +20,6 @@ dayjs.extend(timezone);
 // with the static HTML.
 const TIME_ZONE = "Asia/Seoul";
 
-// Keep dayjs's locale in sync with the active i18next language.
 i18n.on("languageChanged", (lng) => dayjs.locale(lng));
 dayjs.locale(i18n.language);
 

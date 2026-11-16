@@ -27,8 +27,7 @@ import { ArticleCard } from "../article-card";
 import { ArticleMiniList } from "../article-mini-list";
 import { PopularArticles } from "../popular-articles";
 
-// Page root of /article/[id]. Astro renders it as its own React root, so the
-// page passes its i18n instance in.
+// Own React root under Astro; see Header for why i18n is a prop.
 export function ArticlePage({ i18n = appI18n, ...props }: ArticlePage.Props) {
   return (
     <I18nextProvider i18n={i18n}>
@@ -147,10 +146,8 @@ function ArticlePageContent({
       {continueReading.length > 0 && (
         <section
           aria-labelledby="continue-title"
-          // Full-bleed band without leaving the page column: the shadows
-          // paint the surface and its top border out to the window edges.
-          // The negative margin cancels the footer's top margin so the band
-          // meets the footer like the design.
+          // Shadows paint the band out to the window edges without leaving the
+          // page column; the negative margin cancels the footer's top margin.
           className="mt-[88px] -mb-24 bg-surface pt-11 pb-14 shadow-[0_0_0_100vmax_var(--color-surface),0_-1px_0_100vmax_var(--color-border)] [clip-path:inset(-1px_-100vmax_0)] mobile:mt-16 mobile:-mb-16 mobile:pt-9 mobile:pb-10"
         >
           <div className="mb-5 flex items-center justify-between gap-4 border-t-2 border-border-strong pt-3.5">

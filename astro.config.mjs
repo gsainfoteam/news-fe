@@ -31,7 +31,6 @@ const localizedNotFound = {
   },
 };
 
-// https://astro.build/config
 export default defineConfig({
   // OG tags, canonical, and hreflang need absolute URLs.
   site: "https://news.gistory.me",
@@ -59,7 +58,6 @@ export default defineConfig({
 
   env: {
     schema: {
-      // Read only while building pages; never shipped to the browser.
       API_BASE_URL: envField.string({ context: "server", access: "public" }),
       PUBLIC_API_BASE_URL: envField.string({
         context: "client",

@@ -17,7 +17,6 @@ export const withTheme: Decorator = (Story, context) => {
   return <Story />;
 };
 
-/** Syncs the active i18next language (and dayjs locale) with the toolbar. */
 export const withLocale: Decorator = (Story, context) => {
   const locale = (context.globals.locale as string) ?? "ko";
 
