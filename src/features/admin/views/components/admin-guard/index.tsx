@@ -1,20 +1,19 @@
 import { type ReactNode } from "react";
 
-import {
-  Loader2Icon,
-  LockKeyholeIcon,
-  LogInIcon,
-  ShieldAlertIcon,
-} from "lucide-react";
+import { LockKeyholeIcon, LogInIcon, ShieldAlertIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 import { Button, buttonVariants } from "@/common/components/ui/button";
-import { ErrorState } from "@/common/components/ui/error-state";
 import { Toaster } from "@/common/components/ui/sonner";
 import { cn } from "@/common/lib/cn";
 import { localizePath } from "@/common/lib/languages";
 import { QueryProvider } from "@/common/lib/query-client";
-import { getAdminAccess, type User, useMe } from "@/features/auth";
+import {
+  AuthMessage,
+  getAdminAccess,
+  RequireAuth,
+  type User,
+} from "@/features/auth";
 
 import {
   type AdminSection,
@@ -25,10 +24,19 @@ import { AdminBrand, AdminLayout } from "../admin-layout";
 
 // Every CMS page is one `client:only` island rooted here, so the guard also
 // provides the shared query cache and the toast outlet.
-export function AdminGuard(props: AdminGuard.Props) {
+export function AdminGuard({ section, children }: AdminGuard.Props) {
   return (
     <QueryProvider>
-      <AdminGuardContent {...props} />
+      <RequireAuth
+        frame={(screen) => <StandaloneScreen>{screen}</StandaloneScreen>}
+        loginScreen={(login) => <LoginRequired onLogin={login} />}
+      >
+        {({ user, logout }) => (
+          <AdminGuardContent user={user} section={section} onLogout={logout}>
+            {children}
+          </AdminGuardContent>
+        )}
+      </RequireAuth>
       <Toaster position="bottom-center" />
     </QueryProvider>
   );
@@ -42,46 +50,12 @@ export namespace AdminGuard {
   };
 }
 
-function AdminGuardContent({ section, children }: AdminGuard.Props) {
-  const { t } = useTranslation();
-  const session = useMe();
-
-  switch (session.status) {
-    case "loading":
-      return (
-        <StandaloneScreen>
-          <div role="status" className="flex flex-col items-center gap-3">
-            <Loader2Icon className="size-6 animate-spin text-subtle-foreground" />
-            <span className="sr-only">
-              {t("admin.guard.loading", "불러오는 중")}
-            </span>
-          </div>
-        </StandaloneScreen>
-      );
-    case "error":
-      return (
-        <StandaloneScreen>
-          <ErrorState
-            title={t(
-              "admin.guard.error.title",
-              "계정 정보를 불러오지 못했습니다",
-            )}
-            description={t("error.description", "잠시 후 다시 시도해 주세요.")}
-            retryLabel={t("error.retry", "다시 시도")}
-            onRetry={session.retry}
-            className="w-full max-w-[420px] self-start"
-          />
-        </StandaloneScreen>
-      );
-    case "anonymous":
-      return (
-        <StandaloneScreen>
-          <LoginRequired />
-        </StandaloneScreen>
-      );
-  }
-
-  const { user } = session;
+function AdminGuardContent({
+  user,
+  section,
+  onLogout,
+  children,
+}: AdminGuard.Props & { user: User; onLogout: () => void }) {
   const access = getAdminAccess(user, getSectionPermission(section));
   if (access === "not-member") {
     return (
@@ -91,7 +65,7 @@ function AdminGuardContent({ section, children }: AdminGuard.Props) {
     );
   }
   return (
-    <AdminLayout user={user} section={section}>
+    <AdminLayout user={user} section={section} onLogout={onLogout}>
       {access === "forbidden" ? (
         <Forbidden user={user} section={section} />
       ) : typeof children === "function" ? (
@@ -103,10 +77,10 @@ function AdminGuardContent({ section, children }: AdminGuard.Props) {
   );
 }
 
-function LoginRequired() {
+function LoginRequired({ onLogin }: { onLogin: () => void }) {
   const { t, i18n } = useTranslation();
   return (
-    <StateMessage
+    <AuthMessage
       icon={<LockKeyholeIcon />}
       title={t("admin.guard.login.title", "기자 로그인이 필요합니다")}
       description={t(
@@ -114,20 +88,19 @@ function LoginRequired() {
         "CMS는 지스트신문 멤버만 쓸 수 있습니다. 인포팀 계정으로 로그인해 주세요.",
       )}
     >
-      {/* NEF-9 starts the account-sdk login here. */}
-      <Button>
+      <Button onClick={onLogin}>
         <LogInIcon />
         {t("admin.guard.login.action", "인포팀 계정으로 로그인")}
       </Button>
       <SiteLink lng={i18n.language} />
-    </StateMessage>
+    </AuthMessage>
   );
 }
 
 function NotMember({ user }: { user: User }) {
   const { t, i18n } = useTranslation();
   return (
-    <StateMessage
+    <AuthMessage
       icon={<ShieldAlertIcon />}
       title={t("admin.guard.notMember.title", "CMS를 쓸 수 없는 계정입니다")}
       description={t(
@@ -137,7 +110,7 @@ function NotMember({ user }: { user: User }) {
       )}
     >
       <SiteLink lng={i18n.language} />
-    </StateMessage>
+    </AuthMessage>
   );
 }
 
@@ -156,7 +129,7 @@ function Forbidden({ user, section }: { user: User; section: AdminSection }) {
         );
   return (
     <div className="py-16 mobile:py-10">
-      <StateMessage
+      <AuthMessage
         icon={<LockKeyholeIcon />}
         title={t("admin.guard.forbidden.title", "접근 권한이 없습니다")}
         description={description}
@@ -168,7 +141,7 @@ function Forbidden({ user, section }: { user: User; section: AdminSection }) {
             })}
           </a>
         )}
-      </StateMessage>
+      </AuthMessage>
     </div>
   );
 }
@@ -195,36 +168,6 @@ function StandaloneScreen({ children }: { children: ReactNode }) {
       <main className="flex flex-1 justify-center px-4 pt-[120px] pb-[140px] mobile:pt-20 mobile:pb-24">
         {children}
       </main>
-    </div>
-  );
-}
-
-function StateMessage({
-  icon,
-  title,
-  description,
-  children,
-}: {
-  icon: ReactNode;
-  title: string;
-  description: string;
-  children?: ReactNode;
-}) {
-  return (
-    <div className="mx-auto flex max-w-[420px] flex-col items-center gap-4 text-center">
-      <span
-        aria-hidden="true"
-        className="flex size-14 items-center justify-center rounded-full bg-muted text-muted-foreground [&_svg]:size-6"
-      >
-        {icon}
-      </span>
-      <h1 className="text-h3">{title}</h1>
-      <p className="text-sm text-muted-foreground">{description}</p>
-      {children && (
-        <div className="mt-2 flex flex-wrap justify-center gap-2">
-          {children}
-        </div>
-      )}
     </div>
   );
 }

@@ -5,4 +5,6 @@ import { mock } from "bun:test";
 // loads, keeps tests that import a feature's models runnable on their own.
 mock.module("astro:env/client", () => ({
   API_BASE_URL: "https://api.test",
+  ACCOUNT_ISSUER: "staging",
+  ACCOUNT_CLIENT_ID: "news-test",
 }));

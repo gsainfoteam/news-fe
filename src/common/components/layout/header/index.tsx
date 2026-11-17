@@ -78,7 +78,6 @@ function HeaderContent({
               currentPath={currentPath}
               className="mobile:hidden"
             />
-            {account && <div className="mobile:hidden">{account}</div>}
             <a
               href={path("/search")}
               aria-label={searchLabel}
@@ -90,6 +89,7 @@ function HeaderContent({
               <SearchIcon />
             </a>
             {menu && <div className="hidden mobile:flex">{menu}</div>}
+            {account}
           </div>
         </div>
         <CategoryNav current={currentCategory} />

@@ -119,16 +119,12 @@
       "uploadingTitle": "Images are still uploading"
     },
     "guard": {
-      "error": {
-        "title": "Couldn't load your account"
-      },
       "forbidden": {
         "action": "Open {{menu}}",
         "editor": "Only members with editing permission can use this menu. Permission follows your position, and the editor-in-chief can change it.",
         "editorship": "Only the editor-in-chief can use this menu.",
         "title": "You don't have access"
       },
-      "loading": "Loading",
       "login": {
         "action": "Log in with Infoteam account",
         "description": "The CMS is for GIST Newspaper members. Log in with your Infoteam account.",
@@ -142,6 +138,7 @@
     },
     "logout": "Log out",
     "nav": {
+      "archive": "Print PDFs",
       "articles": "Articles",
       "editorshipOnly": "Editor-in-chief only",
       "label": "CMS menu",
@@ -197,6 +194,15 @@
     "site": "Site",
     "siteHome": "GIST Newspaper site"
   },
+  "archive": {
+    "count_one": "{{count}} issue",
+    "count_other": "{{count}} issues",
+    "description": "Every printed issue of the paper, as a PDF.",
+    "empty": "No issues have been uploaded yet",
+    "pageDescription": "Read GIST Newspaper's printed issues as PDFs.",
+    "title": "Print editions",
+    "year": "{{year}}"
+  },
   "article": {
     "byline": "By {{names}}",
     "continueReading": "Keep reading",
@@ -216,6 +222,57 @@
     "related": "Related articles",
     "updatedAt": "Updated {{date}}",
     "views": "{{views}} views"
+  },
+  "auth": {
+    "callback": {
+      "pending": "Logging in",
+      "title": "Log in"
+    },
+    "error": {
+      "title": "Couldn't load your account"
+    },
+    "failed": {
+      "back": "Go back",
+      "cancelled": {
+        "description": "You canceled the login on the Infoteam account screen. Press the button below to log in again.",
+        "title": "Login canceled"
+      },
+      "consent": {
+        "description": "Accounts logging in for the first time need to agree to the terms and sign up. Sign-up is coming soon.",
+        "title": "This account needs to sign up"
+      },
+      "network": {
+        "description": "Check your internet connection and try again.",
+        "title": "Couldn't reach the server"
+      },
+      "rejected": {
+        "description": "GIST Newspaper didn't accept a login from this account. If this keeps happening, contact GIST Newspaper.",
+        "title": "This account can't log in"
+      },
+      "retry": "Log in again",
+      "unknown": {
+        "description": "Please try again in a moment.",
+        "title": "Couldn't log in"
+      },
+      "verification": {
+        "description": "Information GIST Newspaper needs isn't verified on your Infoteam account yet. Verify it, then log in again.",
+        "title": "Account verification needed"
+      }
+    },
+    "loading": "Loading",
+    "login": "Log in",
+    "loginWithAccount": "Log in with Infoteam account",
+    "logout": "Log out",
+    "menu": {
+      "cms": "Open CMS",
+      "error": "Couldn't load your account",
+      "label": "My account menu"
+    },
+    "required": {
+      "description": "Log in with your Infoteam account to see this page.",
+      "title": "Login required"
+    },
+    "toHome": "Go home"
   },
   "category": {
     "ACADEMIC": "Academics",
@@ -256,6 +313,7 @@
   },
   "footer": {
     "address": "GIST Newspaper, 3F Student Union Building 1, 123 Cheomdangwagi-ro, Buk-gu, Gwangju, Korea",
+    "archive": "Print editions",
     "newTab": "(opens in a new tab)",
     "staff": "Editor-in-chief {{editor}}, Web manager {{webManager}}"
   },
@@ -367,6 +425,60 @@
       "roleChanged": "Changed {{name}}'s position",
       "roleFailed": "Couldn't change the position"
     }
+  },
+  "newspaper": {
+    "count_one": "{{count}} issue",
+    "count_other": "{{count}} issues",
+    "delete": {
+      "description": "The PDF is deleted too, and this can't be undone. It leaves the site in 1 to 2 minutes.",
+      "title": "Delete {{title}}?"
+    },
+    "form": {
+      "cancel": "Cancel",
+      "createTitle": "Upload an issue",
+      "dropzone": "Drop a PDF here or <action>choose one</action>",
+      "editTitle": "Edit {{title}}",
+      "file": "PDF file",
+      "fileEmpty": "The file is empty",
+      "fileOptional": "Only to replace it",
+      "fileRequired": "Choose a PDF file",
+      "fileTooLarge": "Files over {{size}} can't be uploaded",
+      "fileType": "Only PDF files can be uploaded",
+      "limit": "Up to {{size}}.",
+      "notice": "It shows on the site's print editions page in 1 to 2 minutes.",
+      "progress": "Uploading {{name}}",
+      "removeFile": "Remove file",
+      "save": "Save",
+      "title": "Title",
+      "titlePlaceholder": "제N호 (No. N)",
+      "titleRequired": "Enter a title",
+      "titleTooLong": "Titles can be up to {{max}} characters",
+      "upload": "Upload"
+    },
+    "loadFailed": "Couldn't load the issues",
+    "table": {
+      "actions": "Actions",
+      "caption": "Issues",
+      "createdAt": "Uploaded",
+      "createdOn": "Uploaded {{date}}",
+      "delete": "Delete",
+      "edit": "Edit",
+      "empty": "No issues uploaded",
+      "menu": "Actions for {{title}}",
+      "open": "Open PDF",
+      "title": "Title",
+      "updatedAt": "Updated"
+    },
+    "title": "Print PDFs",
+    "toast": {
+      "deleted": "Deleted {{title}}",
+      "deleteFailed": "Couldn't delete the issue",
+      "saved": "Saved {{title}}",
+      "saveFailed": "Couldn't save the issue",
+      "uploaded": "Uploaded {{title}}",
+      "uploadFailed": "Couldn't upload the issue"
+    },
+    "upload": "Upload an issue"
   },
   "notFound": {
     "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",

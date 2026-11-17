@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 
 import {
+  ArchiveIcon,
   ExternalLinkIcon,
   GlobeIcon,
   InboxIcon,
@@ -38,11 +39,17 @@ import {
 
 const ICONS: Record<AdminSection, ReactNode> = {
   articles: <NewspaperIcon />,
+  archive: <ArchiveIcon />,
   reports: <InboxIcon />,
   members: <UsersIcon />,
 };
 
-export function AdminLayout({ user, section, children }: AdminLayout.Props) {
+export function AdminLayout({
+  user,
+  section,
+  onLogout,
+  children,
+}: AdminLayout.Props) {
   const { t, i18n } = useTranslation();
   const nav = getAdminNav(t, i18n.language, user);
   const siteHref = localizePath(i18n.language, "/");
@@ -82,8 +89,7 @@ export function AdminLayout({ user, section, children }: AdminLayout.Props) {
               <ExternalLinkIcon />
               {t("admin.site", "사이트")}
             </a>
-            {/* Login and logout are wired by NEF-9 (account-sdk). */}
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={onLogout}>
               <LogOutIcon />
               {t("admin.logout", "로그아웃")}
             </Button>
@@ -114,7 +120,7 @@ export function AdminLayout({ user, section, children }: AdminLayout.Props) {
                 <LanguageMenuItem />
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onLogout}>
                 <LogOutIcon />
                 {t("admin.logout", "로그아웃")}
               </DropdownMenuItem>
@@ -150,6 +156,7 @@ export namespace AdminLayout {
     user: User;
     /** Highlights this menu; omit for pages outside the menu. */
     section?: AdminSection;
+    onLogout?: () => void;
     children: ReactNode;
   };
 }

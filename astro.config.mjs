@@ -8,11 +8,18 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { loadEnv } from "vite";
 
-const { API_BASE_URL } = loadEnv(
-  process.env.NODE_ENV ?? "development",
-  process.cwd(),
-  "",
-);
+// Astro reads this file before it resolves `--mode`, so take the mode from
+// argv: `astro build` defaults to production, everything else to development.
+const modeArg = process.argv.findIndex((arg) => arg.startsWith("--mode"));
+const mode =
+  modeArg === -1
+    ? process.argv.includes("build")
+      ? "production"
+      : "development"
+    : (process.argv[modeArg].split("=")[1] ?? process.argv[modeArg + 1]);
+
+const { API_BASE_URL, SITE } = loadEnv(mode, process.cwd(), "");
+if (!SITE) throw new Error(`SITE is not set for mode "${mode}"`);
 
 // Cloudflare Pages answers a missing path with the nearest `404.html` up the
 // tree, but the i18n fallback writes `/en/404/index.html`. Without this move,
@@ -31,15 +38,30 @@ const localizedNotFound = {
   },
 };
 
+/** @type {import("astro").AstroIntegration} */
+const flatAuthCallback = {
+  name: "flat-auth-callback",
+  hooks: {
+    "astro:build:done": async ({ dir }) => {
+      for (const prefix of ["", "en/"]) {
+        const from = new URL(`${prefix}auth/callback/index.html`, dir);
+        await rename(from, new URL(`${prefix}auth/callback.html`, dir));
+        await rm(new URL(`${prefix}auth/callback/`, dir), { recursive: true });
+      }
+    },
+  },
+};
+
 // https://astro.build/config
 export default defineConfig({
-  // OG tags, canonical, and hreflang need absolute URLs.
-  site: "https://news.gistory.me",
+  // OG tags, canonical, and hreflang need absolute URLs on the domain that
+  // serves the build, or link previews point at the other environment.
+  site: SITE,
 
   // Staging news-be and its S3 bucket allow only this origin through CORS.
   server: { port: 5173 },
 
-  integrations: [react(), localizedNotFound],
+  integrations: [react(), localizedNotFound, flatAuthCallback],
 
   // Article photos are converted to webp at build time (common/lib/image.ts).
   // news-be serves uploads path-style from S3 (`s3.<region>.amazonaws.com/
@@ -60,6 +82,21 @@ export default defineConfig({
   env: {
     schema: {
       API_BASE_URL: envField.string({ context: "client", access: "public" }),
+      ACCOUNT_ISSUER: envField.enum({
+        context: "client",
+        access: "public",
+        values: ["staging", "production"],
+      }),
+      ACCOUNT_CLIENT_ID: envField.string({
+        context: "client",
+        access: "public",
+      }),
+      // Set to true in a mode's .env to keep every page out of search engines.
+      SITE_NOINDEX: envField.boolean({
+        context: "server",
+        access: "public",
+        default: false,
+      }),
     },
   },
 
@@ -74,6 +111,7 @@ export default defineConfig({
           target: API_BASE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
+          cookiePathRewrite: { "/auth": "/api/auth" },
         },
       },
     },
