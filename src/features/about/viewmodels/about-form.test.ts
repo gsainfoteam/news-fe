@@ -5,6 +5,8 @@ import {
   createAboutFormSchema,
   createHistoryFormSchema,
   getChangedAbout,
+  hasAboutEdits,
+  isSameAbout,
   toAboutFormValues,
 } from "./about-form";
 import { MOCK_ABOUT } from "../models/mocks";
@@ -59,5 +61,22 @@ describe("createHistoryFormSchema", () => {
       schema.safeParse({ date: "2026-11-17", content: "가".repeat(1001) })
         .success,
     ).toBe(false);
+  });
+});
+
+describe("hasAboutEdits", () => {
+  test("ignores whitespace-only edits", () => {
+    expect(hasAboutEdits(values, { ...values })).toBe(false);
+    expect(
+      hasAboutEdits(values, { ...values, address: ` ${values.address}` }),
+    ).toBe(false);
+    expect(hasAboutEdits(values, { ...values, director: "김교수" })).toBe(true);
+  });
+
+  test("isSameAbout compares every field", () => {
+    expect(isSameAbout(values, { ...values })).toBe(true);
+    expect(isSameAbout(values, { ...values, instagram: "https://x.com" })).toBe(
+      false,
+    );
   });
 });

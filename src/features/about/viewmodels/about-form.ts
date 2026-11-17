@@ -61,6 +61,17 @@ export function getChangedAbout(
   );
 }
 
+export function isSameAbout(a: AboutFormValues, b: AboutFormValues) {
+  return ABOUT_FIELDS.every((key) => a[key] === b[key]);
+}
+
+export function hasAboutEdits(
+  baseline: AboutFormValues,
+  values: AboutFormValues,
+) {
+  return Object.keys(getChangedAbout(baseline, values)).length > 0;
+}
+
 const required = (message: string) => z.string().trim().min(1, message);
 
 // `<input type="date">` already gives YYYY-MM-DD; the round trip through

@@ -18,14 +18,14 @@ import { type AboutInput } from "../../../models";
 import {
   ABOUT_LIMITS,
   type AboutFormValues,
-  getChangedAbout,
+  hasAboutEdits,
 } from "../../../viewmodels/about-form";
 import { useAboutForm } from "../../../viewmodels/use-about-form";
 
 export function AboutInfoForm({ saved, onSave }: AboutInfoForm.Props) {
   const { t, i18n } = useTranslation();
   const formRef = useRef<HTMLFormElement>(null);
-  const form = useAboutForm({
+  const { form, baseline } = useAboutForm({
     saved,
     onSave,
     onSubmitInvalid: () =>
@@ -141,7 +141,7 @@ export function AboutInfoForm({ saved, onSave }: AboutInfoForm.Props) {
           <form.Subscribe
             selector={(s) => ({
               submitting: s.isSubmitting,
-              changed: Object.keys(getChangedAbout(saved, s.values)).length > 0,
+              changed: hasAboutEdits(baseline, s.values),
             })}
           >
             {({ submitting, changed }) => (
@@ -170,7 +170,7 @@ export function AboutInfoForm({ saved, onSave }: AboutInfoForm.Props) {
 
 export namespace AboutInfoForm {
   export type Props = {
-    /** What the server has; the form starts from it and saves only the difference. */
+    /** The latest server copy; taken into the form only while it has no edits. */
     saved: AboutFormValues;
     /** Rejects to keep the edits for another try. */
     onSave: (changes: AboutInput) => Promise<unknown>;

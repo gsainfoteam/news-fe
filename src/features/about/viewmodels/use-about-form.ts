@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { revalidateLogic, useForm } from "@tanstack/react-form";
 import { useTranslation } from "react-i18next";
@@ -8,11 +8,18 @@ import {
   createAboutFormSchema,
   createHistoryFormSchema,
   getChangedAbout,
+  hasAboutEdits,
   type HistoryFormValues,
+  isSameAbout,
   toHistoryInput,
 } from "./about-form";
 import { type AboutInput, type HistoryInput } from "../models";
 
+// The form keeps its own baseline, the server copy it started from, and
+// saves only the fields edited since. A newer server copy (a refetch on
+// focus, another editor's save, a history change) replaces the form only
+// while it holds no edits, so typing is never thrown away and the save
+// never reverts a field someone else changed meanwhile.
 export function useAboutForm({
   saved,
   onSave,
@@ -25,23 +32,42 @@ export function useAboutForm({
 }) {
   const { t } = useTranslation();
   const schema = useMemo(() => createAboutFormSchema(t), [t]);
+  const [baseline, setBaseline] = useState(saved);
+  // onSubmit reads the ref: the form keeps the options of its first render.
+  const baselineRef = useRef(baseline);
+  const rebase = (next: AboutFormValues) => {
+    baselineRef.current = next;
+    setBaseline(next);
+  };
 
-  return useForm({
+  const form = useForm({
     defaultValues: saved,
     // Quiet until the first submit, then re-check while typing.
     validationLogic: revalidateLogic(),
     validators: { onDynamic: schema },
     onSubmitInvalid,
-    onSubmit: async ({ value }) => {
-      const changes = getChangedAbout(saved, value);
+    onSubmit: async ({ value, formApi }) => {
+      const changes = getChangedAbout(baselineRef.current, value);
       if (Object.keys(changes).length === 0) return;
       try {
         await onSave(changes);
       } catch {
         return;
       }
+      const next = { ...baselineRef.current, ...changes } as AboutFormValues;
+      rebase(next);
+      formApi.reset(next);
     },
   });
+
+  useEffect(() => {
+    if (isSameAbout(saved, baselineRef.current)) return;
+    if (hasAboutEdits(baselineRef.current, form.state.values)) return;
+    rebase(saved);
+    form.reset(saved);
+  }, [saved, form]);
+
+  return { form, baseline };
 }
 
 export function useHistoryForm({

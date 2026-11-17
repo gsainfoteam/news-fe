@@ -85,8 +85,6 @@ export function AboutManagement() {
       ) : (
         <>
           <AboutInfoForm
-            // Remount on a new server copy so the form starts from it.
-            key={JSON.stringify(toAboutFormValues(about.about))}
             saved={toAboutFormValues(about.about)}
             onSave={(changes) =>
               run(
