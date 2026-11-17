@@ -8,6 +8,7 @@ import {
   handleGetMembers,
   handleMockError,
   MOCK_EDIT_ARTICLE,
+  MOCK_IMPORTED_ARTICLE,
   MOCK_MEMBERS,
 } from "@/features/article/models/editor-mocks";
 import { handleMe, mockUser } from "@/features/auth/models/mocks";
@@ -47,6 +48,14 @@ export const Edit: Story = {
 export const EditMobile: Story = {
   ...Edit,
   globals: { viewport: { value: "mobile" } },
+};
+
+export const EditImported: Story = {
+  render: () => (
+    <AdminGuard section="articles">
+      <ArticleEditor article={MOCK_IMPORTED_ARTICLE} />
+    </AdminGuard>
+  ),
 };
 
 /** Storybook's own `?id=` is not an article id, so this is the not-found state. */

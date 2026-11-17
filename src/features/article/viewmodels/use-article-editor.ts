@@ -13,6 +13,9 @@ import {
 import {
   type ArticleDraft,
   type ArticleDraftErrors,
+  getDetachedThumbnail,
+  getSelectedThumbnail,
+  getThumbnailOptions,
   hasPendingImages,
   toArticleDraft,
   toArticleInput,
@@ -109,6 +112,8 @@ export function useArticleEditor(article?: Article) {
     }
   };
 
+  const detached = getDetachedThumbnail(saved);
+
   return {
     /** The article as last saved; undefined until a new one is first saved. */
     article: saved,
@@ -121,5 +126,9 @@ export function useArticleEditor(article?: Article) {
     saving: create.isPending || update.isPending,
     save,
     images,
+    thumbnail: {
+      options: getThumbnailOptions(draft.content, detached),
+      selected: getSelectedThumbnail(draft, detached),
+    },
   };
 }

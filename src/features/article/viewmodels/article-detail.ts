@@ -2,7 +2,7 @@ import { type IOptions } from "sanitize-html";
 
 import { getCategoryGroup, type Category } from "@/features/category";
 
-import { extractSummary, extractThumbnail } from "./article-content";
+import { extractSummary, pickThumbnail } from "./article-content";
 import { filterByCategory } from "./article-list";
 import { getArticlePath, getKickerCategory } from "./article-preview";
 import { type Article } from "../models";
@@ -129,14 +129,13 @@ export async function toArticleDetail(
   // Read the photo from the sanitized body: the raw one may hide an <img>
   // inside markup the page drops (a script string, a data: URL).
   const html = await sanitizeArticleHtml(article.content);
-  const image = article.thumbnailUrl ?? extractThumbnail(html);
   return {
     id: article.id,
     path: getArticlePath(article.id),
     title: article.title,
     subtitle: article.subtitle?.trim() || undefined,
     html,
-    image: image && /^https?:\/\//i.test(image) ? image : undefined,
+    image: pickThumbnail(article.thumbnailUrl, html),
     breadcrumb: getBreadcrumb(article.categories),
     categories: [...article.categories],
     authors: article.authors.map((author) => author.name),
