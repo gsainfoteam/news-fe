@@ -65,8 +65,7 @@ const error = (statusCode: number, message: string) =>
     { status: statusCode },
   );
 
-// Keeps news-be's order (date, then id) so a story sees an added or
-// re-dated entry move to where the reader page will show it.
+// Sorted like news-be (date, then id) so a re-dated entry moves in the story.
 const byDate = (a: HistoryEntry, b: HistoryEntry) =>
   a.date.localeCompare(b.date) || a.id - b.id;
 
@@ -79,7 +78,7 @@ export function handleAbout(initial: About = MOCK_ABOUT) {
   return [
     handleGetAbout(() => HttpResponse.json(about)),
     handleUpdateAbout(async ({ request }) => {
-      // A real round trip, so a story can type while the save is in flight.
+      // Lets a story type while the save is in flight.
       await delay(600);
       about = { ...about, ...(await request.json()) };
       return HttpResponse.json(about);

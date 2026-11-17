@@ -10,8 +10,7 @@ import {
   zHistoryInput,
 } from "../models";
 
-// Mirrors news-be's DTO limits (`zUpdateAboutDto`, `zCreateHistoryDto`),
-// which the generated schemas carry without messages.
+// news-be's DTO limits, which the generated schemas carry without messages.
 export const ABOUT_LIMITS = {
   introduction: 5000,
   name: 100,
@@ -46,8 +45,7 @@ export function toAboutInput(values: AboutFormValues): AboutInput {
   ) as AboutInput;
 }
 
-// PATCH takes any subset; sending only what changed keeps one editor's save
-// from overwriting a field another editor changed in the meantime.
+// Only changed fields, so a save never overwrites another editor's change.
 export function getChangedAbout(
   saved: AboutFormValues,
   values: AboutFormValues,
@@ -74,8 +72,7 @@ export function hasAboutEdits(
 
 const required = (message: string) => z.string().trim().min(1, message);
 
-// `<input type="date">` already gives YYYY-MM-DD; the round trip through
-// Date catches impossible days typed by hand (2026-02-30).
+// The Date round trip catches impossible days typed by hand (2026-02-30).
 const calendarDay = (message: string) =>
   z
     .string()

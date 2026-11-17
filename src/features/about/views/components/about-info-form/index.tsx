@@ -170,15 +170,13 @@ export function AboutInfoForm({ saved, onSave }: AboutInfoForm.Props) {
 
 export namespace AboutInfoForm {
   export type Props = {
-    /** The latest server copy; taken into the form only while it has no edits. */
     saved: AboutFormValues;
     /** Rejects to keep the edits for another try. */
     onSave: (changes: AboutInput) => Promise<unknown>;
   };
 }
 
-// `id` defaults to the field name; set it when one page holds several forms
-// with the same fields (the history rows).
+// Set `id` when one page holds several forms with the same fields.
 export function FormField({
   field,
   id = field.name,

@@ -187,8 +187,7 @@ function Masthead({ about }: { about: AboutPageData }) {
   );
 }
 
-// Same look as the footer's outbound links: underline plus arrow, so they
-// read as clickable and as leaving the site.
+// Matches the footer's outbound links so they read as leaving the site.
 function OutboundLink({
   href,
   newTab,

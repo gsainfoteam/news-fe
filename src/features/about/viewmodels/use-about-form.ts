@@ -15,11 +15,9 @@ import {
 } from "./about-form";
 import { type AboutInput, type HistoryInput } from "../models";
 
-// The form keeps its own baseline, the server copy it started from, and
-// saves only the fields edited since. A newer server copy (a refetch on
-// focus, another editor's save, a history change) replaces the form only
-// while it holds no edits, so typing is never thrown away and the save
-// never reverts a field someone else changed meanwhile.
+// A newer server copy replaces the form only while it holds no edits, and a
+// save sends only fields edited since the baseline, so neither typing nor
+// another editor's change is lost.
 export function useAboutForm({
   saved,
   onSave,
@@ -42,7 +40,6 @@ export function useAboutForm({
 
   const form = useForm({
     defaultValues: saved,
-    // Quiet until the first submit, then re-check while typing.
     validationLogic: revalidateLogic(),
     validators: { onDynamic: schema },
     onSubmitInvalid,
@@ -57,9 +54,8 @@ export function useAboutForm({
       }
       const next = { ...baselineRef.current, ...changes } as AboutFormValues;
       rebase(next);
-      // The inputs stay editable while saving, so a whole-form reset would
-      // drop what was typed meanwhile. Only fields untouched since the
-      // submit take the saved (trimmed) value; later edits stay as edits.
+      // Inputs stay editable while saving; a full reset would drop newer
+      // typing, so only fields untouched since the submit take the saved value.
       for (const key of Object.keys(changes) as (keyof AboutFormValues)[]) {
         if (formApi.state.values[key] === submitted[key]) {
           formApi.setFieldValue(key, next[key]);

@@ -32,8 +32,7 @@ export function toAboutPage({
   };
 }
 
-// The CMS edits the introduction in a plain textarea, so line breaks are the
-// only structure it has.
+// The CMS textarea gives no structure besides line breaks.
 export function toParagraphs(text: string): string[] {
   return text
     .split(/\n+/)
@@ -41,8 +40,7 @@ export function toParagraphs(text: string): string[] {
     .filter(Boolean);
 }
 
-// news-be already sorts by date, then id; sorting again keeps the timeline
-// right if that order ever changes.
+// Re-sorted so the timeline survives a change in news-be's order.
 export function sortHistory(histories: readonly HistoryEntry[]) {
   return [...histories].sort(
     (a, b) => a.date.localeCompare(b.date) || a.id - b.id,
@@ -62,9 +60,7 @@ export function groupHistoryByYear(
   return years;
 }
 
-// Dates are calendar days ("2016-04-11"), not instants: reformatting the
-// string avoids a Date, which would shift the day in time zones ahead of
-// UTC+9 or behind UTC.
+// Calendar days, not instants: a Date would shift the day outside UTC+9.
 export function formatDay(date: string) {
   return date.replaceAll("-", ".");
 }
@@ -73,7 +69,7 @@ export function formatMonthDay(date: string) {
   return formatDay(date.slice(5));
 }
 
-// Only http(s) links are rendered; anything else stays plain text.
+// Keeps `javascript:` and other schemes from editable fields out of hrefs.
 export function toSafeUrl(url: string): string | undefined {
   try {
     const { protocol } = new URL(url);
