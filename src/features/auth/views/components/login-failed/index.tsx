@@ -19,12 +19,13 @@ import { AuthMessage } from "../auth-message";
 export function LoginFailed({
   failure,
   onLogin,
+  onSignup,
   backHref,
   backLabel,
   className,
 }: LoginFailed.Props) {
   const { t } = useTranslation();
-  const { icon, title, description } = useFailureCopy(failure);
+  const { icon, title, description } = useFailureCopy(failure, !!onSignup);
 
   return (
     <AuthMessage
@@ -33,10 +34,17 @@ export function LoginFailed({
       description={description}
       className={className}
     >
-      <Button onClick={onLogin}>
-        <LogInIcon />
-        {t("auth.failed.retry", "다시 로그인")}
-      </Button>
+      {onSignup ? (
+        <Button onClick={onSignup}>
+          <UserRoundPlusIcon />
+          {t("auth.failed.signup", "가입하기")}
+        </Button>
+      ) : (
+        <Button onClick={onLogin}>
+          <LogInIcon />
+          {t("auth.failed.retry", "다시 로그인")}
+        </Button>
+      )}
       <a href={backHref} className={cn(buttonVariants({ variant: "outline" }))}>
         {backLabel ?? t("auth.failed.back", "돌아가기")}
       </a>
@@ -47,14 +55,20 @@ export function LoginFailed({
 export namespace LoginFailed {
   export type Props = {
     failure: LoginFailure;
-    onLogin: () => void;
     backHref: string;
     backLabel?: string;
     className?: string;
-  };
+  } & (
+    | { onLogin: () => void; onSignup?: never }
+    // Reopens the signup form; only the callback page still holds a ticket.
+    | { onSignup: () => void; onLogin?: never }
+  );
 }
 
-function useFailureCopy(failure: LoginFailure): {
+function useFailureCopy(
+  failure: LoginFailure,
+  canSignup: boolean,
+): {
   icon: ReactNode;
   title: string;
   description: string;
@@ -83,10 +97,15 @@ function useFailureCopy(failure: LoginFailure): {
       return {
         icon: <UserRoundPlusIcon />,
         title: t("auth.failed.consent.title", "가입이 필요한 계정입니다"),
-        description: t(
-          "auth.failed.consent.description",
-          "처음 로그인하는 계정은 약관에 동의하고 가입해야 합니다. 가입 화면은 준비 중입니다.",
-        ),
+        description: canSignup
+          ? t(
+              "auth.failed.consent.description",
+              "처음 로그인하는 계정은 약관에 동의하고 가입해야 합니다. 가입하지 않으면 로그인되지 않습니다.",
+            )
+          : t(
+              "auth.failed.consent.relogin",
+              "처음 로그인하는 계정은 약관에 동의하고 가입해야 합니다. 다시 로그인하면 가입 화면이 열립니다.",
+            ),
       };
     case "rejected":
       return {

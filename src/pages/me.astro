@@ -1,0 +1,12 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { MyPage } from "@/features/auth";
+import Layout from "@/layouts/layout.astro";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("auth.me.title", "내 정보");
+---
+
+<Layout title={title} noindex>
+  <MyPage client:only="react" />
+</Layout>

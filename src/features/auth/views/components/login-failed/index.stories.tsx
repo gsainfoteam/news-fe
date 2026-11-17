@@ -36,6 +36,10 @@ export const Verification: Story = { args: { failure: "verification" } };
 
 export const Consent: Story = { args: { failure: "consent" } };
 
+export const ConsentSignup: Story = {
+  args: { failure: "consent", onSignup: () => {} },
+};
+
 export const Rejected: Story = { args: { failure: "rejected" } };
 
 export const Network: Story = { args: { failure: "network" } };

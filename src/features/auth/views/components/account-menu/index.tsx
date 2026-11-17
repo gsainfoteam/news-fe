@@ -6,6 +6,7 @@ import {
   LogOutIcon,
   RotateCwIcon,
   UserIcon,
+  UserRoundIcon,
 } from "lucide-react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 
@@ -158,6 +159,12 @@ function AuthenticatedItems({ user }: { user: User }) {
         </span>
         <span className="truncate">{user.email}</span>
       </DropdownMenuLabel>
+      <DropdownMenuItem
+        render={<a href={localizePath(i18n.language, "/me")} />}
+      >
+        <UserRoundIcon />
+        {t("auth.menu.me", "내 정보")}
+      </DropdownMenuItem>
       {isActiveMember(user) && (
         <DropdownMenuItem
           render={<a href={localizePath(i18n.language, "/admin")} />}

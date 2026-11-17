@@ -1,6 +1,11 @@
 import { delay, HttpResponse } from "msw";
 
-import { handleGetMe, handleLogout, handleRefresh } from "@/@types/api/msw.gen";
+import {
+  handleGetMe,
+  handleLogout,
+  handleRefresh,
+  handleUpdateNickname,
+} from "@/@types/api/msw.gen";
 
 import { type Permission, type User } from ".";
 
@@ -60,6 +65,26 @@ export function handleMe(user: User) {
 
 export function handleMeError() {
   return handleGetMe(() => serverError());
+}
+
+export function handleNicknameChange(user: User) {
+  let current = user;
+  return [
+    handleGetMe(() => HttpResponse.json(current)),
+    handleUpdateNickname(async ({ request }) => {
+      const { nickname } = await request.json();
+      await delay(400);
+      current = { ...current, nickname };
+      return new HttpResponse(null, { status: 200 });
+    }),
+  ];
+}
+
+export function handleNicknameError() {
+  return handleUpdateNickname(async () => {
+    await delay(400);
+    return serverError();
+  });
 }
 
 function unauthorized() {

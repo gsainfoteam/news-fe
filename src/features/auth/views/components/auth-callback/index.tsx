@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { Loader2Icon } from "lucide-react";
 import { I18nextProvider, useTranslation } from "react-i18next";
@@ -7,8 +7,12 @@ import { getPageI18n } from "@/common/lib/i18n";
 import { QueryProvider } from "@/common/lib/query-client";
 
 import { AuthProvider } from "../../../viewmodels/auth-provider";
-import { useAuthCallback } from "../../../viewmodels/use-auth-callback";
+import {
+  type AuthCallback as Callback,
+  useAuthCallback,
+} from "../../../viewmodels/use-auth-callback";
 import { LoginFailed } from "../login-failed";
+import { SignupDialog } from "../signup-dialog";
 
 export function AuthCallback() {
   return (
@@ -22,18 +26,46 @@ export function AuthCallback() {
 
 function AuthCallbackContent() {
   const callback = useAuthCallback();
-  const lng = callback.status === "failed" ? callback.lng : "ko";
+  const lng = callback.status === "pending" ? "ko" : callback.lng;
   const i18n = useMemo(() => getPageI18n(lng), [lng]);
 
   if (callback.status === "pending") return <Pending />;
   return (
     <I18nextProvider i18n={i18n}>
+      {callback.status === "signup" ? (
+        <Signup callback={callback} />
+      ) : (
+        <LoginFailed
+          failure={callback.failure}
+          onLogin={callback.login}
+          backHref={callback.returnTo}
+        />
+      )}
+    </I18nextProvider>
+  );
+}
+
+// The ticket lives in memory, so the signup can't move to another page.
+// Closed, the dialog leaves the consent notice, which can reopen it.
+function Signup({
+  callback,
+}: {
+  callback: Extract<Callback, { status: "signup" }>;
+}) {
+  const [open, setOpen] = useState(true);
+  return (
+    <>
       <LoginFailed
-        failure={callback.failure}
-        onLogin={callback.login}
+        failure="consent"
+        onSignup={() => setOpen(true)}
         backHref={callback.returnTo}
       />
-    </I18nextProvider>
+      <SignupDialog
+        open={open}
+        onOpenChange={setOpen}
+        onSignup={callback.signup}
+      />
+    </>
   );
 }
 
