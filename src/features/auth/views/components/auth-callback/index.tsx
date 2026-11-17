@@ -57,7 +57,6 @@ function Signup({
     <>
       <LoginFailed
         failure="consent"
-        onLogin={() => setOpen(true)}
         onSignup={() => setOpen(true)}
         backHref={callback.returnTo}
       />

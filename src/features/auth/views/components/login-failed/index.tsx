@@ -55,13 +55,14 @@ export function LoginFailed({
 export namespace LoginFailed {
   export type Props = {
     failure: LoginFailure;
-    onLogin: () => void;
-    /** Reopens the signup form; only the callback page still holds a ticket. */
-    onSignup?: () => void;
     backHref: string;
     backLabel?: string;
     className?: string;
-  };
+  } & (
+    | { onLogin: () => void; onSignup?: never }
+    // Reopens the signup form; only the callback page still holds a ticket.
+    | { onSignup: () => void; onLogin?: never }
+  );
 }
 
 function useFailureCopy(
