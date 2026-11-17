@@ -1,4 +1,4 @@
-import { HttpResponse } from "msw";
+import { delay, HttpResponse } from "msw";
 
 import {
   handleCreateHistory,
@@ -79,6 +79,8 @@ export function handleAbout(initial: About = MOCK_ABOUT) {
   return [
     handleGetAbout(() => HttpResponse.json(about)),
     handleUpdateAbout(async ({ request }) => {
+      // A real round trip, so a story can type while the save is in flight.
+      await delay(600);
       about = { ...about, ...(await request.json()) };
       return HttpResponse.json(about);
     }),

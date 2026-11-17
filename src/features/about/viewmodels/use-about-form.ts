@@ -47,7 +47,8 @@ export function useAboutForm({
     validators: { onDynamic: schema },
     onSubmitInvalid,
     onSubmit: async ({ value, formApi }) => {
-      const changes = getChangedAbout(baselineRef.current, value);
+      const submitted = { ...value };
+      const changes = getChangedAbout(baselineRef.current, submitted);
       if (Object.keys(changes).length === 0) return;
       try {
         await onSave(changes);
@@ -56,7 +57,14 @@ export function useAboutForm({
       }
       const next = { ...baselineRef.current, ...changes } as AboutFormValues;
       rebase(next);
-      formApi.reset(next);
+      // The inputs stay editable while saving, so a whole-form reset would
+      // drop what was typed meanwhile. Only fields untouched since the
+      // submit take the saved (trimmed) value; later edits stay as edits.
+      for (const key of Object.keys(changes) as (keyof AboutFormValues)[]) {
+        if (formApi.state.values[key] === submitted[key]) {
+          formApi.setFieldValue(key, next[key]);
+        }
+      }
     },
   });
 
