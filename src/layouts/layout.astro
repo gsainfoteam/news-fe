@@ -43,7 +43,7 @@ const {
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${siteName}` : siteName;
-// Strip the /en/ prefix so each hreflang link points at its own language.
+// Without this, /en/ pages would get /en/en/ alternates.
 const basePath = delocalizePath(Astro.url.pathname);
 const canonical = getAbsoluteLocaleUrl(locale, basePath);
 const imageUrl = new URL(image, Astro.site).href;

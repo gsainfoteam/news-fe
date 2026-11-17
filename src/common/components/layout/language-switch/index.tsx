@@ -5,8 +5,7 @@ import { buttonVariants } from "@/common/components/ui/button";
 import { cn } from "@/common/lib/cn";
 import { getLanguageSwitch } from "@/common/lib/languages";
 
-// A plain link, not a hydrated menu: the header ships no client JS. The
-// layout's `bindLanguageSwitch` script fills in the live query string.
+// A link, not a menu: the header ships no JS. `bindLanguageSwitch` adds the query.
 export function LanguageSwitch({
   currentPath,
   className,
@@ -36,7 +35,6 @@ export function LanguageSwitch({
 
 export namespace LanguageSwitch {
   export type Props = {
-    /** The page's own path; client-only islands may omit it. */
     currentPath?: string;
     className?: string;
   };

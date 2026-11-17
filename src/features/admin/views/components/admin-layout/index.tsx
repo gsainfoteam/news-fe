@@ -154,8 +154,7 @@ export namespace AdminLayout {
   };
 }
 
-// Same link as the reader header's LanguageSwitch, which feature views
-// can't import; the CMS is client-only, so `window` is always there.
+// Copies LanguageSwitch, which feature views can't import. The CMS is client-only.
 function useLanguageLink() {
   const { i18n } = useTranslation();
   const target = getLanguageSwitch(

@@ -1,8 +1,7 @@
 export const LANGUAGES = ["ko", "en"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
-// Each language is named in itself: a reader who can't read the current
-// page still has to recognize their own language in the switcher.
+// Endonyms: a reader who can't read this page must still find their language.
 export const LANGUAGE_NAMES: Record<Language, string> = {
   ko: "한국어",
   en: "English",
@@ -27,9 +26,7 @@ export function delocalizePath(path: string) {
   return path.replace(PREFIX, "") || "/";
 }
 
-// Takes the whole href, not just the path: search terms (`/search?q=`) and
-// CMS ids (`/admin/articles/edit?id=`) live in the query string, and
-// dropping them would land the reader on an empty page.
+// Keeps the query: search terms and CMS ids live there, not in the path.
 export function switchLanguage(href: string, lng: Language) {
   const url = new URL(href, "https://localhost");
   return (
@@ -42,10 +39,8 @@ export function getLanguageSwitch(current: string, href: string) {
   return { lng, name: LANGUAGE_NAMES[lng], href: switchLanguage(href, lng) };
 }
 
-// Static HTML knows only the path it was built for, and islands rewrite the
-// query string after load (search terms, CMS filters, a new article's id).
-// So links marked `data-language-switch` take their href from the address
-// bar at the moment they're used.
+// Static HTML knows only its build path, and islands change the query after
+// load, so the href is read from the address bar when the link is used.
 export function bindLanguageSwitch() {
   const update = (event: Event) => {
     const link = (event.target as Element | null)?.closest?.<HTMLAnchorElement>(

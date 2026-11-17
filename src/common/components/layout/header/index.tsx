@@ -101,7 +101,6 @@ function HeaderContent({
 export namespace Header {
   export type Props = {
     i18n?: I18n;
-    /** `Astro.url.pathname`, for the language switch. */
     currentPath?: string;
     currentCategory?: Category;
     /** Login button or user menu; the login issue hydrates it as an island. */
