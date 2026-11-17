@@ -133,7 +133,9 @@ function ProfileMenu({ user, children }: { user?: User; children: ReactNode }) {
           <Button
             variant="ghost"
             size="icon"
-            className="size-9 rounded-full mobile:size-10"
+            // The avatar is the button; a hover circle around it doubles its
+            // size and stays after a tap on touch screens.
+            className="size-9 rounded-full hover:bg-transparent hover:opacity-80 mobile:size-10"
           />
         }
         aria-label={t("auth.menu.label", "내 계정 메뉴")}
