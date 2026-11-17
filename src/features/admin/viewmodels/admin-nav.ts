@@ -3,7 +3,8 @@ import { type TFunction } from "i18next";
 import { localizePath } from "@/common/lib/languages";
 import { hasPermission, type Permission, type User } from "@/features/auth";
 
-export type AdminSection = "articles" | "notices" | "reports" | "members";
+export type AdminSection =
+  "articles" | "notices" | "archive" | "reports" | "members";
 
 export type AdminNavItem = {
   section: AdminSection;
@@ -19,6 +20,7 @@ const SECTIONS: readonly Omit<AdminNavItem, "label" | "href">[] = [
   { section: "articles", required: "EDITOR" },
   // Notices are articles to news-be, with the same permission.
   { section: "notices", required: "EDITOR" },
+  { section: "archive", required: "EDITOR" },
   { section: "reports", required: "NONE" },
   { section: "members", required: "EDITORSHIP" },
 ];
@@ -26,6 +28,7 @@ const SECTIONS: readonly Omit<AdminNavItem, "label" | "href">[] = [
 const PATHS: Record<AdminSection, string> = {
   articles: "/admin",
   notices: "/admin/notices",
+  archive: "/admin/archive",
   reports: "/admin/reports",
   members: "/admin/members",
 };
@@ -42,6 +45,7 @@ export function getAdminNav(
   const labels: Record<AdminSection, string> = {
     articles: t("admin.nav.articles", "기사"),
     notices: t("admin.nav.notices", "공지사항"),
+    archive: t("admin.nav.archive", "지면 PDF"),
     reports: t("admin.nav.reports", "제보함"),
     members: t("admin.nav.members", "멤버 관리"),
   };
