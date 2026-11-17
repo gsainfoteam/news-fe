@@ -4,6 +4,7 @@ import { CATEGORIES } from "../models";
 import {
   CATEGORY_GROUPS,
   fromCategorySlug,
+  getCategoryPath,
   getCategoryTabs,
   toCategorySlug,
 } from "./category";
@@ -35,6 +36,11 @@ test("navigation lists every category exactly once", () => {
     "NOTICE",
   ];
   expect(listed.toSorted()).toEqual([...CATEGORIES].toSorted());
+});
+
+test("notices link to their own board, not a category page", () => {
+  expect(getCategoryPath("NOTICE")).toBe("/notice");
+  expect(getCategoryPath("CAMPUS")).toBe("/category/campus");
 });
 
 describe("getCategoryTabs", () => {

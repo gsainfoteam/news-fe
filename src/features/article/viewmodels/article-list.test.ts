@@ -92,6 +92,13 @@ describe("toArticlePreview", () => {
     expect(card.path).toBe("/article/5");
     expect(card.authors).toEqual(["김도윤", "이서연"]);
   });
+
+  test("links a notice to its notice page", () => {
+    const card = toArticlePreview(
+      createMockArticle(4, { categories: ["NOTICE"] }),
+    );
+    expect(card.path).toBe("/notice/5");
+  });
 });
 
 test("getPopularArticles ranks by views, newer first on ties", () => {

@@ -143,7 +143,27 @@
       "editorshipOnly": "편집장 전용",
       "label": "CMS 메뉴",
       "members": "멤버 관리",
+      "notices": "공지사항",
       "reports": "제보함"
+    },
+    "notices": {
+      "backToList": "공지 목록",
+      "caption": "공지 목록",
+      "confirm": {
+        "description": "‘{{title}}’ 공지를 삭제하면 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
+        "title": "이 공지를 삭제할까요?"
+      },
+      "deleted": "공지를 삭제했습니다",
+      "deleteFailed": "공지를 삭제하지 못했습니다",
+      "editTitle": "공지 수정",
+      "empty": "조건에 맞는 공지가 없습니다",
+      "imagesHelp": "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 링크 미리보기 이미지로 쓰입니다.",
+      "loadFailed": "공지 목록을 불러오지 못했습니다",
+      "new": "새 공지 작성",
+      "newTitle": "새 공지",
+      "notFound": "공지를 찾을 수 없습니다",
+      "published": "공지를 발행했습니다",
+      "title": "공지사항"
     },
     "reports": {
       "backToList": "제보 목록",
@@ -362,6 +382,22 @@
     "description": "주소가 바뀌었거나 삭제된 기사일 수 있습니다. 방금 발행된 기사는 사이트에 반영되기까지 1~2분 걸립니다.",
     "home": "홈으로 가기",
     "title": "페이지를 찾을 수 없습니다"
+  },
+  "notice": {
+    "adjacent": "다른 공지",
+    "backToList": "목록으로",
+    "count": "공지 {{count}}건",
+    "empty": {
+      "description": "공지가 올라오면 이곳에 보입니다.",
+      "title": "아직 공지가 없습니다"
+    },
+    "newer": "다음 공지",
+    "older": "이전 공지",
+    "pageDescription": "지스트신문 공지사항",
+    "pageTitle": "{{title}} {{page}}쪽",
+    "publishedAt": "게시 {{date}}",
+    "title": "공지사항",
+    "updatedAt": "수정 {{date}}"
   },
   "pagination": {
     "label": "페이지",

@@ -1,7 +1,11 @@
 import { dayjs } from "@/common/lib/dayjs";
 import { CATEGORY_GROUPS, type Category } from "@/features/category";
 
-import { toArticlePreview, type ArticlePreview } from "./article-preview";
+import {
+  isNotice,
+  toArticlePreview,
+  type ArticlePreview,
+} from "./article-preview";
 import {
   ARTICLE_FETCH_LIMIT,
   fetchArticles,
@@ -108,8 +112,8 @@ async function loadHomeArticles(): Promise<HomeArticles> {
   };
   const [latest, popular, ...sections] = await Promise.all([
     get({ sort: "LATEST", limit: ARTICLE_FETCH_LIMIT }),
-    // One spare in case the headline is among them.
-    get({ sort: "MOST_POPULAR", limit: HOME_SECTION_SIZE.popular + 1 }),
+    // Spares for the headline and for notices, which the home page skips.
+    get({ sort: "MOST_POPULAR", limit: HOME_SECTION_SIZE.popular * 2 }),
     ...CATEGORY_GROUPS.map(async ({ category, children }) => {
       const lists = await Promise.all(
         [category, ...children].map((c) =>
@@ -122,8 +126,13 @@ async function loadHomeArticles(): Promise<HomeArticles> {
   return { latest, popular, categories: Object.fromEntries(sections) };
 }
 
+// Notices have their own board, so no home section shows one.
 function latestUnique(articles: readonly Article[]) {
-  const byId = new Map(articles.map((article) => [article.id, article]));
+  const byId = new Map(
+    articles
+      .filter((article) => !isNotice(article))
+      .map((article) => [article.id, article]),
+  );
   return [...byId.values()].toSorted(
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime() || b.id - a.id,
   );
@@ -159,7 +168,7 @@ export function buildHomeSections(
     featured: rest.slice(0, featured),
     latest: rest.slice(featured, featured + latestSize),
     popular: popular
-      .filter(notHeadline)
+      .filter((article) => notHeadline(article) && !isNotice(article))
       .slice(0, popularSize)
       .map((article) => toArticlePreview(article)),
     spotlight: sections.find((s) => s.category === SPOTLIGHT),

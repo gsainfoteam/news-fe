@@ -132,7 +132,7 @@ export async function toArticleDetail(
   const image = article.thumbnailUrl ?? extractThumbnail(html);
   return {
     id: article.id,
-    path: getArticlePath(article.id),
+    path: getArticlePath(article),
     title: article.title,
     subtitle: article.subtitle?.trim() || undefined,
     html,

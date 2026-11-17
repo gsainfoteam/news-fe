@@ -1,0 +1,13 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AdminNoticeEditor } from "@/features/notice";
+import AdminLayout from "@/layouts/admin-layout.astro";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("admin.notices.editTitle", "공지 수정");
+---
+
+<!-- The notice id comes from `?id=`: ids created after the build have no page. -->
+<AdminLayout title={title}>
+  <AdminNoticeEditor mode="edit" client:only="react" />
+</AdminLayout>

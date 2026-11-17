@@ -92,11 +92,7 @@ function ArticlePageContent({
 
       <div className="mt-10 grid grid-cols-[minmax(0,1fr)_300px] items-start gap-[72px] mobile:mt-8 mobile:grid-cols-1 mobile:gap-12">
         <div className="min-w-0">
-          <div
-            className={PROSE}
-            // Sanitized while building (toArticleDetail).
-            dangerouslySetInnerHTML={{ __html: article.html }}
-          />
+          <ArticleBody html={article.html} />
           {article.categories.length > 0 && (
             <ul className="mt-4 flex flex-wrap gap-2">
               {article.categories.map((category) => (
@@ -273,6 +269,24 @@ function Byline({ article }: { article: ArticleDetail }) {
 }
 
 // The body comes from the CMS as plain HTML, so it is styled by element.
+export function ArticleBody({ html, className }: ArticleBody.Props) {
+  return (
+    <div
+      className={cn(PROSE, className)}
+      // Sanitized while building (toArticleDetail).
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
+export namespace ArticleBody {
+  export type Props = {
+    /** Sanitized HTML from `toArticleDetail`. */
+    html: string;
+    className?: string;
+  };
+}
+
 const PROSE = cn(
   "max-w-[680px] text-body-lg tracking-[-0.005em] text-foreground mobile:text-[17px] mobile:leading-[1.8]",
   "[&>*:last-child]:mb-0 [&_p]:mb-[1.35em]",

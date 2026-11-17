@@ -146,7 +146,27 @@
       "editorshipOnly": "Editor-in-chief only",
       "label": "CMS menu",
       "members": "Members",
+      "notices": "Notices",
       "reports": "Tips"
+    },
+    "notices": {
+      "backToList": "Notices",
+      "caption": "Notices",
+      "confirm": {
+        "description": "Deleting “{{title}}” can't be undone. It disappears from the site in a minute or two.",
+        "title": "Delete this notice?"
+      },
+      "deleted": "Notice deleted",
+      "deleteFailed": "Couldn't delete the notice",
+      "editTitle": "Edit notice",
+      "empty": "No notices match",
+      "imagesHelp": "Only jpg, png, webp and gif files can be uploaded. Use the image button in the toolbar or drop files into the body. The first image in the body becomes the link preview image.",
+      "loadFailed": "Couldn't load notices",
+      "new": "New notice",
+      "newTitle": "New notice",
+      "notFound": "Notice not found",
+      "published": "Notice published",
+      "title": "Notices"
     },
     "reports": {
       "backToList": "Tips",
@@ -372,6 +392,23 @@
     "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
     "home": "Go home",
     "title": "Page not found"
+  },
+  "notice": {
+    "adjacent": "Other notices",
+    "backToList": "Back to list",
+    "count_one": "{{count}} notice",
+    "count_other": "{{count}} notices",
+    "empty": {
+      "description": "Notices will show up here.",
+      "title": "No notices yet"
+    },
+    "newer": "Next",
+    "older": "Previous",
+    "pageDescription": "Notices from the GIST Newspaper",
+    "pageTitle": "{{title}}, page {{page}}",
+    "publishedAt": "Posted {{date}}",
+    "title": "Notices",
+    "updatedAt": "Updated {{date}}"
   },
   "pagination": {
     "label": "Pages",

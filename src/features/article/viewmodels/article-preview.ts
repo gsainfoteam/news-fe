@@ -17,8 +17,14 @@ export type ArticlePreview = {
   views: number;
 };
 
-export function getArticlePath(id: number) {
-  return `/article/${id}`;
+// news-be has no notice API: a notice is an article filed under NOTICE. It
+// gets its own pages (/notice) and stays out of the article pages.
+export function isNotice(article: Pick<Article, "categories">) {
+  return article.categories.includes("NOTICE");
+}
+
+export function getArticlePath(article: Pick<Article, "id" | "categories">) {
+  return isNotice(article) ? `/notice/${article.id}` : `/article/${article.id}`;
 }
 
 const SUB_CATEGORIES = new Set<Category>(
@@ -51,7 +57,7 @@ export function toArticlePreview(
 ): ArticlePreview {
   return {
     id: article.id,
-    path: getArticlePath(article.id),
+    path: getArticlePath(article),
     title: article.title,
     subtitle: article.subtitle ?? undefined,
     summary: extractSummary(article.content),

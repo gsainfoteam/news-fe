@@ -3,6 +3,7 @@ import { type ReactNode } from "react";
 import {
   ExternalLinkIcon,
   InboxIcon,
+  MegaphoneIcon,
   LogOutIcon,
   NewspaperIcon,
   UsersIcon,
@@ -37,6 +38,7 @@ import {
 
 const ICONS: Record<AdminSection, ReactNode> = {
   articles: <NewspaperIcon />,
+  notices: <MegaphoneIcon />,
   reports: <InboxIcon />,
   members: <UsersIcon />,
 };

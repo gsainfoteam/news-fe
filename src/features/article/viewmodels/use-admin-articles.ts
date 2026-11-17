@@ -7,6 +7,8 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 
+import { type Category } from "@/features/category";
+
 import {
   type AdminArticleFilters,
   getPageCount,
@@ -22,10 +24,12 @@ import {
 
 const SEARCH_DELAY_MS = 300;
 
-export function useAdminArticles() {
-  const [filters, setFilters] = useState(() =>
-    parseAdminArticleFilters(window.location.search),
-  );
+// A pinned category (the notice list) ignores `?category=` and never writes it.
+export function useAdminArticles(pinned?: Category) {
+  const [filters, setFilters] = useState(() => {
+    const parsed = parseAdminArticleFilters(window.location.search);
+    return pinned ? { ...parsed, category: undefined } : parsed;
+  });
   const [searchInput, setSearchInput] = useState(filters.search);
 
   useEffect(() => {
@@ -45,7 +49,11 @@ export function useAdminArticles() {
   }, [searchInput, filters.search]);
 
   const query = useQuery({
-    ...articlesQuery({ query: toArticlesQuery(filters) }),
+    ...articlesQuery({
+      query: toArticlesQuery(
+        pinned ? { ...filters, category: pinned } : filters,
+      ),
+    }),
     placeholderData: keepPreviousData,
   });
   const count = Number(query.data?.count ?? 0);

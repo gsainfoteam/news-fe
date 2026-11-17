@@ -9,6 +9,7 @@ import {
   getArticleMeta,
   getPopularArticles,
   getRelatedArticles,
+  isNotice,
   toArticleDetail,
   toArticlePreview,
   type Article,
@@ -18,13 +19,15 @@ import Layout from "@/layouts/layout.astro";
 
 // The list already carries each body, so the build never calls the detail
 // API (which counts a view). An article published after the build is a 404
-// until the next one.
+// until the next one. Notices get /notice/[id] instead.
 export const getStaticPaths = (async () => {
   const articles = await fetchAllArticles();
-  return articles.map((article) => ({
-    params: { id: String(article.id) },
-    props: { article },
-  }));
+  return articles
+    .filter((article) => !isNotice(article))
+    .map((article) => ({
+      params: { id: String(article.id) },
+      props: { article },
+    }));
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
@@ -35,7 +38,7 @@ const detail = await toArticleDetail(article);
 const meta = getArticleMeta(detail, getCategoryLabels(i18n.t));
 
 // Cached: the same list getStaticPaths walked.
-const articles = await fetchAllArticles();
+const articles = (await fetchAllArticles()).filter((a) => !isNotice(a));
 const { section, latestInSection, continueReading } = getRelatedArticles(
   articles,
   article,
