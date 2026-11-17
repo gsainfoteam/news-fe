@@ -15,10 +15,6 @@ export {
   type AccountState,
 } from "@infoteam/account-react";
 
-// Logins only start from a click; `silentLogin` would bounce every visitor
-// without a session through the IdP once per tab.
-const SILENT_LOGIN = false;
-
 let account: AccountClient | undefined;
 
 // Created on first use, never at import: the SDK reads `window.location` and
@@ -31,7 +27,9 @@ export function getAccountClient() {
       issuer: ACCOUNT_ISSUER,
       clientId: ACCOUNT_CLIENT_ID,
       api: API_URL,
-      silentLogin: SILENT_LOGIN,
+      // Logins only start from a click; `silentLogin` would bounce every
+      // visitor without a session through the IdP once per tab.
+      silentLogin: false,
     });
     // Browser requests from then on carry the access token, and a 401
     // refreshes the session once and resends. The build never gets here, so

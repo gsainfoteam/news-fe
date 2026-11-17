@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { LANGUAGES, type Language } from "@/common/lib/languages";
 
@@ -24,6 +24,7 @@ export type AuthCallback =
 // the callback page, so a success has to load that page for real.
 export function useAuthCallback(): AuthCallback {
   const { status, error, canRetryLogin, login, retryLogin } = useAccount();
+  const [loginError, setLoginError] = useState<typeof error>(null);
   const failed = status === "unauthenticated" && error !== null;
 
   useEffect(() => {
@@ -35,13 +36,18 @@ export function useAuthCallback(): AuthCallback {
 
   if (!failed) return { status: "pending" };
 
-  const failure = getLoginFailure(error);
+  const failure = getLoginFailure(loginError ?? error);
   return {
     status: "failed",
     failure,
     returnTo: window.location.href,
     lng: getPathLanguage(window.location.pathname),
-    login: () => void login().catch(() => undefined),
+    // `login()` rejects only when the IdP can't be reached; the failure
+    // screen then shows that instead of a button that seems to do nothing.
+    login: () => {
+      setLoginError(null);
+      login().catch(setLoginError);
+    },
     retryLogin: failure === "consent" && canRetryLogin ? retryLogin : undefined,
   };
 }

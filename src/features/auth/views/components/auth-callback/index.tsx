@@ -4,6 +4,7 @@ import { Loader2Icon } from "lucide-react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 
 import { getPageI18n } from "@/common/lib/i18n";
+import { QueryProvider } from "@/common/lib/query-client";
 
 import { AuthProvider } from "../../../viewmodels/auth-provider";
 import { useAuthCallback } from "../../../viewmodels/use-auth-callback";
@@ -13,9 +14,11 @@ import { LoginFailed } from "../login-failed";
 // in. Its screens are the spinner below and LoginFailed.
 export function AuthCallback() {
   return (
-    <AuthProvider fallback={<Pending />}>
-      <AuthCallbackContent />
-    </AuthProvider>
+    <QueryProvider>
+      <AuthProvider fallback={<Pending />}>
+        <AuthCallbackContent />
+      </AuthProvider>
+    </QueryProvider>
   );
 }
 
