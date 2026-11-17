@@ -1,6 +1,6 @@
 import { CATEGORY_GROUPS, type Category } from "@/features/category";
 
-import { extractSummary, extractThumbnail } from "./article-content";
+import { extractSummary, pickThumbnail } from "./article-content";
 import { type Article } from "../models";
 
 export type ArticlePreview = {
@@ -59,9 +59,7 @@ export function toArticlePreview(
     title: article.title,
     subtitle: article.subtitle ?? undefined,
     summary: extractSummary(article.content),
-    // The backend's own thumbnail field wins; older articles only have
-    // images in the body.
-    thumbnail: article.thumbnailUrl ?? extractThumbnail(article.content),
+    thumbnail: pickThumbnail(article.thumbnailUrl, article.content),
     category: getKickerCategory(article.categories, options.category),
     authors: article.authors.map((author) => author.name),
     publishedAt: article.createdAt,

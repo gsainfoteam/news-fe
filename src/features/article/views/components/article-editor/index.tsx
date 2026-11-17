@@ -30,6 +30,7 @@ import {
 import { ArticleBodyEditor } from "../article-body-editor";
 import { AuthorPicker } from "../author-picker";
 import { CategoryPicker } from "../category-picker";
+import { ThumbnailPicker } from "../thumbnail-picker";
 
 export function AdminArticleEditor({
   mode,
@@ -141,10 +142,6 @@ export function ArticleEditor({
           ? t("admin.notices.newTitle", "새 공지")
           : t("admin.notices.editTitle", "공지 수정"),
         published: t("admin.notices.published", "공지를 발행했습니다"),
-        imagesHelp: t(
-          "admin.notices.imagesHelp",
-          "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 링크 미리보기 이미지로 쓰입니다.",
-        ),
       }
     : {
         backToList: t("admin.editor.backToList", "기사 목록"),
@@ -152,10 +149,6 @@ export function ArticleEditor({
           ? t("admin.editor.newTitle", "새 기사")
           : t("admin.editor.editTitle", "기사 수정"),
         published: t("admin.editor.published", "기사를 발행했습니다"),
-        imagesHelp: t(
-          "admin.editor.imagesHelp",
-          "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 목록 썸네일과 링크 미리보기 이미지로 쓰입니다.",
-        ),
       };
 
   const save = async () => {
@@ -391,8 +384,21 @@ export function ArticleEditor({
             </Panel>
           )}
 
+          <Panel label={t("admin.editor.thumbnail", "대표 이미지")}>
+            <ThumbnailPicker
+              options={editor.thumbnail.options}
+              value={editor.thumbnail.selected}
+              onChange={(value) => change("thumbnail", value)}
+            />
+          </Panel>
+
           <Panel label={t("admin.editor.images", "이미지")}>
-            <p className="text-xs text-subtle-foreground">{copy.imagesHelp}</p>
+            <p className="text-xs text-subtle-foreground">
+              {t(
+                "admin.editor.imagesUploadHelp",
+                "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요.",
+              )}
+            </p>
           </Panel>
 
           <div className="hidden flex-col gap-2.5 mobile:flex">

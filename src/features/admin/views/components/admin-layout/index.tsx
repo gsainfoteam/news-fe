@@ -3,6 +3,7 @@ import { type ReactNode } from "react";
 import {
   ArchiveIcon,
   ExternalLinkIcon,
+  GlobeIcon,
   InboxIcon,
   MegaphoneIcon,
   LogOutIcon,
@@ -28,7 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/common/components/ui/dropdown-menu";
 import { cn } from "@/common/lib/cn";
-import { localizePath } from "@/common/lib/languages";
+import { getLanguageSwitch, localizePath } from "@/common/lib/languages";
 import { getRoleLabels, type User } from "@/features/auth";
 
 import {
@@ -45,7 +46,12 @@ const ICONS: Record<AdminSection, ReactNode> = {
   members: <UsersIcon />,
 };
 
-export function AdminLayout({ user, section, children }: AdminLayout.Props) {
+export function AdminLayout({
+  user,
+  section,
+  onLogout,
+  children,
+}: AdminLayout.Props) {
   const { t, i18n } = useTranslation();
   const nav = getAdminNav(t, i18n.language, user);
   const siteHref = localizePath(i18n.language, "/");
@@ -61,7 +67,8 @@ export function AdminLayout({ user, section, children }: AdminLayout.Props) {
             <SideNavLink key={item.section} item={item} current={section} />
           ))}
         </nav>
-        <div className="mt-auto flex flex-col gap-2.5 rounded-lg border border-border bg-background p-3">
+        <SideLanguageLink />
+        <div className="-mt-3 flex flex-col gap-2.5 rounded-lg border border-border bg-background p-3">
           <div className="flex items-center gap-2.5">
             <UserAvatar user={user} />
             <span className="flex min-w-0 flex-col">
@@ -84,8 +91,7 @@ export function AdminLayout({ user, section, children }: AdminLayout.Props) {
               <ExternalLinkIcon />
               {t("admin.site", "사이트")}
             </a>
-            {/* Login and logout are wired by NEF-9 (account-sdk). */}
-            <Button variant="ghost" size="sm">
+            <Button variant="ghost" size="sm" onClick={onLogout}>
               <LogOutIcon />
               {t("admin.logout", "로그아웃")}
             </Button>
@@ -113,9 +119,10 @@ export function AdminLayout({ user, section, children }: AdminLayout.Props) {
                   <ExternalLinkIcon />
                   {t("admin.site", "사이트")}
                 </DropdownMenuItem>
+                <LanguageMenuItem />
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={onLogout}>
                 <LogOutIcon />
                 {t("admin.logout", "로그아웃")}
               </DropdownMenuItem>
@@ -151,8 +158,53 @@ export namespace AdminLayout {
     user: User;
     /** Highlights this menu; omit for pages outside the menu. */
     section?: AdminSection;
+    onLogout?: () => void;
     children: ReactNode;
   };
+}
+
+// Copies LanguageSwitch, which feature views can't import. The CMS is client-only.
+function useLanguageLink() {
+  const { i18n } = useTranslation();
+  const target = getLanguageSwitch(
+    i18n.language,
+    window.location.pathname + window.location.search,
+  );
+  return {
+    name: target.name,
+    props: {
+      href: target.href,
+      hrefLang: target.lng,
+      lang: target.lng,
+      "data-language-switch": target.lng,
+    },
+  };
+}
+
+function SideLanguageLink() {
+  const link = useLanguageLink();
+  return (
+    <a
+      {...link.props}
+      className={cn(
+        buttonVariants({ variant: "ghost", size: "sm" }),
+        "mt-auto self-start",
+      )}
+    >
+      <GlobeIcon />
+      {link.name}
+    </a>
+  );
+}
+
+function LanguageMenuItem() {
+  const link = useLanguageLink();
+  return (
+    <DropdownMenuItem render={<a {...link.props} />}>
+      <GlobeIcon />
+      {link.name}
+    </DropdownMenuItem>
+  );
 }
 
 function SideNavLink({

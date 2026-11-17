@@ -20,6 +20,8 @@ import { i18n as appI18n, getPageI18n } from "@/common/lib/i18n";
 import { localizePath } from "@/common/lib/languages";
 import { getCategoryNav, type Category } from "@/features/category";
 
+import { LanguageSwitch } from "../language-switch";
+
 // An island can't receive the page's i18n instance (props are serialized),
 // so it takes the page language and builds its own; otherwise the build
 // renders it with the shared Korean instance on /en/ pages too.
@@ -32,7 +34,11 @@ export function MobileMenu({ lng, ...props }: MobileMenu.Props) {
   );
 }
 
-function MobileMenuContent({ currentCategory, defaultOpen }: MobileMenu.Props) {
+function MobileMenuContent({
+  currentPath,
+  currentCategory,
+  defaultOpen,
+}: MobileMenu.Props) {
   const { t, i18n } = useTranslation();
   const { groups, notice } = getCategoryNav(t, i18n.language, currentCategory);
   const path = (to: string) => localizePath(i18n.language, to);
@@ -121,6 +127,7 @@ function MobileMenuContent({ currentCategory, defaultOpen }: MobileMenu.Props) {
           >
             {t("header.report", "제보하기")}
           </a>
+          <LanguageSwitch currentPath={currentPath} className="self-center" />
         </SheetBody>
       </SheetContent>
     </Sheet>
@@ -130,6 +137,7 @@ function MobileMenuContent({ currentCategory, defaultOpen }: MobileMenu.Props) {
 export namespace MobileMenu {
   export type Props = {
     lng?: string;
+    currentPath?: string;
     currentCategory?: Category;
     defaultOpen?: boolean;
   };

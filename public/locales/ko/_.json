@@ -76,7 +76,7 @@
         "uploading": "이미지 올리는 중… {{percent}}%"
       },
       "images": "이미지",
-      "imagesHelp": "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 목록 썸네일과 링크 미리보기 이미지로 쓰입니다.",
+      "imagesUploadHelp": "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요.",
       "invalid": "입력하지 않은 항목이 있습니다",
       "italic": "기울임",
       "link": "링크",
@@ -106,6 +106,13 @@
       "saveHelp": "저장 후 사이트에 반영되기까지 1~2분 걸립니다.",
       "searchMember": "멤버 검색",
       "subtitle": "부제목 (선택)",
+      "thumbnail": "대표 이미지",
+      "thumbnailAuto": "자동",
+      "thumbnailDetached": "지금 대표 이미지 (본문에 없음)",
+      "thumbnailEmpty": "본문에 이미지를 넣으면 여기서 대표 이미지를 고를 수 있습니다.",
+      "thumbnailHelp": "목록 썸네일과 링크 미리보기에 쓰입니다. 자동으로 두면 본문의 첫 이미지를 씁니다.",
+      "thumbnailImage": "본문 {{n}}번째 이미지",
+      "thumbnailNotInBody": "본문에 없음",
       "title": "제목",
       "toolbar": "서식",
       "undo": "실행 취소",
@@ -116,16 +123,12 @@
       "uploadingTitle": "이미지를 올리는 중입니다"
     },
     "guard": {
-      "error": {
-        "title": "계정 정보를 불러오지 못했습니다"
-      },
       "forbidden": {
         "action": "{{menu}} 열기",
         "editor": "이 메뉴는 편집 권한이 있는 멤버만 쓸 수 있습니다. 권한은 직책에 따라 정해지며, 편집장이 바꿀 수 있습니다.",
         "editorship": "이 메뉴는 편집장만 쓸 수 있습니다.",
         "title": "접근 권한이 없습니다"
       },
-      "loading": "불러오는 중",
       "login": {
         "action": "인포팀 계정으로 로그인",
         "description": "CMS는 지스트신문 멤버만 쓸 수 있습니다. 인포팀 계정으로 로그인해 주세요.",
@@ -158,7 +161,6 @@
       "deleteFailed": "공지를 삭제하지 못했습니다",
       "editTitle": "공지 수정",
       "empty": "조건에 맞는 공지가 없습니다",
-      "imagesHelp": "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 링크 미리보기 이미지로 쓰입니다.",
       "loadFailed": "공지 목록을 불러오지 못했습니다",
       "new": "새 공지 작성",
       "newTitle": "새 공지",
@@ -238,6 +240,57 @@
     "related": "관련 기사",
     "updatedAt": "수정 {{date}}",
     "views": "조회 {{views}}"
+  },
+  "auth": {
+    "callback": {
+      "pending": "로그인하는 중",
+      "title": "로그인"
+    },
+    "error": {
+      "title": "계정 정보를 불러오지 못했습니다"
+    },
+    "failed": {
+      "back": "돌아가기",
+      "cancelled": {
+        "description": "인포팀 계정 화면에서 로그인을 취소했습니다. 다시 로그인하려면 아래 버튼을 눌러 주세요.",
+        "title": "로그인을 취소했습니다"
+      },
+      "consent": {
+        "description": "처음 로그인하는 계정은 약관에 동의하고 가입해야 합니다. 가입 화면은 준비 중입니다.",
+        "title": "가입이 필요한 계정입니다"
+      },
+      "network": {
+        "description": "인터넷 연결을 확인하고 다시 시도해 주세요.",
+        "title": "서버에 연결하지 못했습니다"
+      },
+      "rejected": {
+        "description": "지스트신문이 이 계정의 로그인을 받지 않았습니다. 문제가 계속되면 지스트신문에 문의해 주세요.",
+        "title": "로그인할 수 없는 계정입니다"
+      },
+      "retry": "다시 로그인",
+      "unknown": {
+        "description": "잠시 후 다시 시도해 주세요.",
+        "title": "로그인하지 못했습니다"
+      },
+      "verification": {
+        "description": "지스트신문에 필요한 정보가 인포팀 계정에서 아직 인증되지 않았습니다. 인증을 마친 뒤 다시 로그인해 주세요.",
+        "title": "계정 인증이 필요합니다"
+      }
+    },
+    "loading": "불러오는 중",
+    "login": "로그인",
+    "loginWithAccount": "인포팀 계정으로 로그인",
+    "logout": "로그아웃",
+    "menu": {
+      "cms": "CMS 열기",
+      "error": "계정 정보를 불러오지 못했습니다",
+      "label": "내 계정 메뉴"
+    },
+    "required": {
+      "description": "인포팀 계정으로 로그인하면 이 페이지를 볼 수 있습니다.",
+      "title": "로그인이 필요합니다"
+    },
+    "toHome": "홈으로 가기"
   },
   "category": {
     "ACADEMIC": "학술",

@@ -45,6 +45,16 @@ export function extractThumbnail(html: string): string | undefined {
   return undefined;
 }
 
+// news-be never fills `thumbnailUrl` from the body, and may send "".
+export function pickThumbnail(
+  thumbnailUrl: string | null | undefined,
+  html: string,
+): string | undefined {
+  const own = thumbnailUrl?.trim();
+  if (own && /^https?:\/\//i.test(own)) return own;
+  return extractThumbnail(html);
+}
+
 // Block-level tags end a sentence visually; without a space their texts
 // would run together ("제목본문").
 const BLOCK_TAG =

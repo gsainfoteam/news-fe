@@ -29,5 +29,10 @@ const fullTitle = `${Astro.props.title} | ${t("admin.cms", "CMS")} | ${siteName}
   </head>
   <body class="min-h-dvh bg-background">
     <slot />
+    <script>
+      import { bindLanguageSwitch } from "@/common/lib/languages";
+
+      bindLanguageSwitch();
+    </script>
   </body>
 </html>
