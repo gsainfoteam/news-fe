@@ -91,7 +91,7 @@ export const MOCK_EDIT_ARTICLE: Article = {
   comments: [],
 };
 
-/** An imported WordPress article: its featured image isn't in the body. */
+// Like a WordPress import, its featured image is only in `imageKeys`.
 export const MOCK_IMPORTED_ARTICLE: Article = {
   ...MOCK_EDIT_ARTICLE,
   id: 43,

@@ -99,7 +99,7 @@ export function ThumbnailPicker({
 export namespace ThumbnailPicker {
   export type Props = {
     options: ThumbnailOption[];
-    /** Null is "자동": readers get the first body image. */
+    /** Null is "자동", the first body image. */
     value: string | null;
     onChange: (value: string | null) => void;
   };

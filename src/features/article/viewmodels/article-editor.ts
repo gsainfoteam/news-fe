@@ -170,7 +170,7 @@ export type ArticleDraft = {
   content: string;
   categories: Category[];
   authorIds: string[];
-  /** Image URL; null lets readers fall back to the first body image. */
+  /** Null falls back to the first body image. */
   thumbnail: string | null;
 };
 
@@ -185,9 +185,8 @@ export function toArticleDraft(article?: Article): ArticleDraft {
   };
 }
 
-// Imported WordPress articles keep their featured image only in `imageKeys`,
-// not in the body. Without this the editor can't offer it, and the next save
-// drops it.
+// WordPress imports keep the featured image only in `imageKeys`; unless the
+// editor offers it, the next save drops it.
 export function getDetachedThumbnail(
   article?: Pick<Article, "thumbnailUrl" | "content">,
 ) {
@@ -217,8 +216,7 @@ export function getThumbnailOptions(
   ];
 }
 
-// The draft keeps a pick whose image was deleted from the body, so undoing
-// the delete brings the pick back.
+// Keeps a pick whose image left the body, so undoing the delete restores it.
 export function getSelectedThumbnail(
   draft: Pick<ArticleDraft, "content" | "thumbnail">,
   detached?: string,
@@ -335,8 +333,7 @@ export function toArticleUpdate(
     uploaded,
     getDetachedThumbnail(article),
   );
-  // Leaving a field out keeps the stored value, so clearing a subtitle or
-  // a thumbnail has to be said.
+  // An omitted field keeps its stored value, so a clear has to be sent.
   return { ...input, subtitle, thumbnailKey: thumbnailKey ?? null };
 }
 

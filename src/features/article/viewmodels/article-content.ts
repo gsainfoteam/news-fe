@@ -45,8 +45,7 @@ export function extractThumbnail(html: string): string | undefined {
   return undefined;
 }
 
-// news-be leaves `thumbnailUrl` empty when no image was picked, and doesn't
-// fill it from the body itself.
+// news-be never fills `thumbnailUrl` from the body, and may send "".
 export function pickThumbnail(
   thumbnailUrl: string | null | undefined,
   html: string,

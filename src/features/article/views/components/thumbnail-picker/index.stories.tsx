@@ -28,8 +28,6 @@ function Showcase() {
   );
 }
 
-// The first tile ("본문에 없음") is an imported article's featured image;
-// the last picker is a body without images.
 const meta = {
   title: "Article/ThumbnailPicker",
   component: ThumbnailPicker,

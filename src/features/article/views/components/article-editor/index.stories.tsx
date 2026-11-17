@@ -50,7 +50,6 @@ export const EditMobile: Story = {
   globals: { viewport: { value: "mobile" } },
 };
 
-/** The featured image of an imported article stays pickable outside the body. */
 export const EditImported: Story = {
   render: () => (
     <AdminGuard section="articles">
