@@ -67,7 +67,6 @@ function HeaderContent({ currentCategory, account, menu }: Header.Props) {
             >
               {t("header.report", "제보하기")}
             </a>
-            {account && <div className="mobile:hidden">{account}</div>}
             <a
               href={path("/search")}
               aria-label={searchLabel}
@@ -79,6 +78,7 @@ function HeaderContent({ currentCategory, account, menu }: Header.Props) {
               <SearchIcon />
             </a>
             {menu && <div className="hidden mobile:flex">{menu}</div>}
+            {account}
           </div>
         </div>
         <CategoryNav current={currentCategory} />

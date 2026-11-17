@@ -119,16 +119,12 @@
       "uploadingTitle": "Images are still uploading"
     },
     "guard": {
-      "error": {
-        "title": "Couldn't load your account"
-      },
       "forbidden": {
         "action": "Open {{menu}}",
         "editor": "Only members with editing permission can use this menu. Permission follows your position, and the editor-in-chief can change it.",
         "editorship": "Only the editor-in-chief can use this menu.",
         "title": "You don't have access"
       },
-      "loading": "Loading",
       "login": {
         "action": "Log in with Infoteam account",
         "description": "The CMS is for GIST Newspaper members. Log in with your Infoteam account.",
@@ -226,6 +222,57 @@
     "related": "Related articles",
     "updatedAt": "Updated {{date}}",
     "views": "{{views}} views"
+  },
+  "auth": {
+    "callback": {
+      "pending": "Logging in",
+      "title": "Log in"
+    },
+    "error": {
+      "title": "Couldn't load your account"
+    },
+    "failed": {
+      "back": "Go back",
+      "cancelled": {
+        "description": "You canceled the login on the Infoteam account screen. Press the button below to log in again.",
+        "title": "Login canceled"
+      },
+      "consent": {
+        "description": "Accounts logging in for the first time need to agree to the terms and sign up. Sign-up is coming soon.",
+        "title": "This account needs to sign up"
+      },
+      "network": {
+        "description": "Check your internet connection and try again.",
+        "title": "Couldn't reach the server"
+      },
+      "rejected": {
+        "description": "GIST Newspaper didn't accept a login from this account. If this keeps happening, contact GIST Newspaper.",
+        "title": "This account can't log in"
+      },
+      "retry": "Log in again",
+      "unknown": {
+        "description": "Please try again in a moment.",
+        "title": "Couldn't log in"
+      },
+      "verification": {
+        "description": "Information GIST Newspaper needs isn't verified on your Infoteam account yet. Verify it, then log in again.",
+        "title": "Account verification needed"
+      }
+    },
+    "loading": "Loading",
+    "login": "Log in",
+    "loginWithAccount": "Log in with Infoteam account",
+    "logout": "Log out",
+    "menu": {
+      "cms": "Open CMS",
+      "error": "Couldn't load your account",
+      "label": "My account menu"
+    },
+    "required": {
+      "description": "Log in with your Infoteam account to see this page.",
+      "title": "Login required"
+    },
+    "toHome": "Go home"
   },
   "category": {
     "ACADEMIC": "Academics",

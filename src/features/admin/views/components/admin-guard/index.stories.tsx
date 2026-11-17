@@ -4,8 +4,9 @@ import { FileTextIcon } from "lucide-react";
 import { EmptyState } from "@/common/components/ui/empty-state";
 import {
   handleMe,
-  handleMeAnonymous,
   handleMeError,
+  handleNoSession,
+  handleSessionError,
   mockUser,
 } from "@/features/auth/models/mocks";
 
@@ -14,7 +15,6 @@ import { AdminPageHeader } from "../admin-layout";
 
 const msw = (...handlers: unknown[]) => ({ msw: { handlers } });
 
-// One story per `GET /user/me` answer. The guarded page is the article list
 // (EDITOR and up), so a reporter (NONE) sees the forbidden notice.
 const meta = {
   title: "Admin/AdminGuard",
@@ -46,10 +46,10 @@ export const Reporter: Story = {
   parameters: msw(handleMe(mockUser({ name: "한지우", permission: "NONE" }))),
 };
 
-/** 401: asks for a login. */
-export const LoggedOut: Story = { parameters: msw(handleMeAnonymous()) };
+export const LoggedOut: Story = { parameters: msw(handleNoSession()) };
 
-/** Any other failure: the shared error screen with a retry. */
+export const SessionError: Story = { parameters: msw(handleSessionError()) };
+
 export const AccountError: Story = { parameters: msw(handleMeError()) };
 
 /** Logged in but not on the member list. */
