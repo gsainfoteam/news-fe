@@ -88,8 +88,6 @@ export function AdminArticles() {
 
 const col = createColumnHelper<typeof dataTableFeatures, Article>();
 
-// Notices are NOTICE articles, so the notice screen is this list pinned to
-// that category.
 export function AdminArticleList({ kind = "article" }: AdminArticleList.Props) {
   const { t, i18n } = useTranslation();
   const dayjs = useDayjs();

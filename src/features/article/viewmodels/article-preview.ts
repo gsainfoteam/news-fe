@@ -17,8 +17,6 @@ export type ArticlePreview = {
   views: number;
 };
 
-// news-be has no notice API: a notice is an article filed under NOTICE. It
-// gets its own pages (/notice) and stays out of the article pages.
 export function isNotice(article: Pick<Article, "categories">) {
   return article.categories.includes("NOTICE");
 }

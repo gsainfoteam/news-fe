@@ -96,8 +96,8 @@ function EditArticle({ kind }: { kind: ArticleEditor.Kind }) {
         />
       );
     case "ready":
-      // The article decides, so a notice opened from the article list (or
-      // a hand-typed URL) still gets the notice editor.
+      // The article decides, so a notice at /admin/articles/edit still gets
+      // the notice editor.
       return (
         <ArticleEditor
           key={result.article.id}
@@ -114,7 +114,6 @@ export function ArticleEditor({
 }: ArticleEditor.Props) {
   const { t, i18n } = useTranslation();
   const notice = kind === "notice";
-  // A notice's only category is NOTICE, so its editor has no picker.
   const editor = useArticleEditor(
     article,
     notice ? { categories: ["NOTICE"] } : undefined,

@@ -16,8 +16,7 @@ export type NoticeItem = {
 const byLatest = (a: Notice, b: Notice) =>
   b.createdAt.getTime() - a.createdAt.getTime() || b.id - a.id;
 
-// Build only. The article pages' list already holds every notice, so the
-// notice pages cost no request of their own.
+// Build only. Reuses the cached article list, so it costs no request.
 export async function fetchAllNotices(): Promise<Notice[]> {
   const articles = await fetchAllArticles();
   return articles.filter(isNotice).toSorted(byLatest);
@@ -44,7 +43,7 @@ export type NoticePage = {
   notices: NoticeItem[];
 };
 
-/** Every list page, page 1 included even when there are no notices. */
+// Page 1 exists even with no notices, so /notice never 404s.
 export function paginateNotices(notices: readonly Notice[]): NoticePage[] {
   const last = Math.max(1, Math.ceil(notices.length / NOTICES_PER_PAGE));
   return Array.from({ length: last }, (_, i) => ({
@@ -56,7 +55,7 @@ export function paginateNotices(notices: readonly Notice[]): NoticePage[] {
   }));
 }
 
-/** `notices` is latest first, as `fetchAllNotices` returns it. */
+// Expects `notices` latest first, as `fetchAllNotices` returns it.
 export function getAdjacentNotices(notices: readonly Notice[], id: number) {
   const index = notices.findIndex((notice) => notice.id === id);
   const at = (i: number) =>

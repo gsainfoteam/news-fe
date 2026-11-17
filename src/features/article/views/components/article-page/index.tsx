@@ -268,7 +268,6 @@ function Byline({ article }: { article: ArticleDetail }) {
   );
 }
 
-// The body comes from the CMS as plain HTML, so it is styled by element.
 export function ArticleBody({ html, className }: ArticleBody.Props) {
   return (
     <div
@@ -281,12 +280,12 @@ export function ArticleBody({ html, className }: ArticleBody.Props) {
 
 export namespace ArticleBody {
   export type Props = {
-    /** Sanitized HTML from `toArticleDetail`. */
     html: string;
     className?: string;
   };
 }
 
+// The body comes from the CMS as plain HTML, so it is styled by element.
 const PROSE = cn(
   "max-w-[680px] text-body-lg tracking-[-0.005em] text-foreground mobile:text-[17px] mobile:leading-[1.8]",
   "[&>*:last-child]:mb-0 [&_p]:mb-[1.35em]",

@@ -50,7 +50,6 @@ export const EditMobile: Story = {
   globals: { viewport: { value: "mobile" } },
 };
 
-/** `/admin/notices/new`: the category is NOTICE and has no picker. */
 export const NewNotice: Story = { args: { kind: "notice" } };
 
 export const NewNoticeMobile: Story = {
@@ -58,7 +57,6 @@ export const NewNoticeMobile: Story = {
   globals: { viewport: { value: "mobile" } },
 };
 
-/** An existing notice, as `/admin/notices/edit?id=900` opens it. */
 export const EditNotice: Story = {
   render: () => (
     <AdminGuard section="notices">

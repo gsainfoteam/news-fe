@@ -4,8 +4,7 @@ import { setupServer } from "msw/node";
 import { fetchHomeArticles, HOME_SECTION_SIZE } from "./home";
 import { handleAdminArticles, mockArticle } from "../models/admin-mocks";
 
-// Newest and most viewed first, so the first page of either sort is all
-// notices.
+// First in both sorts, so the first page of either is all notices.
 const notices = Array.from({ length: 60 }, (_, i) =>
   mockArticle({ categories: ["NOTICE"], views: 1000 - i }),
 );

@@ -42,7 +42,6 @@ export function fromCategorySlug(slug: string): Category | undefined {
 }
 
 export function getCategoryPath(category: Category) {
-  // Notices have their own board instead of a category page.
   if (category === "NOTICE") return "/notice";
   return `/category/${toCategorySlug(category)}`;
 }

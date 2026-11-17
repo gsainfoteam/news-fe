@@ -8,8 +8,7 @@ import { getAdjacentNotices } from "../../../viewmodels/notice";
 
 const [, current] = MOCK_NOTICES;
 
-// toArticleDetail sanitizes only while building, so the story writes the
-// detail by hand.
+// toArticleDetail runs only while building, so the detail is written by hand.
 const notice: ArticleDetail = {
   id: current.id,
   path: `/notice/${current.id}`,

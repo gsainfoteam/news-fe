@@ -111,9 +111,7 @@ async function loadHomeArticles(): Promise<HomeArticles> {
     const { data } = await fetchArticles({ query, throwOnError: true });
     return data.articles;
   };
-  // The API can't leave notices out, and they come in bursts and draw views,
-  // so one fixed-size page may be mostly notices. Keep paging until enough
-  // articles are left.
+  // The API can't leave notices out, and one page may hold nothing else.
   const articlesOnly = async (sort: ArticleSort, size: number) => {
     const kept: Article[] = [];
     for (let offset = 0; ; offset += ARTICLE_FETCH_LIMIT) {
