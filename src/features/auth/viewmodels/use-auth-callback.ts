@@ -23,16 +23,23 @@ export type AuthCallback =
 // page the login started from in the address bar, but this document is still
 // the callback page, so a success has to load that page for real.
 export function useAuthCallback(): AuthCallback {
-  const { status, error, canRetryLogin, login, retryLogin } = useAccount();
+  const {
+    isLoading,
+    isAuthenticated,
+    error,
+    canRetryLogin,
+    login,
+    retryLogin,
+  } = useAccount();
   const [loginError, setLoginError] = useState<typeof error>(null);
-  const failed = status === "unauthenticated" && error !== null;
+  const failed = !isLoading && !isAuthenticated && error !== null;
 
   useEffect(() => {
-    if (status === "loading" || failed) return;
+    if (isLoading || failed) return;
     // The access token lives in memory and is lost here; the next page
     // restores it from the refresh cookie.
     window.location.replace(getCallbackDestination(window.location));
-  }, [status, failed]);
+  }, [isLoading, failed]);
 
   if (!failed) return { status: "pending" };
 

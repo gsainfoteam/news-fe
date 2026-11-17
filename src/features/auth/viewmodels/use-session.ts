@@ -36,7 +36,7 @@ export function useSession(): Session {
   const me = useQuery({
     ...meQuery(),
     // Logged out, the request could only 401 and trigger a pointless refresh.
-    enabled: account.status === "authenticated",
+    enabled: account.isAuthenticated,
     retry: (failureCount, error) => !isUnauthorized(error) && failureCount < 2,
   });
 
