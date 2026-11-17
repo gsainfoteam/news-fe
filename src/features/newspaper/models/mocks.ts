@@ -64,7 +64,8 @@ export function handleNewspapers(
   {
     delayMs = 1200,
     putStatus = 200,
-  }: { delayMs?: number; putStatus?: number } = {},
+    createFailures = 0,
+  }: { delayMs?: number; putStatus?: number; createFailures?: number } = {},
 ) {
   let papers = [...initial];
   let nextId = Math.max(0, ...initial.map((p) => p.id)) + 1;
@@ -101,6 +102,7 @@ export function handleNewspapers(
     }),
     handleCreateNewspaper(async ({ request }) => {
       const { title, fileKey } = await request.json();
+      if (createFailures-- > 0) return error(500, "Internal Server Error");
       if (!uploaded.has(fileKey)) return error(404, "File not uploaded");
       const now = new Date();
       const paper: Newspaper = {

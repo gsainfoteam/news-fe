@@ -46,6 +46,14 @@ export const UploadFails: Story = {
   ),
 };
 
+/** Registering fails once; the retry sends only `POST /newspaper`. */
+export const RegisterFailsOnce: Story = {
+  parameters: msw(
+    handleMe(mockUser({ permission: "EDITOR" })),
+    ...handleNewspapers(MOCK_NEWSPAPERS, { createFailures: 1 }),
+  ),
+};
+
 /** NONE: the guard blocks the page and the menu has no archive entry. */
 export const Reporter: Story = {
   parameters: msw(

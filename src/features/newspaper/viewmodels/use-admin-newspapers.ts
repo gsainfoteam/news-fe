@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -20,6 +20,7 @@ export function useAdminNewspapers() {
   const queryClient = useQueryClient();
   const query = useQuery(allNewspapersQuery());
   const [progress, setProgress] = useState<number>();
+  const uploaded = useRef<{ file: File; key: string }>(undefined);
   const refetchList = () =>
     queryClient.invalidateQueries({ queryKey: allNewspapersQueryKey() });
 
@@ -30,10 +31,15 @@ export function useAdminNewspapers() {
     onSuccess: refetchList,
   });
 
+  // When the PUT succeeded but registering failed, a retry with the same file
+  // reuses the stored object instead of sending up to 100MB again.
   const upload = async (file: File) => {
+    if (uploaded.current?.file === file) return uploaded.current.key;
     setProgress(0);
     try {
-      return await uploadNewspaperFile(file, { onProgress: setProgress });
+      const key = await uploadNewspaperFile(file, { onProgress: setProgress });
+      uploaded.current = { file, key };
+      return key;
     } finally {
       setProgress(undefined);
     }
@@ -51,6 +57,8 @@ export function useAdminNewspapers() {
     } else {
       await create.mutateAsync({ body: { title, fileKey: fileKey! } });
     }
+    // Registered now; reusing the key again would 409.
+    uploaded.current = undefined;
     await refetchList();
   };
 
