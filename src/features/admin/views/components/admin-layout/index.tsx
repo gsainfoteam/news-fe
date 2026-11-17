@@ -5,6 +5,7 @@ import {
   ExternalLinkIcon,
   GlobeIcon,
   InboxIcon,
+  InfoIcon,
   MegaphoneIcon,
   LogOutIcon,
   NewspaperIcon,
@@ -44,6 +45,7 @@ const ICONS: Record<AdminSection, ReactNode> = {
   archive: <ArchiveIcon />,
   reports: <InboxIcon />,
   members: <UsersIcon />,
+  about: <InfoIcon />,
 };
 
 export function AdminLayout({

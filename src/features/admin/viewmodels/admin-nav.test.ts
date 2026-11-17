@@ -15,12 +15,14 @@ describe("getAdminNav", () => {
       "notices",
       "archive",
       "reports",
+      "about",
     ]);
     expect(sections("EDITORSHIP")).toEqual([
       "articles",
       "notices",
       "archive",
       "reports",
+      "about",
       "members",
     ]);
   });
@@ -38,5 +40,6 @@ describe("getSectionPermission", () => {
     expect(getSectionPermission("archive")).toBe("EDITOR");
     expect(getSectionPermission("reports")).toBe("NONE");
     expect(getSectionPermission("members")).toBe("EDITORSHIP");
+    expect(getSectionPermission("about")).toBe("EDITOR");
   });
 });

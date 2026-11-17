@@ -109,6 +109,9 @@ function FooterContent() {
             <a href={path("/archive")} className="hover:text-foreground">
               {t("footer.archive", "지면 보기")}
             </a>
+            <a href={path("/about")} className="hover:text-foreground">
+              {t("footer.about", "신문 소개")}
+            </a>
             {SOCIAL_LINKS.map(({ label, href }) => (
               <a
                 key={label}

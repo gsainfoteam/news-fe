@@ -1,0 +1,12 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AdminAbout } from "@/features/about";
+import AdminLayout from "@/layouts/admin-layout.astro";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("about.admin.title", "신문 소개");
+---
+
+<AdminLayout title={title}>
+  <AdminAbout client:only="react" />
+</AdminLayout>

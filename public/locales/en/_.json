@@ -1,4 +1,64 @@
 {
+  "about": {
+    "address": "Address",
+    "admin": {
+      "addHistory": "Add entry",
+      "cancel": "Cancel",
+      "content": "Content",
+      "contentPlaceholder": "e.g. Issue 50 of the GIST Newspaper published",
+      "date": "Date",
+      "delete": "Delete",
+      "deleteEntry": "Delete {{date}}",
+      "deleteTitle": "Delete the {{date}} entry?",
+      "description": "Edit the introduction, masthead and history on the About page",
+      "edit": "Edit",
+      "editEntry": "Edit {{date}}",
+      "historyCount_one": "{{count}} entry",
+      "historyCount_other": "{{count}} entries",
+      "infoDescription": "Shown in this order on the About page",
+      "infoTitle": "Introduction and masthead",
+      "introductionHelp": "Each line break starts a new paragraph.",
+      "loadFailed": "Couldn't load the About page",
+      "save": "Save",
+      "title": "About",
+      "unchanged": "No changes",
+      "viewPage": "View page"
+    },
+    "director": "Faculty advisor",
+    "editorInChief": "Editor-in-chief",
+    "email": "Email",
+    "error": {
+      "addressRequired": "Enter the address",
+      "contentRequired": "Enter the content",
+      "dateInvalid": "Enter the date as YYYY-MM-DD",
+      "dateRequired": "Pick a date",
+      "emailInvalid": "Check the email address",
+      "introductionRequired": "Enter the introduction",
+      "nameRequired": "Enter a name",
+      "tooLong": "Use {{max}} characters or fewer",
+      "urlInvalid": "Enter an address starting with https://"
+    },
+    "foundedAt": "Founded",
+    "history": "History",
+    "historyEmpty": "No history entries yet.",
+    "homepage": "Homepage",
+    "instagram": "Instagram",
+    "introduction": "Introduction",
+    "kicker": "About",
+    "masthead": "Masthead",
+    "publisher": "Publisher",
+    "toast": {
+      "historyAdded": "Entry added",
+      "historyAddFailed": "Couldn't add the entry",
+      "historyDeleted": "Entry deleted",
+      "historyDeleteFailed": "Couldn't delete the entry",
+      "historyUpdated": "Entry updated",
+      "historyUpdateFailed": "Couldn't update the entry",
+      "rebuild": "The site updates in 1 to 2 minutes.",
+      "saved": "Introduction saved",
+      "saveFailed": "Couldn't save the introduction"
+    }
+  },
   "admin": {
     "accountMenu": "Account menu",
     "articles": {
@@ -145,6 +205,7 @@
     },
     "logout": "Log out",
     "nav": {
+      "about": "About",
       "archive": "Print PDFs",
       "articles": "Articles",
       "editorshipOnly": "Editor-in-chief only",
@@ -338,6 +399,7 @@
     "title": "Couldn't load this content"
   },
   "footer": {
+    "about": "About",
     "address": "GIST Newspaper, 3F Student Union Building 1, 123 Cheomdangwagi-ro, Buk-gu, Gwangju, Korea",
     "archive": "Print editions",
     "newTab": "(opens in a new tab)",
