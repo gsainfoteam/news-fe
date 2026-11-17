@@ -12,6 +12,8 @@
   - `bun run gen:i18n` — extract translation keys to `public/locales/{lng}/{ns}.json` and regenerate i18next types (`i18next-cli`).
 - **Environment variables**: declared in the `astro:env` schema (`astro.config.mjs`). Public values are committed in `.env.development` (`astro dev`), `.env.staging` (`astro build --mode staging`) and `.env.production` (`astro build`); override them locally in `.env.<mode>.local` (git-ignored). Never put secrets in these files; they go in `.env` (git-ignored, see `.env.example`).
   - `API_BASE_URL` (`context: "client"`): the news-be URL, used both while building pages and by browser islands. Import from `astro:env/client`. The schema's `context` decides what reaches the browser, so the name needs no `PUBLIC_` prefix.
+  - `SITE`: the origin that serves the build (`site` in `astro.config.mjs`), used for canonical, hreflang, and OG URLs. `astro.config.mjs` reads it with Vite `loadEnv`, because `astro:env` isn't available inside the config, and takes the mode from `--mode` in argv.
+  - `SITE_NOINDEX` (`context: "server"`, default `false`): `true` puts `<meta name="robots" content="noindex">` on every page.
   - `SWAGGER_USER`/`SWAGGER_PASSWORD`: read only by `openapi-ts.config.ts` (`SWAGGER_URL` defaults to staging). The values are in the team resources.
 
 ## Rendering & Deployment (Event-driven SSG)
