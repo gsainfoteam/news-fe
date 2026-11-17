@@ -77,8 +77,9 @@ export const MOCK_EDIT_ARTICLE: Article = {
     "<h2>무엇이 바뀌었나</h2>",
     "<p>가장 큰 변화는 기록 방식이다. 이전에는 점검 당일 상태만 확인했다면, 이제는 한 학기 동안의 사용 기록을 함께 제출해야 한다.</p>",
     "<blockquote><p>서류가 늘었지만, 사고가 났을 때 무엇을 봐야 할지는 분명해졌다.</p></blockquote>",
+    `<img src="${MOCK_IMAGE_BUCKET}/articles/2026-10-28/r4t5y6-safety-board.png" alt="복도에 붙은 새 점검표">`,
   ].join(""),
-  thumbnailUrl: null,
+  thumbnailUrl: `${MOCK_IMAGE_BUCKET}/articles/2026-10-28/r4t5y6-safety-board.png`,
   views: 1204,
   categories: ["ACADEMIC_RESEARCH", "RESEARCH"],
   createdAt: new Date("2026-10-28T09:00:00Z"),
@@ -88,6 +89,13 @@ export const MOCK_EDIT_ARTICLE: Article = {
     { id: MOCK_MEMBERS[1].id, name: MOCK_MEMBERS[1].name },
   ],
   comments: [],
+};
+
+/** An imported WordPress article: its featured image isn't in the body. */
+export const MOCK_IMPORTED_ARTICLE: Article = {
+  ...MOCK_EDIT_ARTICLE,
+  id: 43,
+  thumbnailUrl: `${MOCK_IMAGE_BUCKET}/articles/wordpress/0f5c40419d6d80502ad3.jpg`,
 };
 
 let uploadCount = 0;
@@ -121,6 +129,10 @@ export function handleArticleSave(article: Article = MOCK_EDIT_ARTICLE) {
     ...body,
     id,
     subtitle: body.subtitle ?? null,
+    thumbnailUrl:
+      body.thumbnailKey === undefined
+        ? article.thumbnailUrl
+        : body.thumbnailKey && `${MOCK_IMAGE_BUCKET}/${body.thumbnailKey}`,
     authors: (body.authorIds ?? []).map((authorId) => ({
       id: authorId,
       name: MOCK_MEMBERS.find((m) => m.id === authorId)?.name ?? authorId,

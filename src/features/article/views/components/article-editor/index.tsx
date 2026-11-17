@@ -28,6 +28,7 @@ import {
 import { ArticleBodyEditor } from "../article-body-editor";
 import { AuthorPicker } from "../author-picker";
 import { CategoryPicker } from "../category-picker";
+import { ThumbnailPicker } from "../thumbnail-picker";
 
 export function AdminArticleEditor({ mode }: AdminArticleEditor.Props) {
   return (
@@ -335,11 +336,19 @@ export function ArticleEditor({ article }: ArticleEditor.Props) {
             />
           </Panel>
 
+          <Panel label={t("admin.editor.thumbnail", "대표 이미지")}>
+            <ThumbnailPicker
+              options={editor.thumbnail.options}
+              value={editor.thumbnail.selected}
+              onChange={(value) => change("thumbnail", value)}
+            />
+          </Panel>
+
           <Panel label={t("admin.editor.images", "이미지")}>
             <p className="text-xs text-subtle-foreground">
               {t(
-                "admin.editor.imagesHelp",
-                "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 목록 썸네일과 링크 미리보기 이미지로 쓰입니다.",
+                "admin.editor.imagesUploadHelp",
+                "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요.",
               )}
             </p>
           </Panel>
