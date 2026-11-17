@@ -11,6 +11,8 @@ import { i18n as appI18n } from "@/common/lib/i18n";
 import { localizePath } from "@/common/lib/languages";
 import { CategoryNav, type Category } from "@/features/category";
 
+import { LanguageSwitch } from "../language-switch";
+
 // Astro renders this as its own React root, so the page passes its i18n
 // instance in; stories fall back to the shared one the toolbar drives.
 export function Header({ i18n = appI18n, ...props }: Header.Props) {
@@ -21,7 +23,12 @@ export function Header({ i18n = appI18n, ...props }: Header.Props) {
   );
 }
 
-function HeaderContent({ currentCategory, account, menu }: Header.Props) {
+function HeaderContent({
+  currentPath,
+  currentCategory,
+  account,
+  menu,
+}: Header.Props) {
   const { t, i18n } = useTranslation();
   const path = (to: string) => localizePath(i18n.language, to);
   const searchLabel = t("header.search", "기사 검색");
@@ -67,6 +74,10 @@ function HeaderContent({ currentCategory, account, menu }: Header.Props) {
             >
               {t("header.report", "제보하기")}
             </a>
+            <LanguageSwitch
+              currentPath={currentPath}
+              className="mobile:hidden"
+            />
             {account && <div className="mobile:hidden">{account}</div>}
             <a
               href={path("/search")}
@@ -90,6 +101,8 @@ function HeaderContent({ currentCategory, account, menu }: Header.Props) {
 export namespace Header {
   export type Props = {
     i18n?: I18n;
+    /** `Astro.url.pathname`, for the language switch. */
+    currentPath?: string;
     currentCategory?: Category;
     /** Login button or user menu; the login issue hydrates it as an island. */
     account?: ReactNode;

@@ -8,7 +8,7 @@ import { MobileMenu } from "@/common/components/layout/mobile-menu";
 // Initialize i18next + dayjs locale sync once for every page (server render).
 import "@/common/lib/dayjs";
 import { getPageI18n } from "@/common/lib/i18n";
-import { LANGUAGES } from "@/common/lib/languages";
+import { delocalizePath, LANGUAGES } from "@/common/lib/languages";
 import { type Category } from "@/features/category";
 
 interface Props {
@@ -43,12 +43,8 @@ const {
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${siteName}` : siteName;
-// The /en/ fallback rewrite keeps the prefix in the pathname; strip it so
-// each hreflang link points at its own language.
-const basePath =
-  locale === "ko"
-    ? Astro.url.pathname
-    : Astro.url.pathname.slice(`/${locale}`.length) || "/";
+// Strip the /en/ prefix so each hreflang link points at its own language.
+const basePath = delocalizePath(Astro.url.pathname);
 const canonical = getAbsoluteLocaleUrl(locale, basePath);
 const imageUrl = new URL(image, Astro.site).href;
 ---
@@ -76,6 +72,11 @@ const imageUrl = new URL(image, Astro.site).href;
               href={getAbsoluteLocaleUrl(lng, basePath)}
             />
           ))}
+          <link
+            rel="alternate"
+            hreflang="x-default"
+            href={getAbsoluteLocaleUrl("ko", basePath)}
+          />
           <meta property="og:url" content={canonical} />
         </>
       )
@@ -90,11 +91,16 @@ const imageUrl = new URL(image, Astro.site).href;
     <slot name="head" />
   </head>
   <body class="flex min-h-dvh flex-col">
-    <Header i18n={i18n} currentCategory={category}>
+    <Header
+      i18n={i18n}
+      currentPath={Astro.url.pathname}
+      currentCategory={category}
+    >
       <MobileMenu
         slot="menu"
         client:media="(max-width: 720px)"
         lng={locale}
+        currentPath={Astro.url.pathname}
         currentCategory={category}
       />
     </Header>
@@ -102,5 +108,10 @@ const imageUrl = new URL(image, Astro.site).href;
       <slot />
     </main>
     <Footer i18n={i18n} />
+    <script>
+      import { bindLanguageSwitch } from "@/common/lib/languages";
+
+      bindLanguageSwitch();
+    </script>
   </body>
 </html>
