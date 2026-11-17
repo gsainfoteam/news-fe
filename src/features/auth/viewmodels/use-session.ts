@@ -15,27 +15,19 @@ export type Session =
   | { status: "loading" }
   | {
       status: "anonymous";
-      /** Why the last login didn't finish, if it didn't. */
       failure: LoginFailure | null;
       login: () => void;
-      /**
-       * Set after a `consent` failure: sends the signup input (NEF-13) with
-       * the backend's ticket instead of going through the IdP again.
-       */
       retryLogin?: (body: unknown) => Promise<void>;
     }
   | { status: "error"; retry: () => void; logout: () => void }
   | { status: "authenticated"; user: User; logout: () => void };
 
-// Screens see only this Session. The SDK owns the login itself; `GET
-// /user/me` adds the news profile (role, permission) on top.
 export function useSession(): Session {
   const account = useAccount();
   const queryClient = useQueryClient();
   const [loginError, setLoginError] = useState<AccountError | null>(null);
   const me = useQuery({
     ...meQuery(),
-    // Logged out, the request could only 401 and trigger a pointless refresh.
     enabled: account.isAuthenticated,
     retry: (failureCount, error) => !isUnauthorized(error) && failureCount < 2,
   });
@@ -45,18 +37,17 @@ export function useSession(): Session {
     error: loginError ?? account.error,
     canRetryLogin: account.canRetryLogin,
     me,
-    // `login()` rejects only when the IdP can't be reached; otherwise the
-    // page leaves for the IdP.
     login: () => {
       setLoginError(null);
       account.login().catch(setLoginError);
     },
     retryLogin: account.retryLogin,
     logout: () => {
-      void account.logout().then(() =>
-        // The next login may be someone else on this browser.
-        queryClient.removeQueries({ queryKey: meQuery().queryKey }),
-      );
+      void account
+        .logout()
+        .then(() =>
+          queryClient.removeQueries({ queryKey: meQuery().queryKey }),
+        );
     },
   });
 }
@@ -98,7 +89,6 @@ export function resolveSession(input: SessionInput): Session {
   return { status: "authenticated", user: me.data, logout };
 }
 
-// Network failures and response validation errors are not ErrorDto.
 function isUnauthorized(error: unknown) {
   return (
     typeof error === "object" &&

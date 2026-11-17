@@ -2,8 +2,6 @@ import { type ReactNode } from "react";
 
 import { cn } from "@/common/lib/cn";
 
-// The centered notice every sign-in state uses (login required, login failed,
-// and the CMS's not-member and forbidden screens), so they read as one set.
 export function AuthMessage({
   icon,
   title,
@@ -41,7 +39,6 @@ export namespace AuthMessage {
     title: string;
     description: string;
     className?: string;
-    /** Actions, laid out as a centered button row. */
     children?: ReactNode;
   };
 }

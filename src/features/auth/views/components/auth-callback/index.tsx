@@ -10,8 +10,6 @@ import { AuthProvider } from "../../../viewmodels/auth-provider";
 import { useAuthCallback } from "../../../viewmodels/use-auth-callback";
 import { LoginFailed } from "../login-failed";
 
-// The `/auth/callback` island. It has no story: it reloads the page it runs
-// in. Its screens are the spinner below and LoginFailed.
 export function AuthCallback() {
   return (
     <QueryProvider>
@@ -28,8 +26,6 @@ function AuthCallbackContent() {
   const i18n = useMemo(() => getPageI18n(lng), [lng]);
 
   if (callback.status === "pending") return <Pending />;
-  // NEF-13 shows the terms here when `callback.retryLogin` is set: the
-  // ticket lives in memory, so the signup can't move to another page.
   return (
     <I18nextProvider i18n={i18n}>
       <LoginFailed

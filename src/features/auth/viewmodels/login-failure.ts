@@ -3,8 +3,6 @@ import { type AccountError } from "../models";
 export type LoginFailure =
   "cancelled" | "verification" | "consent" | "rejected" | "network" | "unknown";
 
-// news-be rejects a first login with 403 `session_rejected` and
-// `details.reason = "consent_required"` until the user agrees to the terms.
 export function getLoginFailure(
   error: Pick<AccountError, "code" | "details">,
 ): LoginFailure {

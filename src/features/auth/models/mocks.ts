@@ -8,8 +8,6 @@ export { resetAccountClient } from "./account";
 
 export const MOCK_ACCESS_TOKEN = "mock-access-token";
 
-// What the SDK sees on load: a refresh cookie it can trade for a token.
-// Storybook installs this for every story; `handleNoSession` overrides it.
 export function handleSession() {
   return [
     handleRefresh({ body: { access_token: MOCK_ACCESS_TOKEN } }),
@@ -21,7 +19,6 @@ export function handleNoSession() {
   return handleRefresh(() => unauthorized());
 }
 
-// A refresh that never answers keeps the session loading.
 export function handleSessionPending() {
   return handleRefresh(async () => {
     await delay("infinite");
@@ -29,7 +26,6 @@ export function handleSessionPending() {
   });
 }
 
-// news-be down: not a missing session but a failure the SDK reports.
 export function handleSessionError() {
   return handleRefresh(() => serverError());
 }

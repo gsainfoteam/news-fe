@@ -15,8 +15,6 @@ import { AdminPageHeader } from "../admin-layout";
 
 const msw = (...handlers: unknown[]) => ({ msw: { handlers } });
 
-// One story per session state: the SDK restores the session from the refresh
-// cookie (logged in unless a story overrides it), then `GET /user/me` decides. The guarded page is the article list
 // (EDITOR and up), so a reporter (NONE) sees the forbidden notice.
 const meta = {
   title: "Admin/AdminGuard",
@@ -48,13 +46,10 @@ export const Reporter: Story = {
   parameters: msw(handleMe(mockUser({ name: "한지우", permission: "NONE" }))),
 };
 
-/** No refresh cookie: asks for a login. */
 export const LoggedOut: Story = { parameters: msw(handleNoSession()) };
 
-/** Restoring the session failed (news-be down): the login failure screen. */
 export const SessionError: Story = { parameters: msw(handleSessionError()) };
 
-/** Logged in, but `GET /user/me` failed: the error screen with a retry. */
 export const AccountError: Story = { parameters: msw(handleMeError()) };
 
 /** Logged in but not on the member list. */

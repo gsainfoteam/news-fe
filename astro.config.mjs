@@ -31,10 +31,6 @@ const localizedNotFound = {
   },
 };
 
-// The IdP sends logins back to `/auth/callback` exactly, but Cloudflare Pages
-// answers that path with a 308 to `/auth/callback/` when the page is a
-// directory index, and the SDK only finishes a login on the registered path.
-// A flat `callback.html` is served at the path itself.
 /** @type {import("astro").AstroIntegration} */
 const flatAuthCallback = {
   name: "flat-auth-callback",
@@ -78,7 +74,6 @@ export default defineConfig({
   env: {
     schema: {
       API_BASE_URL: envField.string({ context: "client", access: "public" }),
-      // The IdP environment and the news client registered there.
       ACCOUNT_ISSUER: envField.enum({
         context: "client",
         access: "public",
@@ -102,8 +97,6 @@ export default defineConfig({
           target: API_BASE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
-          // news-be scopes the refresh cookie to `/auth`; behind the proxy
-          // the browser calls `/api/auth/…` and would never send it back.
           cookiePathRewrite: { "/auth": "/api/auth" },
         },
       },

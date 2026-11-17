@@ -48,7 +48,6 @@ export namespace LoginFailed {
   export type Props = {
     failure: LoginFailure;
     onLogin: () => void;
-    /** The page the login started from. */
     backHref: string;
     backLabel?: string;
     className?: string;
