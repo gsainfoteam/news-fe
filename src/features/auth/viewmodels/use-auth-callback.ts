@@ -6,9 +6,7 @@ import { AccountError, type SignupInput, useAccount } from "../models";
 import { getLoginFailure, type LoginFailure } from "./login-failure";
 
 type CallbackPage = {
-  /** Where the login started; the failure screen links back to it. */
   returnTo: string;
-  /** The language of that page; the callback URL itself is Korean. */
   lng: Language;
 };
 
@@ -74,8 +72,6 @@ export function useAuthCallback(): AuthCallback {
     status: "failed",
     failure,
     ...page,
-    // `login()` rejects only when the IdP can't be reached; the failure
-    // screen then shows that instead of a button that seems to do nothing.
     login: () => {
       setLoginError(null);
       login().catch(setLoginError);

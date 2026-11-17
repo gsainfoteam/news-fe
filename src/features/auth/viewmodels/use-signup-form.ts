@@ -14,7 +14,6 @@ export function useSignupForm({
   onSignup,
   onSubmitInvalid,
 }: {
-  /** Rejects to keep the dialog open for another try. */
   onSignup: (input: SignupInput) => Promise<void>;
   onSubmitInvalid?: () => void;
 }) {
@@ -24,7 +23,6 @@ export function useSignupForm({
 
   const form = useForm({
     defaultValues: SIGNUP_FORM_DEFAULTS,
-    // Quiet until the first submit, then re-check as the reader types.
     validationLogic: revalidateLogic(),
     validators: { onDynamic: schema },
     onSubmitInvalid,

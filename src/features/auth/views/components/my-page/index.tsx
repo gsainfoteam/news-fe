@@ -17,8 +17,6 @@ import { getRoleLabels } from "../../../viewmodels/role";
 import { NicknameForm } from "../nickname-form";
 import { RequireAuth } from "../require-auth";
 
-// The `/me` island. RequireAuth brings the query cache it shares with the
-// header, so a nickname saved here shows in the account menu at once.
 export function MyPage() {
   return (
     <RequireAuth>

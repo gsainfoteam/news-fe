@@ -1,7 +1,6 @@
 import { AccountError } from "@infoteam/account-react";
 import { describe, expect, test } from "bun:test";
 
-
 import {
   getCallbackDestination,
   getPathLanguage,

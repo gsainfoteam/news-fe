@@ -58,7 +58,6 @@ export namespace LoginFailed {
     onLogin: () => void;
     /** Reopens the signup form; only the callback page still holds a ticket. */
     onSignup?: () => void;
-    /** The page the login started from. */
     backHref: string;
     backLabel?: string;
     className?: string;

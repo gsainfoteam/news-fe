@@ -36,8 +36,6 @@ import { useSignupForm } from "../../../viewmodels/use-signup-form";
 const TERMS_URL = "https://terms.gistory.me/news/tos/";
 const PRIVACY_URL = "https://terms.gistory.me/news/privacy/";
 
-// Shown over /auth/callback after news-be asks for consent. Closing it
-// leaves the visitor logged out; nothing is stored until the signup is sent.
 export function SignupDialog({
   open,
   onOpenChange,

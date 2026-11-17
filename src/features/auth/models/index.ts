@@ -12,8 +12,6 @@ export { type UpdateNicknameDto as NicknameInput } from "@/@types/api/types.gen"
 
 export type User = UserDto;
 
-// What the signup adds to `POST /auth/login`; the SDK adds the ticket and
-// the login protocol fields.
 export const zSignupInput = zLoginDto.pick({ nickname: true });
 export type SignupInput = Pick<LoginDto, "nickname">;
 

@@ -67,8 +67,6 @@ export function handleMeError() {
   return handleGetMe(() => serverError());
 }
 
-// `GET /user/me` answers with the nickname sent last, so a story shows the
-// header picking up the change.
 export function handleNicknameChange(user: User) {
   let current = user;
   return [

@@ -14,8 +14,6 @@ import {
 import { LoginFailed } from "../login-failed";
 import { SignupDialog } from "../signup-dialog";
 
-// The `/auth/callback` island. It has no story: it reloads the page it runs
-// in. Its screens are the spinner below, LoginFailed and SignupDialog.
 export function AuthCallback() {
   return (
     <QueryProvider>

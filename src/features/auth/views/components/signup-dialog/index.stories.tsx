@@ -6,9 +6,6 @@ import { SignupDialog } from ".";
 const wait = (ms: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, ms));
 
-// Opens over /auth/callback after news-be answers a first login with
-// `consent_required`. Submitting here waits, then resolves; on the real page
-// the browser then leaves for the page the login started from.
 const meta = {
   title: "Auth/SignupDialog",
   component: SignupDialog,
@@ -26,7 +23,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Mobile: Story = { globals: { viewport: { value: "mobile" } } };
 
-/** news-be failed the signup: the dialog stays for another try. */
 export const Failed: Story = {
   args: {
     onSignup: fn(async () => {

@@ -11,8 +11,6 @@ import { AccountMenu } from "../account-menu";
 
 const msw = (...handlers: unknown[]) => ({ msw: { handlers } });
 
-// `/me` with the header's account menu beside it: both islands read one
-// query cache, so a saved nickname shows in the open menu right away.
 const meta = {
   title: "Auth/MyPage",
   component: MyPage,
@@ -38,7 +36,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Mobile: Story = { globals: { viewport: { value: "mobile" } } };
 
-/** A reader with no newsroom role and no nickname yet. */
 export const Reader: Story = {
   parameters: msw(
     ...handleNicknameChange(

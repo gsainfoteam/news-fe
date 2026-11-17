@@ -11,8 +11,6 @@ import { NicknameForm } from ".";
 const msw = (...handlers: unknown[]) => ({ msw: { handlers } });
 const user = mockUser();
 
-// The nickname field on /me. Saving writes the new nickname into the shared
-// `me` cache (see Auth/MyPage for the header picking it up).
 const meta = {
   title: "Auth/NicknameForm",
   component: NicknameForm,
@@ -31,7 +29,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Mobile: Story = { globals: { viewport: { value: "mobile" } } };
 
-/** No nickname yet: the field is empty and shows the name as a hint. */
 export const Empty: Story = { args: { user: mockUser({ nickname: null }) } };
 
 export const SaveError: Story = { parameters: msw(handleNicknameError()) };
