@@ -22,8 +22,8 @@
         "description": "Deleting “{{title}}” can't be undone. It disappears from the site in a minute or two.",
         "title": "Delete this article?"
       },
-      "count_one": "전체 {{count}}건",
-      "count_other": "전체 {{count}}건",
+      "count_one": "{{count}} article in total",
+      "count_other": "{{count}} articles in total",
       "delete": "Delete",
       "deleted": "Article deleted",
       "deletedDescription": "It disappears from the site in a minute or two.",
@@ -153,7 +153,7 @@
       "content": "Message",
       "count_one": "{{count}} tip, newest first",
       "count_other": "{{count}} tips, newest first",
-      "detailFailed": "Couldn’t load this tip",
+      "detailFailed": "Couldn't load this tip",
       "download": "Download {{name}}",
       "downloadShort": "Download",
       "email": "Email",
@@ -173,7 +173,7 @@
         "title": "The download links have expired"
       },
       "listLabel": "Tips",
-      "loadFailed": "Couldn’t load tips",
+      "loadFailed": "Couldn't load tips",
       "name": "Name",
       "next": "Next page",
       "notFound": {
@@ -185,7 +185,7 @@
       "pick": "Pick a tip from the list to read it here.",
       "previous": "Previous page",
       "received": "#{{id}}, received {{date}}",
-      "refreshFailed": "Couldn’t get new links",
+      "refreshFailed": "Couldn't get new links",
       "reply": "Reply by email",
       "replySubject": "Re: your tip to GIST Newspaper",
       "replySubjectWithTitle": "Re: {{title}}",
@@ -293,7 +293,7 @@
       "deleteComment": "Delete others' comments",
       "editArticle": "Edit and delete articles",
       "noCms": "Cannot use the CMS",
-      "readReports": "Read reports",
+      "readReports": "Read tips",
       "register": "Register members",
       "stayListed": "Stays on the member list",
       "writeArticle": "Write articles"
