@@ -105,15 +105,29 @@ async function loadHomeArticles(): Promise<HomeArticles> {
   const get = async (query: {
     sort: ArticleSort;
     limit: number;
+    offset?: number;
     category?: Category;
   }) => {
     const { data } = await fetchArticles({ query, throwOnError: true });
     return data.articles;
   };
+  // The API can't leave notices out, and they come in bursts and draw views,
+  // so one fixed-size page may be mostly notices. Keep paging until enough
+  // articles are left.
+  const articlesOnly = async (sort: ArticleSort, size: number) => {
+    const kept: Article[] = [];
+    for (let offset = 0; ; offset += ARTICLE_FETCH_LIMIT) {
+      const page = await get({ sort, offset, limit: ARTICLE_FETCH_LIMIT });
+      kept.push(...page.filter((article) => !isNotice(article)));
+      if (kept.length >= size || page.length < ARTICLE_FETCH_LIMIT) {
+        return kept.slice(0, size);
+      }
+    }
+  };
   const [latest, popular, ...sections] = await Promise.all([
-    get({ sort: "LATEST", limit: ARTICLE_FETCH_LIMIT }),
-    // Spares for the headline and for notices, which the home page skips.
-    get({ sort: "MOST_POPULAR", limit: HOME_SECTION_SIZE.popular * 2 }),
+    articlesOnly("LATEST", ARTICLE_FETCH_LIMIT),
+    // One spare in case the headline is among them.
+    articlesOnly("MOST_POPULAR", HOME_SECTION_SIZE.popular + 1),
     ...CATEGORY_GROUPS.map(async ({ category, children }) => {
       const lists = await Promise.all(
         [category, ...children].map((c) =>
