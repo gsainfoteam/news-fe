@@ -5,6 +5,7 @@ import {
   ExternalLinkIcon,
   GlobeIcon,
   InboxIcon,
+  MegaphoneIcon,
   LogOutIcon,
   NewspaperIcon,
   UsersIcon,
@@ -39,6 +40,7 @@ import {
 
 const ICONS: Record<AdminSection, ReactNode> = {
   articles: <NewspaperIcon />,
+  notices: <MegaphoneIcon />,
   archive: <ArchiveIcon />,
   reports: <InboxIcon />,
   members: <UsersIcon />,

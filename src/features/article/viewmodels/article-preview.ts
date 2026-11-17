@@ -17,8 +17,12 @@ export type ArticlePreview = {
   views: number;
 };
 
-export function getArticlePath(id: number) {
-  return `/article/${id}`;
+export function isNotice(article: Pick<Article, "categories">) {
+  return article.categories.includes("NOTICE");
+}
+
+export function getArticlePath(article: Pick<Article, "id" | "categories">) {
+  return isNotice(article) ? `/notice/${article.id}` : `/article/${article.id}`;
 }
 
 const SUB_CATEGORIES = new Set<Category>(
@@ -51,7 +55,7 @@ export function toArticlePreview(
 ): ArticlePreview {
   return {
     id: article.id,
-    path: getArticlePath(article.id),
+    path: getArticlePath(article),
     title: article.title,
     subtitle: article.subtitle ?? undefined,
     summary: extractSummary(article.content),

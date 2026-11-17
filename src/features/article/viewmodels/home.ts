@@ -1,7 +1,11 @@
 import { dayjs } from "@/common/lib/dayjs";
 import { CATEGORY_GROUPS, type Category } from "@/features/category";
 
-import { toArticlePreview, type ArticlePreview } from "./article-preview";
+import {
+  isNotice,
+  toArticlePreview,
+  type ArticlePreview,
+} from "./article-preview";
 import {
   ARTICLE_FETCH_LIMIT,
   fetchArticles,
@@ -101,15 +105,27 @@ async function loadHomeArticles(): Promise<HomeArticles> {
   const get = async (query: {
     sort: ArticleSort;
     limit: number;
+    offset?: number;
     category?: Category;
   }) => {
     const { data } = await fetchArticles({ query, throwOnError: true });
     return data.articles;
   };
+  // The API can't leave notices out, and one page may hold nothing else.
+  const articlesOnly = async (sort: ArticleSort, size: number) => {
+    const kept: Article[] = [];
+    for (let offset = 0; ; offset += ARTICLE_FETCH_LIMIT) {
+      const page = await get({ sort, offset, limit: ARTICLE_FETCH_LIMIT });
+      kept.push(...page.filter((article) => !isNotice(article)));
+      if (kept.length >= size || page.length < ARTICLE_FETCH_LIMIT) {
+        return kept.slice(0, size);
+      }
+    }
+  };
   const [latest, popular, ...sections] = await Promise.all([
-    get({ sort: "LATEST", limit: ARTICLE_FETCH_LIMIT }),
+    articlesOnly("LATEST", ARTICLE_FETCH_LIMIT),
     // One spare in case the headline is among them.
-    get({ sort: "MOST_POPULAR", limit: HOME_SECTION_SIZE.popular + 1 }),
+    articlesOnly("MOST_POPULAR", HOME_SECTION_SIZE.popular + 1),
     ...CATEGORY_GROUPS.map(async ({ category, children }) => {
       const lists = await Promise.all(
         [category, ...children].map((c) =>
@@ -122,8 +138,13 @@ async function loadHomeArticles(): Promise<HomeArticles> {
   return { latest, popular, categories: Object.fromEntries(sections) };
 }
 
+// Notices have their own board, so no home section shows one.
 function latestUnique(articles: readonly Article[]) {
-  const byId = new Map(articles.map((article) => [article.id, article]));
+  const byId = new Map(
+    articles
+      .filter((article) => !isNotice(article))
+      .map((article) => [article.id, article]),
+  );
   return [...byId.values()].toSorted(
     (a, b) => b.createdAt.getTime() - a.createdAt.getTime() || b.id - a.id,
   );
@@ -159,7 +180,7 @@ export function buildHomeSections(
     featured: rest.slice(0, featured),
     latest: rest.slice(featured, featured + latestSize),
     popular: popular
-      .filter(notHeadline)
+      .filter((article) => notHeadline(article) && !isNotice(article))
       .slice(0, popularSize)
       .map((article) => toArticlePreview(article)),
     spotlight: sections.find((s) => s.category === SPOTLIGHT),

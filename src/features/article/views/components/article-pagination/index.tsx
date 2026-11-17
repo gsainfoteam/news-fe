@@ -18,13 +18,13 @@ export function ArticlePagination({
   current,
   last,
   basePath,
+  pagePath = (page) => getPagePath(basePath, page),
   className,
 }: ArticlePagination.Props) {
   const { t, i18n } = useTranslation();
   if (last <= 1) return null;
 
-  const href = (page: number) =>
-    localizePath(i18n.language, getPagePath(basePath, page));
+  const href = (page: number) => localizePath(i18n.language, pagePath(page));
   // A disabled end keeps its slot so the numbers don't shift.
   const edge = (page: number, enabled: boolean) =>
     enabled ? { href: href(page) } : { "aria-disabled": true as const };
@@ -69,6 +69,8 @@ export namespace ArticlePagination {
     last: number;
     /** Page 1's path, unprefixed (`/category/campus`). */
     basePath: string;
+    /** For lists whose page 2 can't sit at `basePath/2` (notices). */
+    pagePath?: (page: number) => string;
     className?: string;
   };
 }

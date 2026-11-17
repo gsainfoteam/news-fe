@@ -9,6 +9,7 @@ import {
   fetchAllArticles,
   filterByCategory,
   getPopularArticles,
+  isNotice,
   toArticlePreview,
 } from "@/features/article";
 import {
@@ -19,10 +20,11 @@ import {
 import Layout from "@/layouts/layout.astro";
 
 // Every category gets at least page 1, so an empty one shows its empty
-// state; an unknown slug has no page and falls to 404.
+// state; an unknown slug has no page and falls to 404. Notices live on
+// /notice instead.
 export const getStaticPaths = (async ({ paginate }) => {
-  const articles = await fetchAllArticles();
-  return CATEGORIES.flatMap((category) => {
+  const articles = (await fetchAllArticles()).filter((a) => !isNotice(a));
+  return CATEGORIES.filter((c) => c !== "NOTICE").flatMap((category) => {
     const list = filterByCategory(articles, category);
     return paginate(list, {
       pageSize: ARTICLES_PER_PAGE,

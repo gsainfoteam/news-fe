@@ -12,6 +12,7 @@ import {
   MOCK_MEMBERS,
 } from "@/features/article/models/editor-mocks";
 import { handleMe, mockUser } from "@/features/auth/models/mocks";
+import { createMockNotice } from "@/features/notice/models/mocks";
 
 import { AdminArticleEditor, ArticleEditor } from ".";
 
@@ -47,6 +48,26 @@ export const Edit: Story = {
 
 export const EditMobile: Story = {
   ...Edit,
+  globals: { viewport: { value: "mobile" } },
+};
+
+export const NewNotice: Story = { args: { kind: "notice" } };
+
+export const NewNoticeMobile: Story = {
+  ...NewNotice,
+  globals: { viewport: { value: "mobile" } },
+};
+
+export const EditNotice: Story = {
+  render: () => (
+    <AdminGuard section="notices">
+      <ArticleEditor article={createMockNotice(0)} kind="notice" />
+    </AdminGuard>
+  ),
+};
+
+export const EditNoticeMobile: Story = {
+  ...EditNotice,
   globals: { viewport: { value: "mobile" } },
 };
 

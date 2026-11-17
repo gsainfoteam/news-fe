@@ -131,7 +131,7 @@ export async function toArticleDetail(
   const html = await sanitizeArticleHtml(article.content);
   return {
     id: article.id,
-    path: getArticlePath(article.id),
+    path: getArticlePath(article),
     title: article.title,
     subtitle: article.subtitle?.trim() || undefined,
     html,

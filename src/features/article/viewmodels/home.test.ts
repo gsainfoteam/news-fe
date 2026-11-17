@@ -117,6 +117,22 @@ describe("buildHomeSections", () => {
     expect(ids(sections.popular)).toEqual([1, 3, 4, 5, 6]);
   });
 
+  test("leaves notices to the notice board", () => {
+    const notice = withPhoto(0, { categories: ["NOTICE"], views: 9999 });
+    const articles = [notice, ...latest.slice(1)];
+    const sections = buildHomeSections(
+      { latest: articles, popular: articles, categories: {} },
+      new Date("2026-10-30T00:00:00Z"),
+    );
+    const all = [
+      sections.headline,
+      ...sections.featured,
+      ...sections.latest,
+      ...sections.popular,
+    ];
+    expect(all.map((a) => a?.id)).not.toContain(notice.id);
+  });
+
   test("merges a section with its sub-categories, newest first", () => {
     const research = createMockArticle(2, { categories: ["RESEARCH"] });
     const academic = createMockArticle(0, { categories: ["ACADEMIC"] });
