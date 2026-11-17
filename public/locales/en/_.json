@@ -228,7 +228,8 @@
         "title": "Login canceled"
       },
       "consent": {
-        "description": "Accounts logging in for the first time need to agree to the terms and sign up. Sign-up is coming soon.",
+        "description": "Accounts logging in for the first time need to agree to the terms and sign up. Without signing up, you stay logged out.",
+        "relogin": "Accounts logging in for the first time need to agree to the terms and sign up. Log in again to open the sign-up form.",
         "title": "This account needs to sign up"
       },
       "network": {
@@ -240,6 +241,7 @@
         "title": "This account can't log in"
       },
       "retry": "Log in again",
+      "signup": "Sign up",
       "unknown": {
         "description": "Please try again in a moment.",
         "title": "Couldn't log in"
@@ -253,14 +255,51 @@
     "login": "Log in",
     "loginWithAccount": "Log in with Infoteam account",
     "logout": "Log out",
+    "me": {
+      "accountNote": "Your name and email come from your Infoteam account. To change them, edit your Infoteam account.",
+      "agreed": "Agreed to terms",
+      "email": "Email",
+      "joined": "Joined",
+      "name": "Name",
+      "role": "Position",
+      "title": "My account"
+    },
     "menu": {
       "cms": "Open CMS",
       "error": "Couldn't load your account",
-      "label": "My account menu"
+      "label": "My account menu",
+      "me": "My account"
+    },
+    "nickname": {
+      "failed": "Couldn't change your nickname. Please try again in a moment.",
+      "help": "Shown instead of your name on GIST Newspaper. You can change it later in My account.",
+      "label": "Nickname",
+      "meHelp": "Shown instead of your name on GIST Newspaper.",
+      "required": "Enter a nickname",
+      "save": "Save",
+      "saved": "Nickname changed",
+      "saving": "Saving",
+      "tooLong": "Use 20 characters or fewer"
     },
     "required": {
       "description": "Log in with your Infoteam account to see this page.",
       "title": "Login required"
+    },
+    "signup": {
+      "cancel": "Don't sign up",
+      "consent": "Terms",
+      "description": "This is your first login. Choose a nickname and agree to the terms to finish signing up.",
+      "failed": "Couldn't sign up. Please try again in a moment.",
+      "privacy": "(Required) I agree to the collection and use of my personal information",
+      "privacyRequired": "Agree to the collection and use of personal information",
+      "submit": "Agree and sign up",
+      "submitting": "Signing up",
+      "terms": "(Required) I agree to GIST Newspaper Terms of Service",
+      "termsRequired": "Agree to the Terms of Service",
+      "title": "Sign up for GIST Newspaper",
+      "view": "View",
+      "viewPrivacy": "View the privacy policy",
+      "viewTerms": "View the Terms of Service"
     },
     "toHome": "Go home"
   },

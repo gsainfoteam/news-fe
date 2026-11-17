@@ -23,4 +23,5 @@ export {
 export { AuthCallback } from "./views/components/auth-callback";
 export { AuthMessage } from "./views/components/auth-message";
 export { LoginFailed } from "./views/components/login-failed";
+export { MyPage } from "./views/components/my-page";
 export { RequireAuth } from "./views/components/require-auth";

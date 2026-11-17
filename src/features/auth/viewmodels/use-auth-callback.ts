@@ -2,22 +2,28 @@ import { useEffect, useState } from "react";
 
 import { LANGUAGES, type Language } from "@/common/lib/languages";
 
-import { useAccount } from "../models";
+import { AccountError, type SignupInput, useAccount } from "../models";
 import { getLoginFailure, type LoginFailure } from "./login-failure";
+
+type CallbackPage = {
+  /** Where the login started; the failure screen links back to it. */
+  returnTo: string;
+  /** The language of that page; the callback URL itself is Korean. */
+  lng: Language;
+};
 
 export type AuthCallback =
   | { status: "pending" }
-  | {
+  | (CallbackPage & {
+      status: "signup";
+      /** Resolves only when the login went through; the page then leaves. */
+      signup: (input: SignupInput) => Promise<void>;
+    })
+  | (CallbackPage & {
       status: "failed";
       failure: LoginFailure;
-      /** Where the login started; the failure screen links back to it. */
-      returnTo: string;
-      /** The language of that page; the callback URL itself is Korean. */
-      lng: Language;
       login: () => void;
-      /** See `Session`: set after a `consent` failure for NEF-13's signup. */
-      retryLogin?: (body: unknown) => Promise<void>;
-    };
+    });
 
 // Runs on /auth/callback. The SDK finishes the login and has already put the
 // page the login started from in the address bar, but this document is still
@@ -32,7 +38,12 @@ export function useAuthCallback(): AuthCallback {
     retryLogin,
   } = useAccount();
   const [loginError, setLoginError] = useState<typeof error>(null);
+  // A failed signup replaces the SDK's `session_rejected` error with that
+  // failure, but the ticket is still good: the form stays and shows it.
+  const [signingUp, setSigningUp] = useState(false);
   const failed = !isLoading && !isAuthenticated && error !== null;
+  const failure = failed ? getLoginFailure(loginError ?? error) : null;
+  if (!signingUp && failure === "consent" && canRetryLogin) setSigningUp(true);
 
   useEffect(() => {
     if (isLoading || failed) return;
@@ -41,22 +52,46 @@ export function useAuthCallback(): AuthCallback {
     window.location.replace(getCallbackDestination(window.location));
   }, [isLoading, failed]);
 
-  if (!failed) return { status: "pending" };
+  if (!failure) return { status: "pending" };
 
-  const failure = getLoginFailure(loginError ?? error);
+  const page = {
+    returnTo: window.location.href,
+    lng: getPathLanguage(window.location.pathname),
+  };
+  if (signingUp && canRetryLogin) {
+    return {
+      status: "signup",
+      ...page,
+      signup: async (input) => {
+        try {
+          await retryLogin(input);
+        } catch (error) {
+          if (!isTicketExpired(error)) throw error;
+          // The IdP session usually outlives the 5-minute ticket, so this
+          // comes straight back with a fresh one.
+          await login();
+          return new Promise(() => undefined);
+        }
+      },
+    };
+  }
   return {
     status: "failed",
     failure,
-    returnTo: window.location.href,
-    lng: getPathLanguage(window.location.pathname),
+    ...page,
     // `login()` rejects only when the IdP can't be reached; the failure
     // screen then shows that instead of a button that seems to do nothing.
     login: () => {
       setLoginError(null);
       login().catch(setLoginError);
     },
-    retryLogin: failure === "consent" && canRetryLogin ? retryLogin : undefined,
   };
+}
+
+// news-be answers a ticket older than 5 minutes (or one it can't verify)
+// with 401; the SDK passes the status on.
+export function isTicketExpired(error: unknown) {
+  return AccountError.is(error) && error.status === 401;
 }
 
 const CALLBACK_PATH = /^(\/en)?\/auth\/callback\/?$/;
