@@ -19,3 +19,11 @@ export function toSafeFileName(name: string) {
   const safeBase = /[a-zA-Z0-9]/.test(base) ? base : "file";
   return ext ? `${safeBase}.${ext}` : safeBase;
 }
+
+const round1 = (n: number) => Math.round(n * 10) / 10;
+
+export function formatFileSize(bytes: number) {
+  if (bytes < 1024) return `${bytes}B`;
+  if (bytes < 1024 ** 2) return `${round1(bytes / 1024)}KB`;
+  return `${round1(bytes / 1024 ** 2)}MB`;
+}

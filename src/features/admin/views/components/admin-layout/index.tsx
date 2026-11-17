@@ -1,6 +1,7 @@
 import { type ReactNode } from "react";
 
 import {
+  ArchiveIcon,
   ExternalLinkIcon,
   InboxIcon,
   InfoIcon,
@@ -38,6 +39,7 @@ import {
 
 const ICONS: Record<AdminSection, ReactNode> = {
   articles: <NewspaperIcon />,
+  archive: <ArchiveIcon />,
   reports: <InboxIcon />,
   members: <UsersIcon />,
   about: <InfoIcon />,
