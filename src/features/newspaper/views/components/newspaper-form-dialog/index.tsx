@@ -149,7 +149,7 @@ function NewspaperForm({
         <DialogDescription>
           {t(
             "newspaper.form.notice",
-            "저장하면 CMS에는 바로 보이고, 사이트의 지면 보기에는 다음 배포부터 나옵니다.",
+            "사이트의 지면 보기에는 1~2분 뒤 반영됩니다.",
           )}
         </DialogDescription>
       </DialogHeader>

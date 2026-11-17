@@ -371,7 +371,7 @@
   "newspaper": {
     "count": "지면 {{count}}개",
     "delete": {
-      "description": "PDF 파일도 함께 지워지고 되돌릴 수 없습니다. 사이트의 지면 보기에서는 다음 배포 때 사라집니다.",
+      "description": "PDF 파일도 함께 지워지고 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
       "title": "{{title}} 지면을 삭제할까요?"
     },
     "form": {
@@ -386,7 +386,7 @@
       "fileTooLarge": "{{size}}보다 큰 파일은 올릴 수 없습니다",
       "fileType": "PDF 파일만 올릴 수 있습니다",
       "limit": "{{size}}까지 올릴 수 있습니다.",
-      "notice": "저장하면 CMS에는 바로 보이고, 사이트의 지면 보기에는 다음 배포부터 나옵니다.",
+      "notice": "사이트의 지면 보기에는 1~2분 뒤 반영됩니다.",
       "progress": "{{name}} 업로드",
       "removeFile": "파일 빼기",
       "save": "저장",

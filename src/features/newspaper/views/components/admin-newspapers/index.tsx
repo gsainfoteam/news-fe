@@ -147,7 +147,7 @@ export function NewspaperManagement() {
             <AlertDialogDescription>
               {t(
                 "newspaper.delete.description",
-                "PDF 파일도 함께 지워지고 되돌릴 수 없습니다. 사이트의 지면 보기에서는 다음 배포 때 사라집니다.",
+                "PDF 파일도 함께 지워지고 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
