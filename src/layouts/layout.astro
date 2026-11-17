@@ -1,4 +1,5 @@
 ---
+import { SITE_NOINDEX } from "astro:env/server";
 import { getAbsoluteLocaleUrl } from "astro:i18n";
 
 import "@/styles/global.css";
@@ -8,7 +9,7 @@ import { MobileMenu } from "@/common/components/layout/mobile-menu";
 // Initialize i18next + dayjs locale sync once for every page (server render).
 import "@/common/lib/dayjs";
 import { getPageI18n } from "@/common/lib/i18n";
-import { LANGUAGES } from "@/common/lib/languages";
+import { delocalizePath, LANGUAGES } from "@/common/lib/languages";
 import { AccountMenu, AccountMenuSkeleton } from "@/features/auth";
 import { type Category } from "@/features/category";
 
@@ -20,8 +21,9 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   category?: Category;
-  /** For pages served at any URL (404): no canonical, hreflang, or og:url. */
   noindex?: boolean;
+  /** For pages served at any URL (404): no canonical, hreflang, or og:url. */
+  noCanonical?: boolean;
   /** Drop the page column so sections can run edge to edge (home hero). */
   fullWidth?: boolean;
 }
@@ -36,22 +38,21 @@ const {
     "site.description",
     "광주과학기술원(GIST) 학생들이 만드는 신문입니다.",
   ),
-  image = "/logo.png",
+  image = "/og-image.png",
   type = "website",
   category,
   noindex = false,
+  noCanonical = false,
   fullWidth = false,
 } = Astro.props;
 
 const fullTitle = title ? `${title} | ${siteName}` : siteName;
-// The /en/ fallback rewrite keeps the prefix in the pathname; strip it so
-// each hreflang link points at its own language.
-const basePath =
-  locale === "ko"
-    ? Astro.url.pathname
-    : Astro.url.pathname.slice(`/${locale}`.length) || "/";
+// Without this, /en/ pages would get /en/en/ alternates.
+const basePath = delocalizePath(Astro.url.pathname);
 const canonical = getAbsoluteLocaleUrl(locale, basePath);
 const imageUrl = new URL(image, Astro.site).href;
+// Only the default image has a known size; article photos vary.
+const isDefaultImage = !Astro.props.image;
 ---
 
 <html lang={locale}>
@@ -64,10 +65,9 @@ const imageUrl = new URL(image, Astro.site).href;
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {(noindex || SITE_NOINDEX) && <meta name="robots" content="noindex" />}
     {
-      noindex ? (
-        <meta name="robots" content="noindex" />
-      ) : (
+      !noCanonical && (
         <>
           <link rel="canonical" href={canonical} />
           {LANGUAGES.map((lng) => (
@@ -77,6 +77,11 @@ const imageUrl = new URL(image, Astro.site).href;
               href={getAbsoluteLocaleUrl(lng, basePath)}
             />
           ))}
+          <link
+            rel="alternate"
+            hreflang="x-default"
+            href={getAbsoluteLocaleUrl("ko", basePath)}
+          />
           <meta property="og:url" content={canonical} />
         </>
       )
@@ -86,16 +91,30 @@ const imageUrl = new URL(image, Astro.site).href;
     <meta property="og:title" content={title ?? siteName} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageUrl} />
+    {
+      isDefaultImage && (
+        <>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content={siteName} />
+        </>
+      )
+    }
     <meta property="og:locale" content={locale === "ko" ? "ko_KR" : "en_US"} />
     <meta name="twitter:card" content="summary_large_image" />
     <slot name="head" />
   </head>
   <body class="flex min-h-dvh flex-col">
-    <Header i18n={i18n} currentCategory={category}>
+    <Header
+      i18n={i18n}
+      currentPath={Astro.url.pathname}
+      currentCategory={category}
+    >
       <MobileMenu
         slot="menu"
         client:media="(max-width: 720px)"
         lng={locale}
+        currentPath={Astro.url.pathname}
         currentCategory={category}
       />
       <AccountMenu slot="account" client:only="react" lng={locale}>
@@ -106,5 +125,10 @@ const imageUrl = new URL(image, Astro.site).href;
       <slot />
     </main>
     <Footer i18n={i18n} />
+    <script>
+      import { bindLanguageSwitch } from "@/common/lib/languages";
+
+      bindLanguageSwitch();
+    </script>
   </body>
 </html>

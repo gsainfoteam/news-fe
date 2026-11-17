@@ -12,8 +12,6 @@ import { AccountMenu } from ".";
 
 const msw = (...handlers: unknown[]) => ({ msw: { handlers } });
 
-// The header slot, by session state. Every story starts with a refresh
-// cookie (see .storybook/preview.tsx) unless it overrides `/auth/refresh`.
 const meta = {
   title: "Auth/AccountMenu",
   component: AccountMenu,
@@ -28,11 +26,9 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A member: the menu links to the CMS. */
 export const Default: Story = {};
 export const Mobile: Story = { globals: { viewport: { value: "mobile" } } };
 
-/** A reader with no newsroom role: no CMS link. */
 export const Reader: Story = {
   parameters: msw(
     handleMe(
@@ -54,8 +50,6 @@ export const LoggedOutMobile: Story = {
   globals: { viewport: { value: "mobile" } },
 };
 
-/** Restoring the session: a placeholder the size of the login button. */
 export const Loading: Story = { parameters: msw(handleSessionPending()) };
 
-/** Logged in, but `GET /user/me` failed. */
 export const ProfileError: Story = { parameters: msw(handleMeError()) };

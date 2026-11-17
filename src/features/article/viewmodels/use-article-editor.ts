@@ -13,6 +13,9 @@ import {
 import {
   type ArticleDraft,
   type ArticleDraftErrors,
+  getDetachedThumbnail,
+  getSelectedThumbnail,
+  getThumbnailOptions,
   hasPendingImages,
   toArticleDraft,
   toArticleInput,
@@ -27,12 +30,18 @@ export type ArticleSaveResult =
   | { status: "uploading" }
   | { status: "failed" };
 
-export function useArticleEditor(article?: Article) {
+export function useArticleEditor(
+  article?: Article,
+  defaults?: Partial<ArticleDraft>,
+) {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const images = useArticleImages();
   const [saved, setSaved] = useState(article);
-  const [draft, setDraft] = useState(() => toArticleDraft(article));
+  const [draft, setDraft] = useState(() => ({
+    ...toArticleDraft(article),
+    ...(!article && defaults),
+  }));
   const [baseline, setBaseline] = useState(draft);
   const [errors, setErrors] = useState<ArticleDraftErrors>({});
   const uploading = useSyncExternalStore(
@@ -109,6 +118,8 @@ export function useArticleEditor(article?: Article) {
     }
   };
 
+  const detached = getDetachedThumbnail(saved);
+
   return {
     /** The article as last saved; undefined until a new one is first saved. */
     article: saved,
@@ -121,5 +132,9 @@ export function useArticleEditor(article?: Article) {
     saving: create.isPending || update.isPending,
     save,
     images,
+    thumbnail: {
+      options: getThumbnailOptions(draft.content, detached),
+      selected: getSelectedThumbnail(draft, detached),
+    },
   };
 }

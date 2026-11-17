@@ -8,7 +8,6 @@ import {
 } from ".";
 import { mockUser } from "./mocks";
 
-// The SDK runs in a browser; give it the few globals it touches.
 class MemoryStorage implements Storage {
   #items = new Map<string, string>();
   get length() {
@@ -45,8 +44,6 @@ beforeEach(() => {
     sessionStorage: new MemoryStorage(),
     localStorage: new MemoryStorage(),
   });
-  // news-be: each refresh issues the next token; only the newest one is
-  // accepted, as after the previous access token expired.
   tokens = ["expired", "fresh"];
   calls = [];
   nicknames = [];

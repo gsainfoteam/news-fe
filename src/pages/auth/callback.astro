@@ -3,8 +3,6 @@ import { getPageI18n } from "@/common/lib/i18n";
 import { AuthCallback } from "@/features/auth";
 import Layout from "@/layouts/layout.astro";
 
-// The SDK finishes the IdP login here before anything renders, then the
-// island loads the page the login started from.
 const { t } = getPageI18n(Astro.currentLocale);
 const title = t("auth.callback.title", "로그인");
 ---

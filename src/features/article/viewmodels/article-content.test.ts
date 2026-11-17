@@ -4,8 +4,33 @@ import {
   decodeEntities,
   extractSummary,
   extractThumbnail,
+  pickThumbnail,
   toPlainText,
 } from "./article-content";
+
+describe("pickThumbnail", () => {
+  const body = '<p>본문</p><img src="https://cdn.test/body.jpg">';
+
+  test("the picked image wins over the body", () => {
+    expect(pickThumbnail("https://cdn.test/picked.jpg", body)).toBe(
+      "https://cdn.test/picked.jpg",
+    );
+  });
+
+  test("without a pick, the first body image stands in", () => {
+    expect(pickThumbnail(null, body)).toBe("https://cdn.test/body.jpg");
+    expect(pickThumbnail(undefined, body)).toBe("https://cdn.test/body.jpg");
+    // news-be returns the key itself when it is an empty string.
+    expect(pickThumbnail("", body)).toBe("https://cdn.test/body.jpg");
+  });
+
+  test("a picked URL that isn't http(s) falls back too", () => {
+    expect(pickThumbnail("javascript:alert(1)", body)).toBe(
+      "https://cdn.test/body.jpg",
+    );
+    expect(pickThumbnail(null, "<p>사진 없음</p>")).toBeUndefined();
+  });
+});
 
 describe("extractThumbnail", () => {
   test("takes the first image in the body", () => {

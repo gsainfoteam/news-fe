@@ -1,0 +1,41 @@
+---
+import { type GetStaticPaths, type InferGetStaticPropsType } from "astro";
+
+import { getPageI18n } from "@/common/lib/i18n";
+import {
+  fetchAllNotices,
+  NoticeList,
+  paginateNotices,
+} from "@/features/notice";
+import Layout from "@/layouts/layout.astro";
+
+// Not /notice/2: that is the notice with id 2 ([id].astro).
+export const getStaticPaths = (async () => {
+  const pages = paginateNotices(await fetchAllNotices());
+  return pages.map((list) => ({
+    params: {
+      page: list.page.current > 1 ? `page/${list.page.current}` : undefined,
+    },
+    props: { list },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { list } = Astro.props;
+const i18n = getPageI18n(Astro.currentLocale);
+const { t } = i18n;
+const label = t("notice.title", "공지사항");
+const title =
+  list.page.current > 1
+    ? t("notice.pageTitle", "{{title}} {{page}}쪽", {
+        title: label,
+        page: list.page.current,
+      })
+    : label;
+const description = t("notice.pageDescription", "지스트신문 공지사항");
+---
+
+<Layout title={title} description={description} category="NOTICE">
+  <NoticeList i18n={i18n} {...list} />
+</Layout>

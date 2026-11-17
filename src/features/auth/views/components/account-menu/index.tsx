@@ -35,8 +35,6 @@ import { AuthProvider } from "../../../viewmodels/auth-provider";
 import { isActiveMember } from "../../../viewmodels/permission";
 import { useSession } from "../../../viewmodels/use-session";
 
-// The header's login button and profile menu, a `client:only` island: the
-// session exists only in the browser. See MobileMenu for the `lng` prop.
 export function AccountMenu({ lng }: AccountMenu.Props) {
   const i18n = useMemo(() => (lng ? getPageI18n(lng) : appI18n), [lng]);
   return (
@@ -56,8 +54,6 @@ export namespace AccountMenu {
   };
 }
 
-// Same footprint as the logged-out button, so the header doesn't shift
-// while the session is restored.
 export function AccountMenuSkeleton() {
   return (
     <Skeleton
@@ -134,8 +130,6 @@ function ProfileMenu({ user, children }: { user?: User; children: ReactNode }) {
           <Button
             variant="ghost"
             size="icon"
-            // The avatar is the button; a hover circle around it doubles its
-            // size and stays after a tap on touch screens.
             className="size-9 rounded-full hover:bg-transparent hover:opacity-80 mobile:size-10"
           />
         }

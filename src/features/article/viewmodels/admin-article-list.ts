@@ -1,5 +1,6 @@
 import { CATEGORIES, type Category } from "@/features/category";
 
+import { isNotice } from "./article-preview";
 import { type Article, type ArticleSort } from "../models";
 
 export const ADMIN_PAGE_SIZE = 20;
@@ -72,6 +73,11 @@ export function getPageWindow(page: number, pageCount: number, size = 5) {
   );
   const end = Math.min(pageCount, start + size - 1);
   return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
+export function getAdminEditPath(article: Pick<Article, "id" | "categories">) {
+  const base = isNotice(article) ? "/admin/notices" : "/admin/articles";
+  return `${base}/edit?id=${article.id}`;
 }
 
 export function getAuthorNames(article: Pick<Article, "authors">) {

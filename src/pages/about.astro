@@ -1,0 +1,15 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AboutPage, loadAbout, toAboutPage } from "@/features/about";
+import Layout from "@/layouts/layout.astro";
+
+const i18n = getPageI18n(Astro.currentLocale);
+const { t } = i18n;
+const about = toAboutPage(await loadAbout());
+const title = t("about.kicker", "신문 소개");
+const description = about.paragraphs[0];
+---
+
+<Layout title={title} description={description}>
+  <AboutPage i18n={i18n} about={about} />
+</Layout>

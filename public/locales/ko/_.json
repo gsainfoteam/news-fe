@@ -1,4 +1,63 @@
 {
+  "about": {
+    "address": "주소",
+    "admin": {
+      "addHistory": "연혁 추가",
+      "cancel": "취소",
+      "content": "내용",
+      "contentPlaceholder": "예: 지스트신문 50호 발행",
+      "date": "날짜",
+      "delete": "삭제",
+      "deleteEntry": "{{date}} 삭제",
+      "deleteTitle": "{{date}} 연혁을 삭제할까요?",
+      "description": "신문 소개 페이지의 소개 문구, 발행 정보, 연혁을 고칩니다",
+      "edit": "수정",
+      "editEntry": "{{date}} 수정",
+      "historyCount": "항목 {{count}}개",
+      "infoDescription": "신문 소개 페이지와 같은 순서로 보입니다",
+      "infoTitle": "소개와 발행 정보",
+      "introductionHelp": "줄을 바꾸면 문단이 나뉩니다.",
+      "loadFailed": "신문 소개를 불러오지 못했습니다",
+      "save": "저장",
+      "title": "신문 소개",
+      "unchanged": "바뀐 내용이 없습니다",
+      "viewPage": "페이지 보기"
+    },
+    "director": "주간",
+    "editorInChief": "편집장",
+    "email": "이메일",
+    "error": {
+      "addressRequired": "주소를 입력해 주세요",
+      "contentRequired": "내용을 입력해 주세요",
+      "dateInvalid": "날짜를 YYYY-MM-DD 형식으로 입력해 주세요",
+      "dateRequired": "날짜를 골라 주세요",
+      "emailInvalid": "이메일 형식을 확인해 주세요",
+      "introductionRequired": "소개 문구를 입력해 주세요",
+      "nameRequired": "이름을 입력해 주세요",
+      "tooLong": "{{max}}자 이하로 입력해 주세요",
+      "urlInvalid": "https://로 시작하는 주소를 입력해 주세요"
+    },
+    "foundedAt": "창간",
+    "history": "연혁",
+    "historyEmpty": "아직 등록된 연혁이 없습니다.",
+    "homepage": "홈페이지",
+    "instagram": "인스타그램",
+    "introduction": "소개",
+    "kicker": "신문 소개",
+    "masthead": "발행 정보",
+    "publisher": "발행인",
+    "toast": {
+      "historyAdded": "연혁을 추가했습니다",
+      "historyAddFailed": "연혁을 추가하지 못했습니다",
+      "historyDeleted": "연혁을 삭제했습니다",
+      "historyDeleteFailed": "연혁을 삭제하지 못했습니다",
+      "historyUpdated": "연혁을 고쳤습니다",
+      "historyUpdateFailed": "연혁을 고치지 못했습니다",
+      "rebuild": "사이트에는 1~2분 뒤에 반영됩니다.",
+      "saved": "소개를 저장했습니다",
+      "saveFailed": "소개를 저장하지 못했습니다"
+    }
+  },
   "admin": {
     "accountMenu": "내 계정 메뉴",
     "articles": {
@@ -76,7 +135,7 @@
         "uploading": "이미지 올리는 중… {{percent}}%"
       },
       "images": "이미지",
-      "imagesHelp": "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 목록 썸네일과 링크 미리보기 이미지로 쓰입니다.",
+      "imagesUploadHelp": "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요.",
       "invalid": "입력하지 않은 항목이 있습니다",
       "italic": "기울임",
       "link": "링크",
@@ -106,6 +165,13 @@
       "saveHelp": "저장 후 사이트에 반영되기까지 1~2분 걸립니다.",
       "searchMember": "멤버 검색",
       "subtitle": "부제목 (선택)",
+      "thumbnail": "대표 이미지",
+      "thumbnailAuto": "자동",
+      "thumbnailDetached": "지금 대표 이미지 (본문에 없음)",
+      "thumbnailEmpty": "본문에 이미지를 넣으면 여기서 대표 이미지를 고를 수 있습니다.",
+      "thumbnailHelp": "목록 썸네일과 링크 미리보기에 쓰입니다. 자동으로 두면 본문의 첫 이미지를 씁니다.",
+      "thumbnailImage": "본문 {{n}}번째 이미지",
+      "thumbnailNotInBody": "본문에 없음",
       "title": "제목",
       "toolbar": "서식",
       "undo": "실행 취소",
@@ -135,11 +201,32 @@
     },
     "logout": "로그아웃",
     "nav": {
+      "about": "신문 소개",
+      "archive": "지면 PDF",
       "articles": "기사",
       "editorshipOnly": "편집장 전용",
       "label": "CMS 메뉴",
       "members": "멤버 관리",
+      "notices": "공지사항",
       "reports": "제보함"
+    },
+    "notices": {
+      "backToList": "공지 목록",
+      "caption": "공지 목록",
+      "confirm": {
+        "description": "‘{{title}}’ 공지를 삭제하면 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
+        "title": "이 공지를 삭제할까요?"
+      },
+      "deleted": "공지를 삭제했습니다",
+      "deleteFailed": "공지를 삭제하지 못했습니다",
+      "editTitle": "공지 수정",
+      "empty": "조건에 맞는 공지가 없습니다",
+      "loadFailed": "공지 목록을 불러오지 못했습니다",
+      "new": "새 공지 작성",
+      "newTitle": "새 공지",
+      "notFound": "공지를 찾을 수 없습니다",
+      "published": "공지를 발행했습니다",
+      "title": "공지사항"
     },
     "reports": {
       "backToList": "제보 목록",
@@ -186,6 +273,14 @@
     },
     "site": "사이트",
     "siteHome": "지스트신문 사이트"
+  },
+  "archive": {
+    "count": "총 {{count}}호",
+    "description": "종이 신문으로 발행한 지면을 호마다 PDF로 볼 수 있습니다.",
+    "empty": "아직 올라온 지면이 없습니다",
+    "pageDescription": "지스트신문 지면을 호마다 PDF로 볼 수 있습니다.",
+    "title": "지면 보기",
+    "year": "{{year}}년"
   },
   "article": {
     "byline": "{{names}} 기자",
@@ -334,7 +429,9 @@
     "title": "내용을 불러오지 못했습니다"
   },
   "footer": {
+    "about": "신문 소개",
     "address": "광주광역시 북구 첨단과기로 123 제1학생회관 3층 GIST신문사",
+    "archive": "지면 보기",
     "newTab": "(새 탭에서 열림)",
     "staff": "편집장 {{editor}}, 웹관리 {{webManager}}"
   },
@@ -444,10 +541,79 @@
       "roleFailed": "직책을 바꾸지 못했습니다"
     }
   },
+  "newspaper": {
+    "count": "지면 {{count}}개",
+    "delete": {
+      "description": "PDF 파일도 함께 지워지고 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
+      "title": "{{title}} 지면을 삭제할까요?"
+    },
+    "form": {
+      "cancel": "취소",
+      "createTitle": "지면 올리기",
+      "dropzone": "PDF를 끌어다 놓거나 <action>선택</action>하세요",
+      "editTitle": "{{title}} 수정",
+      "file": "PDF 파일",
+      "fileEmpty": "빈 파일은 올릴 수 없습니다",
+      "fileOptional": "바꿀 때만 고르세요",
+      "fileRequired": "PDF 파일을 골라 주세요",
+      "fileTooLarge": "{{size}}보다 큰 파일은 올릴 수 없습니다",
+      "fileType": "PDF 파일만 올릴 수 있습니다",
+      "limit": "{{size}}까지 올릴 수 있습니다.",
+      "notice": "사이트의 지면 보기에는 1~2분 뒤 반영됩니다.",
+      "progress": "{{name}} 업로드",
+      "removeFile": "파일 빼기",
+      "save": "저장",
+      "title": "제목",
+      "titlePlaceholder": "제N호",
+      "titleRequired": "제목을 입력해 주세요",
+      "titleTooLong": "제목은 {{max}}자까지 쓸 수 있습니다",
+      "upload": "올리기"
+    },
+    "loadFailed": "지면 목록을 불러오지 못했습니다",
+    "table": {
+      "actions": "작업",
+      "caption": "지면 목록",
+      "createdAt": "등록일",
+      "createdOn": "{{date}} 등록",
+      "delete": "삭제",
+      "edit": "수정",
+      "empty": "올린 지면이 없습니다",
+      "menu": "{{title}} 작업 메뉴",
+      "open": "PDF 열기",
+      "title": "제목",
+      "updatedAt": "수정일"
+    },
+    "title": "지면 PDF",
+    "toast": {
+      "deleted": "{{title}} 지면을 삭제했습니다",
+      "deleteFailed": "지면을 삭제하지 못했습니다",
+      "saved": "{{title}} 지면을 저장했습니다",
+      "saveFailed": "지면을 저장하지 못했습니다",
+      "uploaded": "{{title}} 지면을 올렸습니다",
+      "uploadFailed": "지면을 올리지 못했습니다"
+    },
+    "upload": "지면 올리기"
+  },
   "notFound": {
     "description": "주소가 바뀌었거나 삭제된 기사일 수 있습니다. 방금 발행된 기사는 사이트에 반영되기까지 1~2분 걸립니다.",
     "home": "홈으로 가기",
     "title": "페이지를 찾을 수 없습니다"
+  },
+  "notice": {
+    "adjacent": "다른 공지",
+    "backToList": "목록으로",
+    "count": "공지 {{count}}건",
+    "empty": {
+      "description": "공지가 올라오면 이곳에 보입니다.",
+      "title": "아직 공지가 없습니다"
+    },
+    "newer": "다음 공지",
+    "older": "이전 공지",
+    "pageDescription": "지스트신문 공지사항",
+    "pageTitle": "{{title}} {{page}}쪽",
+    "publishedAt": "게시 {{date}}",
+    "title": "공지사항",
+    "updatedAt": "수정 {{date}}"
   },
   "pagination": {
     "label": "페이지",

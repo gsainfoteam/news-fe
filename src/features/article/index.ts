@@ -32,6 +32,7 @@ export {
 export {
   getArticlePath,
   getKickerCategory,
+  isNotice,
   toArticlePreview,
   type ArticlePreview,
 } from "./viewmodels/article-preview";
@@ -50,7 +51,7 @@ export {
 } from "./views/components/article-editor";
 export { ArticleCard } from "./views/components/article-card";
 export { ArticleList } from "./views/components/article-list";
-export { ArticlePage } from "./views/components/article-page";
+export { ArticleBody, ArticlePage } from "./views/components/article-page";
 export { ArticlePagination } from "./views/components/article-pagination";
 export { CategoryArticles } from "./views/components/category-articles";
 export { HomeArticles } from "./views/components/home-articles";

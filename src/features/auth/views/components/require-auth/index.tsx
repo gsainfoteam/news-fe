@@ -15,9 +15,6 @@ import { useSession } from "../../../viewmodels/use-session";
 import { AuthMessage } from "../auth-message";
 import { LoginFailed } from "../login-failed";
 
-// Wraps a page that needs a login (`/me`, `/admin/*`) as the island root.
-// Static pages have no router guard, so the page itself waits for the
-// session and shows the login screen in place of its content.
 export function RequireAuth(props: RequireAuth.Props) {
   return (
     <QueryProvider>
@@ -33,9 +30,7 @@ export namespace RequireAuth {
 
   export type Props = {
     children: ReactNode | ((session: Signed) => ReactNode);
-    /** Places the loading, error and login screens inside the page frame. */
     frame?: (screen: ReactNode) => ReactNode;
-    /** Replaces the default login prompt, e.g. with CMS-specific copy. */
     loginScreen?: (login: () => void) => ReactNode;
   };
 }

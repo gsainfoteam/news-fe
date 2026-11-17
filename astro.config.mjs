@@ -8,11 +8,18 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 import { loadEnv } from "vite";
 
-const { API_BASE_URL } = loadEnv(
-  process.env.NODE_ENV ?? "development",
-  process.cwd(),
-  "",
-);
+// Astro reads this file before it resolves `--mode`, so take the mode from
+// argv: `astro build` defaults to production, everything else to development.
+const modeArg = process.argv.findIndex((arg) => arg.startsWith("--mode"));
+const mode =
+  modeArg === -1
+    ? process.argv.includes("build")
+      ? "production"
+      : "development"
+    : (process.argv[modeArg].split("=")[1] ?? process.argv[modeArg + 1]);
+
+const { API_BASE_URL, SITE } = loadEnv(mode, process.cwd(), "");
+if (!SITE) throw new Error(`SITE is not set for mode "${mode}"`);
 
 // Cloudflare Pages answers a missing path with the nearest `404.html` up the
 // tree, but the i18n fallback writes `/en/404/index.html`. Without this move,
@@ -31,10 +38,6 @@ const localizedNotFound = {
   },
 };
 
-// The IdP sends logins back to `/auth/callback` exactly, but Cloudflare Pages
-// answers that path with a 308 to `/auth/callback/` when the page is a
-// directory index, and the SDK only finishes a login on the registered path.
-// A flat `callback.html` is served at the path itself.
 /** @type {import("astro").AstroIntegration} */
 const flatAuthCallback = {
   name: "flat-auth-callback",
@@ -51,8 +54,9 @@ const flatAuthCallback = {
 
 // https://astro.build/config
 export default defineConfig({
-  // OG tags, canonical, and hreflang need absolute URLs.
-  site: "https://news.gistory.me",
+  // OG tags, canonical, and hreflang need absolute URLs on the domain that
+  // serves the build, or link previews point at the other environment.
+  site: SITE,
 
   // Staging news-be and its S3 bucket allow only this origin through CORS.
   server: { port: 5173 },
@@ -78,7 +82,6 @@ export default defineConfig({
   env: {
     schema: {
       API_BASE_URL: envField.string({ context: "client", access: "public" }),
-      // The IdP environment and the news client registered there.
       ACCOUNT_ISSUER: envField.enum({
         context: "client",
         access: "public",
@@ -87,6 +90,12 @@ export default defineConfig({
       ACCOUNT_CLIENT_ID: envField.string({
         context: "client",
         access: "public",
+      }),
+      // Set to true in a mode's .env to keep every page out of search engines.
+      SITE_NOINDEX: envField.boolean({
+        context: "server",
+        access: "public",
+        default: false,
       }),
     },
   },
@@ -102,8 +111,6 @@ export default defineConfig({
           target: API_BASE_URL,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api/, ""),
-          // news-be scopes the refresh cookie to `/auth`; behind the proxy
-          // the browser calls `/api/auth/…` and would never send it back.
           cookiePathRewrite: { "/auth": "/api/auth" },
         },
       },
