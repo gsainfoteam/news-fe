@@ -1,4 +1,5 @@
 ---
+import { SITE_NOINDEX } from "astro:env/server";
 import { getAbsoluteLocaleUrl } from "astro:i18n";
 
 import "@/styles/global.css";
@@ -19,8 +20,9 @@ interface Props {
   image?: string;
   type?: "website" | "article";
   category?: Category;
-  /** For pages served at any URL (404): no canonical, hreflang, or og:url. */
   noindex?: boolean;
+  /** For pages served at any URL (404): no canonical, hreflang, or og:url. */
+  noCanonical?: boolean;
   /** Drop the page column so sections can run edge to edge (home hero). */
   fullWidth?: boolean;
 }
@@ -35,10 +37,11 @@ const {
     "site.description",
     "광주과학기술원(GIST) 학생들이 만드는 신문입니다.",
   ),
-  image = "/logo.png",
+  image = "/og-image.png",
   type = "website",
   category,
   noindex = false,
+  noCanonical = false,
   fullWidth = false,
 } = Astro.props;
 
@@ -51,6 +54,8 @@ const basePath =
     : Astro.url.pathname.slice(`/${locale}`.length) || "/";
 const canonical = getAbsoluteLocaleUrl(locale, basePath);
 const imageUrl = new URL(image, Astro.site).href;
+// Only the default image has a known size; article photos vary.
+const isDefaultImage = !Astro.props.image;
 ---
 
 <html lang={locale}>
@@ -63,10 +68,9 @@ const imageUrl = new URL(image, Astro.site).href;
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    {(noindex || SITE_NOINDEX) && <meta name="robots" content="noindex" />}
     {
-      noindex ? (
-        <meta name="robots" content="noindex" />
-      ) : (
+      !noCanonical && (
         <>
           <link rel="canonical" href={canonical} />
           {LANGUAGES.map((lng) => (
@@ -85,6 +89,15 @@ const imageUrl = new URL(image, Astro.site).href;
     <meta property="og:title" content={title ?? siteName} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageUrl} />
+    {
+      isDefaultImage && (
+        <>
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content={siteName} />
+        </>
+      )
+    }
     <meta property="og:locale" content={locale === "ko" ? "ko_KR" : "en_US"} />
     <meta name="twitter:card" content="summary_large_image" />
     <slot name="head" />
