@@ -3,6 +3,7 @@ import { type ReactNode } from "react";
 import {
   ExternalLinkIcon,
   InboxIcon,
+  InfoIcon,
   LogOutIcon,
   NewspaperIcon,
   UsersIcon,
@@ -39,6 +40,7 @@ const ICONS: Record<AdminSection, ReactNode> = {
   articles: <NewspaperIcon />,
   reports: <InboxIcon />,
   members: <UsersIcon />,
+  about: <InfoIcon />,
 };
 
 export function AdminLayout({ user, section, children }: AdminLayout.Props) {

@@ -10,8 +10,13 @@ const sections = (permission: "NONE" | "EDITOR" | "EDITORSHIP") =>
 describe("getAdminNav", () => {
   test("shows only the menus each permission can open", () => {
     expect(sections("NONE")).toEqual(["reports"]);
-    expect(sections("EDITOR")).toEqual(["articles", "reports"]);
-    expect(sections("EDITORSHIP")).toEqual(["articles", "reports", "members"]);
+    expect(sections("EDITOR")).toEqual(["articles", "reports", "about"]);
+    expect(sections("EDITORSHIP")).toEqual([
+      "articles",
+      "reports",
+      "about",
+      "members",
+    ]);
   });
 
   test("prefixes paths with the language", () => {
@@ -25,5 +30,6 @@ describe("getSectionPermission", () => {
     expect(getSectionPermission("articles")).toBe("EDITOR");
     expect(getSectionPermission("reports")).toBe("NONE");
     expect(getSectionPermission("members")).toBe("EDITORSHIP");
+    expect(getSectionPermission("about")).toBe("EDITOR");
   });
 });

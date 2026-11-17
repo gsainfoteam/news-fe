@@ -3,7 +3,7 @@ import { type TFunction } from "i18next";
 import { localizePath } from "@/common/lib/languages";
 import { hasPermission, type Permission, type User } from "@/features/auth";
 
-export type AdminSection = "articles" | "reports" | "members";
+export type AdminSection = "articles" | "reports" | "members" | "about";
 
 export type AdminNavItem = {
   section: AdminSection;
@@ -18,6 +18,7 @@ export type AdminNavItem = {
 const SECTIONS: readonly Omit<AdminNavItem, "label" | "href">[] = [
   { section: "articles", required: "EDITOR" },
   { section: "reports", required: "NONE" },
+  { section: "about", required: "EDITOR" },
   { section: "members", required: "EDITORSHIP" },
 ];
 
@@ -25,6 +26,7 @@ const PATHS: Record<AdminSection, string> = {
   articles: "/admin",
   reports: "/admin/reports",
   members: "/admin/members",
+  about: "/admin/about",
 };
 
 export function getSectionPermission(section: AdminSection): Permission {
@@ -40,6 +42,7 @@ export function getAdminNav(
     articles: t("admin.nav.articles", "기사"),
     reports: t("admin.nav.reports", "제보함"),
     members: t("admin.nav.members", "멤버 관리"),
+    about: t("admin.nav.about", "신문 소개"),
   };
   return SECTIONS.filter((s) => hasPermission(user, s.required)).map((s) => ({
     ...s,
