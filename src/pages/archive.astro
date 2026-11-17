@@ -1,0 +1,24 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import {
+  fetchAllNewspapers,
+  NewspaperArchive,
+  toArchiveYears,
+} from "@/features/newspaper";
+import Layout from "@/layouts/layout.astro";
+
+// The PDF URLs are public and don't expire, so the list is baked in at build
+// time like the articles.
+const years = toArchiveYears(await fetchAllNewspapers());
+const i18n = getPageI18n(Astro.currentLocale);
+const { t } = i18n;
+const title = t("archive.title", "지면 보기");
+const description = t(
+  "archive.pageDescription",
+  "지스트신문 지면을 호마다 PDF로 볼 수 있습니다.",
+);
+---
+
+<Layout title={title} description={description}>
+  <NewspaperArchive i18n={i18n} years={years} />
+</Layout>
