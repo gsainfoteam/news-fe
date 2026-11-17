@@ -11,6 +11,7 @@ import {
   MOCK_MEMBERS,
 } from "@/features/article/models/editor-mocks";
 import { handleMe, mockUser } from "@/features/auth/models/mocks";
+import { createMockNotice } from "@/features/notice/models/mocks";
 
 import { AdminArticleEditor, ArticleEditor } from ".";
 
@@ -46,6 +47,28 @@ export const Edit: Story = {
 
 export const EditMobile: Story = {
   ...Edit,
+  globals: { viewport: { value: "mobile" } },
+};
+
+/** `/admin/notices/new`: the category is NOTICE and has no picker. */
+export const NewNotice: Story = { args: { kind: "notice" } };
+
+export const NewNoticeMobile: Story = {
+  ...NewNotice,
+  globals: { viewport: { value: "mobile" } },
+};
+
+/** An existing notice, as `/admin/notices/edit?id=900` opens it. */
+export const EditNotice: Story = {
+  render: () => (
+    <AdminGuard section="notices">
+      <ArticleEditor article={createMockNotice(0)} kind="notice" />
+    </AdminGuard>
+  ),
+};
+
+export const EditNoticeMobile: Story = {
+  ...EditNotice,
   globals: { viewport: { value: "mobile" } },
 };
 

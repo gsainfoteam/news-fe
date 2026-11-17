@@ -1,6 +1,6 @@
 ---
 import { getPageI18n } from "@/common/lib/i18n";
-import { AdminNoticeEditor } from "@/features/notice";
+import { AdminArticleEditor } from "@/features/article";
 import AdminLayout from "@/layouts/admin-layout.astro";
 
 const { t } = getPageI18n(Astro.currentLocale);
@@ -8,5 +8,5 @@ const title = t("admin.notices.newTitle", "새 공지");
 ---
 
 <AdminLayout title={title}>
-  <AdminNoticeEditor mode="new" client:only="react" />
+  <AdminArticleEditor mode="new" kind="notice" client:only="react" />
 </AdminLayout>
