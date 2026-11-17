@@ -4,6 +4,10 @@ import { setupWorker } from "msw/browser";
 import { mswLoader } from "msw-storybook-addon/csf3";
 
 import { queryClient } from "../src/common/lib/query-client";
+import {
+  handleSession,
+  resetAccountClient,
+} from "../src/features/auth/models/mocks";
 
 import { withLocale, withTheme } from "./decorators";
 
@@ -13,7 +17,9 @@ import "../src/styles/global.css";
 // (embedded browsers, some privacy modes), and that error replaces every
 // story. Without the worker, stories still render; only API calls go unmocked.
 async function startWorker() {
-  const worker = setupWorker();
+  // Every story starts logged in; a story overrides the refresh endpoint to
+  // show other session states.
+  const worker = setupWorker(...handleSession());
   try {
     await worker.start({
       quiet: true,
@@ -38,6 +44,8 @@ const preview: Preview = {
     // story would show the previous story's cached responses.
     () => {
       queryClient.clear();
+      // Same for the login SDK: one client per page, so one per story.
+      resetAccountClient();
     },
   ],
   globalTypes: {

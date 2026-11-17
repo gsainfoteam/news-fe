@@ -9,6 +9,7 @@ import { MobileMenu } from "@/common/components/layout/mobile-menu";
 import "@/common/lib/dayjs";
 import { getPageI18n } from "@/common/lib/i18n";
 import { LANGUAGES } from "@/common/lib/languages";
+import { AccountMenu, AccountMenuSkeleton } from "@/features/auth";
 import { type Category } from "@/features/category";
 
 interface Props {
@@ -97,6 +98,9 @@ const imageUrl = new URL(image, Astro.site).href;
         lng={locale}
         currentCategory={category}
       />
+      <AccountMenu slot="account" client:only="react" lng={locale}>
+        <AccountMenuSkeleton slot="fallback" />
+      </AccountMenu>
     </Header>
     <main class:list={["flex-1", !fullWidth && "page-container"]}>
       <slot />

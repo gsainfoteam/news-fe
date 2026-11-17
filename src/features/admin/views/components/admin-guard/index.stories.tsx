@@ -4,8 +4,9 @@ import { FileTextIcon } from "lucide-react";
 import { EmptyState } from "@/common/components/ui/empty-state";
 import {
   handleMe,
-  handleMeAnonymous,
   handleMeError,
+  handleNoSession,
+  handleSessionError,
   mockUser,
 } from "@/features/auth/models/mocks";
 
@@ -14,7 +15,8 @@ import { AdminPageHeader } from "../admin-layout";
 
 const msw = (...handlers: unknown[]) => ({ msw: { handlers } });
 
-// One story per `GET /user/me` answer. The guarded page is the article list
+// One story per session state: the SDK restores the session from the refresh
+// cookie (logged in unless a story overrides it), then `GET /user/me` decides. The guarded page is the article list
 // (EDITOR and up), so a reporter (NONE) sees the forbidden notice.
 const meta = {
   title: "Admin/AdminGuard",
@@ -46,10 +48,13 @@ export const Reporter: Story = {
   parameters: msw(handleMe(mockUser({ name: "한지우", permission: "NONE" }))),
 };
 
-/** 401: asks for a login. */
-export const LoggedOut: Story = { parameters: msw(handleMeAnonymous()) };
+/** No refresh cookie: asks for a login. */
+export const LoggedOut: Story = { parameters: msw(handleNoSession()) };
 
-/** Any other failure: the shared error screen with a retry. */
+/** Restoring the session failed (news-be down): the login failure screen. */
+export const SessionError: Story = { parameters: msw(handleSessionError()) };
+
+/** Logged in, but `GET /user/me` failed: the error screen with a retry. */
 export const AccountError: Story = { parameters: msw(handleMeError()) };
 
 /** Logged in but not on the member list. */

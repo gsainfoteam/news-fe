@@ -1,8 +1,38 @@
-import { HttpResponse } from "msw";
+import { delay, HttpResponse } from "msw";
 
-import { handleGetMe } from "@/@types/api/msw.gen";
+import { handleGetMe, handleLogout, handleRefresh } from "@/@types/api/msw.gen";
 
 import { type Permission, type User } from ".";
+
+export { resetAccountClient } from "./account";
+
+export const MOCK_ACCESS_TOKEN = "mock-access-token";
+
+// What the SDK sees on load: a refresh cookie it can trade for a token.
+// Storybook installs this for every story; `handleNoSession` overrides it.
+export function handleSession() {
+  return [
+    handleRefresh({ body: { access_token: MOCK_ACCESS_TOKEN } }),
+    handleLogout(() => new HttpResponse(null, { status: 201 })),
+  ];
+}
+
+export function handleNoSession() {
+  return handleRefresh(() => unauthorized());
+}
+
+// A refresh that never answers keeps the session loading.
+export function handleSessionPending() {
+  return handleRefresh(async () => {
+    await delay("infinite");
+    return unauthorized();
+  });
+}
+
+// news-be down: not a missing session but a failure the SDK reports.
+export function handleSessionError() {
+  return handleRefresh(() => serverError());
+}
 
 const ROLE_BY_PERMISSION = {
   NONE: "REPORTING_REPORTER",
@@ -32,24 +62,24 @@ export function handleMe(user: User) {
   return handleGetMe({ body: user });
 }
 
-export function handleMeAnonymous() {
-  return handleGetMe(() =>
-    HttpResponse.json(
-      { message: "Unauthorized", error: "Unauthorized", statusCode: 401 },
-      { status: 401 },
-    ),
+export function handleMeError() {
+  return handleGetMe(() => serverError());
+}
+
+function unauthorized() {
+  return HttpResponse.json(
+    { message: "Unauthorized", error: "Unauthorized", statusCode: 401 },
+    { status: 401 },
   );
 }
 
-export function handleMeError() {
-  return handleGetMe(() =>
-    HttpResponse.json(
-      {
-        message: "Internal Server Error",
-        error: "Internal Server Error",
-        statusCode: 500,
-      },
-      { status: 500 },
-    ),
+function serverError() {
+  return HttpResponse.json(
+    {
+      message: "Internal Server Error",
+      error: "Internal Server Error",
+      statusCode: 500,
+    },
+    { status: 500 },
   );
 }

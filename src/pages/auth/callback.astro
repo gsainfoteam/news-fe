@@ -1,0 +1,18 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AuthCallback } from "@/features/auth";
+import Layout from "@/layouts/layout.astro";
+
+// The SDK finishes the IdP login here before anything renders, then the
+// island loads the page the login started from.
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("auth.callback.title", "로그인");
+---
+
+<Layout title={title} noindex>
+  <div
+    class="flex justify-center pt-[120px] pb-[140px] mobile:pt-20 mobile:pb-24"
+  >
+    <AuthCallback client:only="react" />
+  </div>
+</Layout>
