@@ -1,0 +1,12 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AdminNewspapers } from "@/features/newspaper";
+import AdminLayout from "@/layouts/admin-layout.astro";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("newspaper.title", "지면 PDF");
+---
+
+<AdminLayout title={title}>
+  <AdminNewspapers client:only="react" />
+</AdminLayout>
