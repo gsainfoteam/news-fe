@@ -4,7 +4,12 @@ import { localizePath } from "@/common/lib/languages";
 import { hasPermission, type Permission, type User } from "@/features/auth";
 
 export type AdminSection =
-  "articles" | "archive" | "reports" | "members" | "about";
+  | "articles"
+  | "notices"
+  | "archive"
+  | "reports"
+  | "members"
+  | "about";
 
 export type AdminNavItem = {
   section: AdminSection;
@@ -18,6 +23,8 @@ export type AdminNavItem = {
 // real rules; this only keeps people from opening screens that would fail.
 const SECTIONS: readonly Omit<AdminNavItem, "label" | "href">[] = [
   { section: "articles", required: "EDITOR" },
+  // Notices are articles to news-be, with the same permission.
+  { section: "notices", required: "EDITOR" },
   { section: "archive", required: "EDITOR" },
   { section: "reports", required: "NONE" },
   { section: "about", required: "EDITOR" },
@@ -26,6 +33,7 @@ const SECTIONS: readonly Omit<AdminNavItem, "label" | "href">[] = [
 
 const PATHS: Record<AdminSection, string> = {
   articles: "/admin",
+  notices: "/admin/notices",
   archive: "/admin/archive",
   reports: "/admin/reports",
   members: "/admin/members",
@@ -43,6 +51,7 @@ export function getAdminNav(
 ): AdminNavItem[] {
   const labels: Record<AdminSection, string> = {
     articles: t("admin.nav.articles", "기사"),
+    notices: t("admin.nav.notices", "공지사항"),
     archive: t("admin.nav.archive", "지면 PDF"),
     reports: t("admin.nav.reports", "제보함"),
     members: t("admin.nav.members", "멤버 관리"),

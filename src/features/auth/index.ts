@@ -6,6 +6,8 @@ export {
   type Permission,
   type User,
 } from "./models";
+export { AuthProvider } from "./viewmodels/auth-provider";
+export { type LoginFailure } from "./viewmodels/login-failure";
 export {
   getAdminAccess,
   hasPermission,
@@ -13,4 +15,12 @@ export {
   type AdminAccess,
 } from "./viewmodels/permission";
 export { getRoleLabels } from "./viewmodels/role";
-export { useMe, type Session } from "./viewmodels/use-me";
+export { useSession, type Session } from "./viewmodels/use-session";
+export {
+  AccountMenu,
+  AccountMenuSkeleton,
+} from "./views/components/account-menu";
+export { AuthCallback } from "./views/components/auth-callback";
+export { AuthMessage } from "./views/components/auth-message";
+export { LoginFailed } from "./views/components/login-failed";
+export { RequireAuth } from "./views/components/require-auth";

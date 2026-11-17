@@ -1,7 +1,10 @@
 import { type UserDto } from "@/@types/api/types.gen";
 import { zUserDto } from "@/@types/api/zod.gen";
 
+export * from "./account";
+
 export { getMeOptions as meQuery } from "@/@types/api/@tanstack/react-query.gen";
+export { getMe as fetchMe, updateNickname } from "@/@types/api/sdk.gen";
 
 export type User = UserDto;
 

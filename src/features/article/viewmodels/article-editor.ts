@@ -170,6 +170,8 @@ export type ArticleDraft = {
   content: string;
   categories: Category[];
   authorIds: string[];
+  /** Null falls back to the first body image. */
+  thumbnail: string | null;
 };
 
 export function toArticleDraft(article?: Article): ArticleDraft {
@@ -179,7 +181,53 @@ export function toArticleDraft(article?: Article): ArticleDraft {
     content: article?.content ?? "",
     categories: normalizeCategories(article?.categories ?? []),
     authorIds: article?.authors.map((a) => a.id) ?? [],
+    thumbnail: article?.thumbnailUrl || null,
   };
+}
+
+// WordPress imports keep the featured image only in `imageKeys`; unless the
+// editor offers it, the next save drops it.
+export function getDetachedThumbnail(
+  article?: Pick<Article, "thumbnailUrl" | "content">,
+) {
+  const src = article?.thumbnailUrl;
+  return src && !getImageSources(article.content).includes(src)
+    ? src
+    : undefined;
+}
+
+export type ThumbnailOption = { src: string; inBody: boolean };
+
+// A `blob:` preview is still uploading and has no key to save yet.
+export function getThumbnailOptions(
+  html: string,
+  detached?: string,
+): ThumbnailOption[] {
+  const body = [
+    ...new Set(
+      getImageSources(html).filter((src) => /^https?:\/\//i.test(src)),
+    ),
+  ];
+  return [
+    ...(detached && !body.includes(detached)
+      ? [{ src: detached, inBody: false }]
+      : []),
+    ...body.map((src) => ({ src, inBody: true })),
+  ];
+}
+
+// Keeps a pick whose image left the body, so undoing the delete restores it.
+export function getSelectedThumbnail(
+  draft: Pick<ArticleDraft, "content" | "thumbnail">,
+  detached?: string,
+) {
+  const { thumbnail } = draft;
+  return thumbnail &&
+    getThumbnailOptions(draft.content, detached).some(
+      (o) => o.src === thumbnail,
+    )
+    ? thumbnail
+    : null;
 }
 
 export function isContentEmpty(html: string) {
@@ -235,40 +283,58 @@ export function trimTrailingEmptyParagraphs(html: string) {
   return html.replace(/(?:<p><\/p>)+$/, "");
 }
 
+function toPayload(
+  draft: ArticleDraft,
+  uploaded: ReadonlyMap<string, string>,
+  detached?: string,
+) {
+  const subtitle = draft.subtitle.trim();
+  const thumbnail = getSelectedThumbnail(draft, detached);
+  const thumbnailKey = thumbnail
+    ? (uploaded.get(thumbnail) ?? getImageKey(thumbnail))
+    : undefined;
+  const imageKeys = collectImageKeys(draft.content, uploaded);
+  // news-be rejects a `thumbnailKey` that isn't one of `imageKeys`.
+  if (thumbnailKey && !imageKeys.includes(thumbnailKey)) {
+    imageKeys.push(thumbnailKey);
+  }
+  return {
+    subtitle,
+    thumbnailKey,
+    input: {
+      title: draft.title.trim(),
+      content: trimTrailingEmptyParagraphs(draft.content),
+      imageKeys,
+      categories: normalizeCategories(draft.categories),
+      authorIds: [...new Set(draft.authorIds)],
+    },
+  };
+}
+
 export function toArticleInput(
   draft: ArticleDraft,
   uploaded: ReadonlyMap<string, string>,
 ): ArticleInput {
-  const subtitle = draft.subtitle.trim();
+  const { subtitle, thumbnailKey, input } = toPayload(draft, uploaded);
   return {
-    title: draft.title.trim(),
+    ...input,
     ...(subtitle && { subtitle }),
-    content: trimTrailingEmptyParagraphs(draft.content),
-    imageKeys: collectImageKeys(draft.content, uploaded),
-    categories: normalizeCategories(draft.categories),
-    authorIds: [...new Set(draft.authorIds)],
+    ...(thumbnailKey && { thumbnailKey }),
   };
 }
 
 export function toArticleUpdate(
   draft: ArticleDraft,
   uploaded: ReadonlyMap<string, string>,
-  article: Pick<Article, "thumbnailUrl">,
+  article: Pick<Article, "thumbnailUrl" | "content">,
 ): ArticleUpdate {
-  const input = toArticleInput(draft, uploaded);
-  // news-be rejects a thumbnail that isn't one of `imageKeys`, so deleting
-  // the thumbnail's image from the body clears the thumbnail too.
-  const thumbnailKey = article.thumbnailUrl
-    ? getImageKey(article.thumbnailUrl)
-    : undefined;
-  const thumbnailRemoved =
-    thumbnailKey !== undefined && !input.imageKeys?.includes(thumbnailKey);
-  return {
-    ...input,
-    // An empty string clears a subtitle the article had.
-    subtitle: draft.subtitle.trim(),
-    ...(thumbnailRemoved && { thumbnailKey: null }),
-  };
+  const { subtitle, thumbnailKey, input } = toPayload(
+    draft,
+    uploaded,
+    getDetachedThumbnail(article),
+  );
+  // An omitted field keeps its stored value, so a clear has to be sent.
+  return { ...input, subtitle, thumbnailKey: thumbnailKey ?? null };
 }
 
 export function parseArticleId(search: string) {

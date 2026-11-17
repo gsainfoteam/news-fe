@@ -42,6 +42,7 @@ export function fromCategorySlug(slug: string): Category | undefined {
 }
 
 export function getCategoryPath(category: Category) {
+  if (category === "NOTICE") return "/notice";
   return `/category/${toCategorySlug(category)}`;
 }
 

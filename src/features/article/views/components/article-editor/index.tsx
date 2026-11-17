@@ -19,7 +19,9 @@ import { localizePath } from "@/common/lib/languages";
 import { AdminGuard } from "@/features/admin";
 
 import { type Article } from "../../../models";
+import { getAdminEditPath } from "../../../viewmodels/admin-article-list";
 import { type ArticleDraft } from "../../../viewmodels/article-editor";
+import { isNotice } from "../../../viewmodels/article-preview";
 import { useArticleEditor } from "../../../viewmodels/use-article-editor";
 import {
   useAuthorOptions,
@@ -28,20 +30,28 @@ import {
 import { ArticleBodyEditor } from "../article-body-editor";
 import { AuthorPicker } from "../author-picker";
 import { CategoryPicker } from "../category-picker";
+import { ThumbnailPicker } from "../thumbnail-picker";
 
-export function AdminArticleEditor({ mode }: AdminArticleEditor.Props) {
+export function AdminArticleEditor({
+  mode,
+  kind = "article",
+}: AdminArticleEditor.Props) {
   return (
-    <AdminGuard section="articles">
-      {mode === "edit" ? <EditArticle /> : <ArticleEditor />}
+    <AdminGuard section={kind === "notice" ? "notices" : "articles"}>
+      {mode === "edit" ? (
+        <EditArticle kind={kind} />
+      ) : (
+        <ArticleEditor kind={kind} />
+      )}
     </AdminGuard>
   );
 }
 
 export namespace AdminArticleEditor {
-  export type Props = { mode: "new" | "edit" };
+  export type Props = { mode: "new" | "edit"; kind?: ArticleEditor.Kind };
 }
 
-function EditArticle() {
+function EditArticle({ kind }: { kind: ArticleEditor.Kind }) {
   const { t, i18n } = useTranslation();
   const result = useEditableArticle();
 
@@ -52,7 +62,11 @@ function EditArticle() {
       return (
         <EmptyState
           icon={<FileQuestionIcon />}
-          title={t("admin.editor.notFound.title", "기사를 찾을 수 없습니다")}
+          title={
+            kind === "notice"
+              ? t("admin.notices.notFound", "공지를 찾을 수 없습니다")
+              : t("admin.editor.notFound.title", "기사를 찾을 수 없습니다")
+          }
           description={t(
             "admin.editor.notFound.description",
             "삭제되었거나 주소가 잘못되었습니다.",
@@ -60,10 +74,15 @@ function EditArticle() {
           className="py-16"
         >
           <a
-            href={localizePath(i18n.language, "/admin")}
+            href={localizePath(
+              i18n.language,
+              kind === "notice" ? "/admin/notices" : "/admin",
+            )}
             className={buttonVariants({ variant: "outline" })}
           >
-            {t("admin.editor.backToList", "기사 목록")}
+            {kind === "notice"
+              ? t("admin.notices.backToList", "공지 목록")
+              : t("admin.editor.backToList", "기사 목록")}
           </a>
         </EmptyState>
       );
@@ -78,13 +97,28 @@ function EditArticle() {
         />
       );
     case "ready":
-      return <ArticleEditor key={result.article.id} article={result.article} />;
+      // The article decides, so a notice at /admin/articles/edit still gets
+      // the notice editor.
+      return (
+        <ArticleEditor
+          key={result.article.id}
+          article={result.article}
+          kind={isNotice(result.article) ? "notice" : "article"}
+        />
+      );
   }
 }
 
-export function ArticleEditor({ article }: ArticleEditor.Props) {
+export function ArticleEditor({
+  article,
+  kind = "article",
+}: ArticleEditor.Props) {
   const { t, i18n } = useTranslation();
-  const editor = useArticleEditor(article);
+  const notice = kind === "notice";
+  const editor = useArticleEditor(
+    article,
+    notice ? { categories: ["NOTICE"] } : undefined,
+  );
   const authors = useAuthorOptions(article?.authors);
   const titleRef = useRef<HTMLTextAreaElement>(null);
   const paperRef = useRef<HTMLDivElement>(null);
@@ -96,8 +130,26 @@ export function ArticleEditor({ article }: ArticleEditor.Props) {
   };
 
   const isNew = !editor.article;
-  const listHref = localizePath(i18n.language, "/admin");
+  const listHref = localizePath(
+    i18n.language,
+    notice ? "/admin/notices" : "/admin",
+  );
   const { draft, errors, change } = editor;
+  const copy = notice
+    ? {
+        backToList: t("admin.notices.backToList", "공지 목록"),
+        heading: isNew
+          ? t("admin.notices.newTitle", "새 공지")
+          : t("admin.notices.editTitle", "공지 수정"),
+        published: t("admin.notices.published", "공지를 발행했습니다"),
+      }
+    : {
+        backToList: t("admin.editor.backToList", "기사 목록"),
+        heading: isNew
+          ? t("admin.editor.newTitle", "새 기사")
+          : t("admin.editor.editTitle", "기사 수정"),
+        published: t("admin.editor.published", "기사를 발행했습니다"),
+      };
 
   const save = async () => {
     const result = await editor.save();
@@ -135,15 +187,12 @@ export function ArticleEditor({ article }: ArticleEditor.Props) {
           history.replaceState(
             history.state,
             "",
-            localizePath(
-              i18n.language,
-              `/admin/articles/edit?id=${result.article.id}`,
-            ),
+            localizePath(i18n.language, getAdminEditPath(result.article)),
           );
         }
         toast.success(
           result.created
-            ? t("admin.editor.published", "기사를 발행했습니다")
+            ? copy.published
             : t("admin.editor.saved", "변경 사항을 저장했습니다"),
           {
             description: t(
@@ -213,12 +262,10 @@ export function ArticleEditor({ article }: ArticleEditor.Props) {
             className="inline-flex w-fit items-center gap-1 text-sm font-semibold text-subtle-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeftIcon aria-hidden="true" className="size-4" />
-            {t("admin.editor.backToList", "기사 목록")}
+            {copy.backToList}
           </a>
           <h1 className="text-[26px] leading-[1.3] font-extrabold tracking-[-0.025em] mobile:text-[22px]">
-            {isNew
-              ? t("admin.editor.newTitle", "새 기사")
-              : t("admin.editor.editTitle", "기사 수정")}
+            {copy.heading}
           </h1>
         </div>
         <div className="flex gap-2 mobile:hidden">
@@ -323,23 +370,33 @@ export function ArticleEditor({ article }: ArticleEditor.Props) {
             )}
           </Panel>
 
-          <Panel
-            label={t("admin.editor.categories", "카테고리")}
-            meta={t("admin.editor.categoriesMeta", "{{count}}개 선택", {
-              count: draft.categories.length,
-            })}
-          >
-            <CategoryPicker
-              value={draft.categories}
-              onChange={(value) => change("categories", value)}
+          {!notice && (
+            <Panel
+              label={t("admin.editor.categories", "카테고리")}
+              meta={t("admin.editor.categoriesMeta", "{{count}}개 선택", {
+                count: draft.categories.length,
+              })}
+            >
+              <CategoryPicker
+                value={draft.categories}
+                onChange={(value) => change("categories", value)}
+              />
+            </Panel>
+          )}
+
+          <Panel label={t("admin.editor.thumbnail", "대표 이미지")}>
+            <ThumbnailPicker
+              options={editor.thumbnail.options}
+              value={editor.thumbnail.selected}
+              onChange={(value) => change("thumbnail", value)}
             />
           </Panel>
 
           <Panel label={t("admin.editor.images", "이미지")}>
             <p className="text-xs text-subtle-foreground">
               {t(
-                "admin.editor.imagesHelp",
-                "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요. 본문의 첫 이미지가 목록 썸네일과 링크 미리보기 이미지로 쓰입니다.",
+                "admin.editor.imagesUploadHelp",
+                "jpg, png, webp, gif 파일만 올릴 수 있습니다. 툴바의 이미지 버튼을 누르거나 본문에 끌어다 놓으세요.",
               )}
             </p>
           </Panel>
@@ -363,8 +420,10 @@ export function ArticleEditor({ article }: ArticleEditor.Props) {
 }
 
 export namespace ArticleEditor {
+  export type Kind = "article" | "notice";
   export type Props = {
     article?: Article;
+    kind?: Kind;
   };
 }
 

@@ -69,11 +69,13 @@ import { type Article } from "../../../models";
 import {
   type AdminArticleFilters,
   type AdminArticleSort,
+  getAdminEditPath,
   getAuthorNames,
   getPageWindow,
   isEdited,
   writeAdminArticleFilters,
 } from "../../../viewmodels/admin-article-list";
+import { getArticlePath } from "../../../viewmodels/article-preview";
 import { useAdminArticles } from "../../../viewmodels/use-admin-articles";
 
 export function AdminArticles() {
@@ -86,20 +88,71 @@ export function AdminArticles() {
 
 const col = createColumnHelper<typeof dataTableFeatures, Article>();
 
-export function AdminArticleList() {
+export function AdminArticleList({ kind = "article" }: AdminArticleList.Props) {
   const { t, i18n } = useTranslation();
   const dayjs = useDayjs();
-  const list = useAdminArticles();
+  const notice = kind === "notice";
+  const list = useAdminArticles(notice ? "NOTICE" : undefined);
   const [target, setTarget] = useState<Article>();
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   const lng = i18n.language;
   const labels = getCategoryLabels(t);
   const path = (to: string) => localizePath(lng, to);
-  const editHref = (a: Article) => path(`/admin/articles/edit?id=${a.id}`);
-  const siteHref = (a: Article) => path(`/article/${a.id}`);
+  const editHref = (a: Article) => path(getAdminEditPath(a));
+  const siteHref = (a: Article) => path(getArticlePath(a));
   const date = (d: Date) => dayjs(d).format("YYYY.MM.DD");
   const views = (n: number) => n.toLocaleString(lng);
+  const copy = notice
+    ? {
+        title: t("admin.notices.title", "공지사항"),
+        newHref: "/admin/notices/new",
+        new: t("admin.notices.new", "새 공지 작성"),
+        caption: t("admin.notices.caption", "공지 목록"),
+        empty: t("admin.notices.empty", "조건에 맞는 공지가 없습니다"),
+        loadFailed: t(
+          "admin.notices.loadFailed",
+          "공지 목록을 불러오지 못했습니다",
+        ),
+        deleted: t("admin.notices.deleted", "공지를 삭제했습니다"),
+        deleteFailed: t(
+          "admin.notices.deleteFailed",
+          "공지를 삭제하지 못했습니다",
+        ),
+        confirmTitle: t("admin.notices.confirm.title", "이 공지를 삭제할까요?"),
+        confirmDescription: (title?: string) =>
+          t(
+            "admin.notices.confirm.description",
+            "‘{{title}}’ 공지를 삭제하면 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
+            { title },
+          ),
+      }
+    : {
+        title: t("admin.articles.title", "기사"),
+        newHref: "/admin/articles/new",
+        new: t("admin.articles.new", "새 기사 작성"),
+        caption: t("admin.articles.caption", "기사 목록"),
+        empty: t("admin.articles.empty", "조건에 맞는 기사가 없습니다"),
+        loadFailed: t(
+          "admin.articles.loadFailed",
+          "기사 목록을 불러오지 못했습니다",
+        ),
+        deleted: t("admin.articles.deleted", "기사를 삭제했습니다"),
+        deleteFailed: t(
+          "admin.articles.deleteFailed",
+          "기사를 삭제하지 못했습니다",
+        ),
+        confirmTitle: t(
+          "admin.articles.confirm.title",
+          "이 기사를 삭제할까요?",
+        ),
+        confirmDescription: (title?: string) =>
+          t(
+            "admin.articles.confirm.description",
+            "‘{{title}}’ 기사를 삭제하면 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
+            { title },
+          ),
+      };
   const actionLabels = {
     view: t("admin.articles.view", "사이트에서 보기"),
     edit: t("admin.articles.edit", "수정"),
@@ -116,22 +169,19 @@ export function AdminArticleList() {
     try {
       await list.deleteArticle(target.id);
       setConfirmOpen(false);
-      toast.success(t("admin.articles.deleted", "기사를 삭제했습니다"), {
+      toast.success(copy.deleted, {
         description: t(
           "admin.articles.deletedDescription",
           "사이트에서는 1~2분 뒤 사라집니다.",
         ),
       });
     } catch {
-      toast.error(
-        t("admin.articles.deleteFailed", "기사를 삭제하지 못했습니다"),
-        {
-          description: t(
-            "admin.articles.deleteFailedDescription",
-            "잠시 뒤 다시 시도해 주세요.",
-          ),
-        },
-      );
+      toast.error(copy.deleteFailed, {
+        description: t(
+          "admin.articles.deleteFailedDescription",
+          "잠시 뒤 다시 시도해 주세요.",
+        ),
+      });
     }
   };
 
@@ -158,10 +208,14 @@ export function AdminArticleList() {
         </a>
       ),
     }),
-    col.accessor("categories", {
-      header: t("admin.articles.column.category", "카테고리"),
-      cell: ({ row }) => categories(row.original),
-    }),
+    ...(notice
+      ? []
+      : [
+          col.accessor("categories", {
+            header: t("admin.articles.column.category", "카테고리"),
+            cell: ({ row }) => categories(row.original),
+          }),
+        ]),
     col.display({
       id: "authors",
       header: t("admin.articles.column.authors", "작성자"),
@@ -236,7 +290,7 @@ export function AdminArticleList() {
   return (
     <>
       <AdminPageHeader
-        title={t("admin.articles.title", "기사")}
+        title={copy.title}
         description={
           list.status === "success" &&
           t("admin.articles.count", "전체 {{count}}건", {
@@ -244,12 +298,9 @@ export function AdminArticleList() {
           })
         }
         actions={
-          <a
-            href={path("/admin/articles/new")}
-            className={cn(buttonVariants())}
-          >
+          <a href={path(copy.newHref)} className={cn(buttonVariants())}>
             <PlusIcon />
-            {t("admin.articles.new", "새 기사 작성")}
+            {copy.new}
           </a>
         }
       />
@@ -267,38 +318,40 @@ export function AdminArticleList() {
             className="h-[38px]"
           />
         </div>
-        <NativeSelect
-          value={list.filters.category ?? ""}
-          onChange={(e) =>
-            list.setCategory((e.target.value || undefined) as Category)
-          }
-          aria-label={t("admin.articles.categoryFilter", "카테고리 필터")}
-          className="w-[168px] [&_select]:h-[38px]"
-        >
-          <NativeSelectOption value="">
-            {t("admin.articles.allCategories", "전체 카테고리")}
-          </NativeSelectOption>
-          {CATEGORY_GROUPS.map(({ category, children }) =>
-            children.length ? (
-              <NativeSelectOptGroup key={category} label={labels[category]}>
-                <NativeSelectOption value={category}>
-                  {t("admin.articles.groupAll", "{{category}} 전체", {
-                    category: labels[category],
-                  })}
-                </NativeSelectOption>
-                {children.map((child) => (
-                  <NativeSelectOption key={child} value={child}>
-                    {labels[child]}
+        {!notice && (
+          <NativeSelect
+            value={list.filters.category ?? ""}
+            onChange={(e) =>
+              list.setCategory((e.target.value || undefined) as Category)
+            }
+            aria-label={t("admin.articles.categoryFilter", "카테고리 필터")}
+            className="w-[168px] [&_select]:h-[38px]"
+          >
+            <NativeSelectOption value="">
+              {t("admin.articles.allCategories", "전체 카테고리")}
+            </NativeSelectOption>
+            {CATEGORY_GROUPS.map(({ category, children }) =>
+              children.length ? (
+                <NativeSelectOptGroup key={category} label={labels[category]}>
+                  <NativeSelectOption value={category}>
+                    {t("admin.articles.groupAll", "{{category}} 전체", {
+                      category: labels[category],
+                    })}
                   </NativeSelectOption>
-                ))}
-              </NativeSelectOptGroup>
-            ) : (
-              <NativeSelectOption key={category} value={category}>
-                {labels[category]}
-              </NativeSelectOption>
-            ),
-          )}
-        </NativeSelect>
+                  {children.map((child) => (
+                    <NativeSelectOption key={child} value={child}>
+                      {labels[child]}
+                    </NativeSelectOption>
+                  ))}
+                </NativeSelectOptGroup>
+              ) : (
+                <NativeSelectOption key={category} value={category}>
+                  {labels[category]}
+                </NativeSelectOption>
+              ),
+            )}
+          </NativeSelect>
+        )}
         <ToggleGroup
           size="lg"
           value={[list.filters.sort]}
@@ -320,10 +373,7 @@ export function AdminArticleList() {
         <ListSkeleton />
       ) : list.status === "error" ? (
         <ErrorState
-          title={t(
-            "admin.articles.loadFailed",
-            "기사 목록을 불러오지 못했습니다",
-          )}
+          title={copy.loadFailed}
           description={t("error.description", "잠시 후 다시 시도해 주세요.")}
           retryLabel={t("error.retry", "다시 시도")}
           onRetry={list.retry}
@@ -337,14 +387,14 @@ export function AdminArticleList() {
           )}
         >
           <DataTable
-            caption={t("admin.articles.caption", "기사 목록")}
+            caption={copy.caption}
             columns={columns}
             data={list.articles}
             getRowId={(a) => String(a.id)}
-            empty={t("admin.articles.empty", "조건에 맞는 기사가 없습니다")}
+            empty={copy.empty}
             renderMobileItem={({ original: a }) => (
               <>
-                {categories(a)}
+                {!notice && categories(a)}
                 <a href={editHref(a)} className="leading-[1.45] font-bold">
                   {a.title}
                 </a>
@@ -401,15 +451,9 @@ export function AdminArticleList() {
       <AlertDialog open={confirmOpen} onOpenChange={setConfirmOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>
-              {t("admin.articles.confirm.title", "이 기사를 삭제할까요?")}
-            </AlertDialogTitle>
+            <AlertDialogTitle>{copy.confirmTitle}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t(
-                "admin.articles.confirm.description",
-                "‘{{title}}’ 기사를 삭제하면 되돌릴 수 없습니다. 사이트에서는 1~2분 뒤 사라집니다.",
-                { title: target?.title },
-              )}
+              {copy.confirmDescription(target?.title)}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -428,6 +472,12 @@ export function AdminArticleList() {
       </AlertDialog>
     </>
   );
+}
+
+export namespace AdminArticleList {
+  export type Props = {
+    kind?: "article" | "notice";
+  };
 }
 
 function PageNav({

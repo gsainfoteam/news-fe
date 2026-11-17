@@ -1,0 +1,43 @@
+---
+import { type GetStaticPaths, type InferGetStaticPropsType } from "astro";
+
+import { getPageI18n } from "@/common/lib/i18n";
+import { getArticleMeta, toArticleDetail } from "@/features/article";
+import { getCategoryLabels } from "@/features/category";
+import {
+  fetchAllNotices,
+  getAdjacentNotices,
+  NoticePage,
+} from "@/features/notice";
+import Layout from "@/layouts/layout.astro";
+
+// Same list as the article pages, so no detail call (which counts a view).
+export const getStaticPaths = (async () => {
+  const notices = await fetchAllNotices();
+  return notices.map((notice) => ({
+    params: { id: String(notice.id) },
+    props: { notice, ...getAdjacentNotices(notices, notice.id) },
+  }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { notice, newer, older } = Astro.props;
+const i18n = getPageI18n(Astro.currentLocale);
+const detail = await toArticleDetail(notice);
+const meta = getArticleMeta(detail, getCategoryLabels(i18n.t));
+---
+
+<Layout
+  title={meta.title}
+  description={meta.description}
+  image={meta.image}
+  type="article"
+  category="NOTICE"
+>
+  <Fragment slot="head">
+    <meta property="article:published_time" content={meta.publishedTime} />
+    <meta property="article:modified_time" content={meta.modifiedTime} />
+  </Fragment>
+  <NoticePage i18n={i18n} notice={detail} newer={newer} older={older} />
+</Layout>

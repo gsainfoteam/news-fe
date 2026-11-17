@@ -5,8 +5,11 @@ import {
   checkArticleImage,
   collectImageKeys,
   getAuthorOptions,
+  getDetachedThumbnail,
   getImageKey,
   getImageSources,
+  getSelectedThumbnail,
+  getThumbnailOptions,
   hasPendingImages,
   isCategoryLocked,
   isContentEmpty,
@@ -153,6 +156,7 @@ const draft = (overrides: Partial<ArticleDraft> = {}): ArticleDraft => ({
   content: `<p>본문</p><img src="${S3}/${KEY_A}">`,
   categories: ["RESEARCH"],
   authorIds: [AUTHOR, AUTHOR],
+  thumbnail: null,
   ...overrides,
 });
 
@@ -176,21 +180,96 @@ describe("payload", () => {
     );
   });
 
-  test("update: sends an empty subtitle to clear it", () => {
-    const body = toArticleUpdate(draft(), new Map(), { thumbnailUrl: null });
+  test("update: sends an empty subtitle and a null thumbnail to clear them", () => {
+    const body = toArticleUpdate(draft(), new Map(), {
+      thumbnailUrl: null,
+      content: "",
+    });
     expect(body.subtitle).toBe("");
-    expect(body).not.toHaveProperty("thumbnailKey");
+    expect(body.thumbnailKey).toBeNull();
   });
 
-  test("update: clears the thumbnail when its image left the body", () => {
-    const article = { thumbnailUrl: `${S3}/${KEY_B}` };
+  test("create: sends the picked image's key, from the upload or the URL", () => {
+    const uploadedSrc = "https://cdn.test/fresh.png";
+    const content = `<img src="${S3}/${KEY_A}"><img src="${uploadedSrc}">`;
+    const uploaded = new Map([[uploadedSrc, KEY_B]]);
     expect(
-      toArticleUpdate(draft(), new Map(), article).thumbnailKey,
-    ).toBeNull();
-    const kept = draft({ content: `<img src="${S3}/${KEY_B}">` });
-    expect(toArticleUpdate(kept, new Map(), article)).not.toHaveProperty(
+      toArticleInput(draft({ content, thumbnail: uploadedSrc }), uploaded)
+        .thumbnailKey,
+    ).toBe(KEY_B);
+    expect(
+      toArticleInput(draft({ content, thumbnail: `${S3}/${KEY_A}` }), uploaded)
+        .thumbnailKey,
+    ).toBe(KEY_A);
+    expect(toArticleInput(draft({ content }), uploaded)).not.toHaveProperty(
       "thumbnailKey",
     );
+  });
+
+  test("a pick whose image left the body falls back to automatic", () => {
+    const body = draft({ thumbnail: `${S3}/${KEY_B}` });
+    expect(toArticleInput(body, new Map())).not.toHaveProperty("thumbnailKey");
+    expect(
+      toArticleUpdate(body, new Map(), { thumbnailUrl: null, content: "" })
+        .thumbnailKey,
+    ).toBeNull();
+  });
+
+  test("update: keeps an imported featured image that was never in the body", () => {
+    const featured = `${S3}/${KEY_B}`;
+    const article = { thumbnailUrl: featured, content: draft().content };
+    const body = toArticleUpdate(
+      draft({ thumbnail: featured }),
+      new Map(),
+      article,
+    );
+    expect(body.thumbnailKey).toBe(KEY_B);
+    expect(body.imageKeys).toEqual([KEY_A, KEY_B]);
+  });
+
+  test("update: deleting the picked image from the body clears it", () => {
+    const picked = `${S3}/${KEY_B}`;
+    const article = {
+      thumbnailUrl: picked,
+      content: `${draft().content}<img src="${picked}">`,
+    };
+    const body = toArticleUpdate(
+      draft({ thumbnail: picked }),
+      new Map(),
+      article,
+    );
+    expect(body.thumbnailKey).toBeNull();
+    expect(body.imageKeys).toEqual([KEY_A]);
+  });
+});
+
+describe("thumbnail options", () => {
+  const a = `${S3}/${KEY_A}`;
+  const b = `${S3}/${KEY_B}`;
+
+  test("lists body images once, skipping uploads still in progress", () => {
+    const html = `<img src="${a}"><img src="blob:http://localhost/1"><img src="${a}">`;
+    expect(getThumbnailOptions(html)).toEqual([{ src: a, inBody: true }]);
+  });
+
+  test("puts a featured image outside the body first", () => {
+    const article = { thumbnailUrl: b, content: `<img src="${a}">` };
+    const detached = getDetachedThumbnail(article);
+    expect(detached).toBe(b);
+    expect(getThumbnailOptions(article.content, detached)).toEqual([
+      { src: b, inBody: false },
+      { src: a, inBody: true },
+    ]);
+    expect(
+      getDetachedThumbnail({ thumbnailUrl: a, content: article.content }),
+    ).toBeUndefined();
+  });
+
+  test("a pick counts only while its image is offered", () => {
+    const content = `<img src="${a}">`;
+    expect(getSelectedThumbnail({ content, thumbnail: a })).toBe(a);
+    expect(getSelectedThumbnail({ content, thumbnail: b })).toBeNull();
+    expect(getSelectedThumbnail({ content, thumbnail: b }, b)).toBe(b);
   });
 });
 

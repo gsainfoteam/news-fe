@@ -1,6 +1,6 @@
 import { CATEGORY_GROUPS, type Category } from "@/features/category";
 
-import { extractSummary, extractThumbnail } from "./article-content";
+import { extractSummary, pickThumbnail } from "./article-content";
 import { type Article } from "../models";
 
 export type ArticlePreview = {
@@ -17,8 +17,12 @@ export type ArticlePreview = {
   views: number;
 };
 
-export function getArticlePath(id: number) {
-  return `/article/${id}`;
+export function isNotice(article: Pick<Article, "categories">) {
+  return article.categories.includes("NOTICE");
+}
+
+export function getArticlePath(article: Pick<Article, "id" | "categories">) {
+  return isNotice(article) ? `/notice/${article.id}` : `/article/${article.id}`;
 }
 
 const SUB_CATEGORIES = new Set<Category>(
@@ -51,13 +55,11 @@ export function toArticlePreview(
 ): ArticlePreview {
   return {
     id: article.id,
-    path: getArticlePath(article.id),
+    path: getArticlePath(article),
     title: article.title,
     subtitle: article.subtitle ?? undefined,
     summary: extractSummary(article.content),
-    // The backend's own thumbnail field wins; older articles only have
-    // images in the body.
-    thumbnail: article.thumbnailUrl ?? extractThumbnail(article.content),
+    thumbnail: pickThumbnail(article.thumbnailUrl, article.content),
     category: getKickerCategory(article.categories, options.category),
     authors: article.authors.map((author) => author.name),
     publishedAt: article.createdAt,

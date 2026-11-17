@@ -82,8 +82,8 @@
         "description": "Deleting “{{title}}” can't be undone. It disappears from the site in a minute or two.",
         "title": "Delete this article?"
       },
-      "count_one": "전체 {{count}}건",
-      "count_other": "전체 {{count}}건",
+      "count_one": "{{count}} article in total",
+      "count_other": "{{count}} articles in total",
       "delete": "Delete",
       "deleted": "Article deleted",
       "deletedDescription": "It disappears from the site in a minute or two.",
@@ -138,7 +138,7 @@
         "uploading": "Uploading image… {{percent}}%"
       },
       "images": "Images",
-      "imagesHelp": "Only jpg, png, webp and gif files can be uploaded. Use the image button in the toolbar or drop files into the body. The first image in the body becomes the list thumbnail and link preview image.",
+      "imagesUploadHelp": "Only jpg, png, webp and gif files can be uploaded. Use the image button in the toolbar or drop files into the body.",
       "invalid": "Some fields are missing",
       "italic": "Italic",
       "link": "Link",
@@ -168,6 +168,13 @@
       "saveHelp": "Changes reach the site 1 to 2 minutes after saving.",
       "searchMember": "Search members",
       "subtitle": "Subtitle (optional)",
+      "thumbnail": "Cover image",
+      "thumbnailAuto": "Auto",
+      "thumbnailDetached": "Current cover image (not in the body)",
+      "thumbnailEmpty": "Add an image to the body to pick a cover image here.",
+      "thumbnailHelp": "Used for list thumbnails and link previews. Auto uses the first image in the body.",
+      "thumbnailImage": "Image {{n}} in the body",
+      "thumbnailNotInBody": "Not in body",
       "title": "Title",
       "toolbar": "Formatting",
       "undo": "Undo",
@@ -179,16 +186,12 @@
       "uploadingTitle": "Images are still uploading"
     },
     "guard": {
-      "error": {
-        "title": "Couldn't load your account"
-      },
       "forbidden": {
         "action": "Open {{menu}}",
         "editor": "Only members with editing permission can use this menu. Permission follows your position, and the editor-in-chief can change it.",
         "editorship": "Only the editor-in-chief can use this menu.",
         "title": "You don't have access"
       },
-      "loading": "Loading",
       "login": {
         "action": "Log in with Infoteam account",
         "description": "The CMS is for GIST Newspaper members. Log in with your Infoteam account.",
@@ -208,14 +211,33 @@
       "editorshipOnly": "Editor-in-chief only",
       "label": "CMS menu",
       "members": "Members",
+      "notices": "Notices",
       "reports": "Tips"
+    },
+    "notices": {
+      "backToList": "Notices",
+      "caption": "Notices",
+      "confirm": {
+        "description": "Deleting “{{title}}” can't be undone. It disappears from the site in a minute or two.",
+        "title": "Delete this notice?"
+      },
+      "deleted": "Notice deleted",
+      "deleteFailed": "Couldn't delete the notice",
+      "editTitle": "Edit notice",
+      "empty": "No notices match",
+      "loadFailed": "Couldn't load notices",
+      "new": "New notice",
+      "newTitle": "New notice",
+      "notFound": "Notice not found",
+      "published": "Notice published",
+      "title": "Notices"
     },
     "reports": {
       "backToList": "Tips",
       "content": "Message",
       "count_one": "{{count}} tip, newest first",
       "count_other": "{{count}} tips, newest first",
-      "detailFailed": "Couldn’t load this tip",
+      "detailFailed": "Couldn't load this tip",
       "download": "Download {{name}}",
       "downloadShort": "Download",
       "email": "Email",
@@ -235,7 +257,7 @@
         "title": "The download links have expired"
       },
       "listLabel": "Tips",
-      "loadFailed": "Couldn’t load tips",
+      "loadFailed": "Couldn't load tips",
       "name": "Name",
       "next": "Next page",
       "notFound": {
@@ -247,7 +269,7 @@
       "pick": "Pick a tip from the list to read it here.",
       "previous": "Previous page",
       "received": "#{{id}}, received {{date}}",
-      "refreshFailed": "Couldn’t get new links",
+      "refreshFailed": "Couldn't get new links",
       "reply": "Reply by email",
       "replySubject": "Re: your tip to GIST Newspaper",
       "replySubjectWithTitle": "Re: {{title}}",
@@ -287,6 +309,57 @@
     "related": "Related articles",
     "updatedAt": "Updated {{date}}",
     "views": "{{views}} views"
+  },
+  "auth": {
+    "callback": {
+      "pending": "Logging in",
+      "title": "Log in"
+    },
+    "error": {
+      "title": "Couldn't load your account"
+    },
+    "failed": {
+      "back": "Go back",
+      "cancelled": {
+        "description": "You canceled the login on the Infoteam account screen. Press the button below to log in again.",
+        "title": "Login canceled"
+      },
+      "consent": {
+        "description": "Accounts logging in for the first time need to agree to the terms and sign up. Sign-up is coming soon.",
+        "title": "This account needs to sign up"
+      },
+      "network": {
+        "description": "Check your internet connection and try again.",
+        "title": "Couldn't reach the server"
+      },
+      "rejected": {
+        "description": "GIST Newspaper didn't accept a login from this account. If this keeps happening, contact GIST Newspaper.",
+        "title": "This account can't log in"
+      },
+      "retry": "Log in again",
+      "unknown": {
+        "description": "Please try again in a moment.",
+        "title": "Couldn't log in"
+      },
+      "verification": {
+        "description": "Information GIST Newspaper needs isn't verified on your Infoteam account yet. Verify it, then log in again.",
+        "title": "Account verification needed"
+      }
+    },
+    "loading": "Loading",
+    "login": "Log in",
+    "loginWithAccount": "Log in with Infoteam account",
+    "logout": "Log out",
+    "menu": {
+      "cms": "Open CMS",
+      "error": "Couldn't load your account",
+      "label": "My account menu"
+    },
+    "required": {
+      "description": "Log in with your Infoteam account to see this page.",
+      "title": "Login required"
+    },
+    "toHome": "Go home"
   },
   "category": {
     "ACADEMIC": "Academics",
@@ -366,7 +439,7 @@
       "deleteComment": "Delete others' comments",
       "editArticle": "Edit and delete articles",
       "noCms": "Cannot use the CMS",
-      "readReports": "Read reports",
+      "readReports": "Read tips",
       "register": "Register members",
       "stayListed": "Stays on the member list",
       "writeArticle": "Write articles"
@@ -499,6 +572,23 @@
     "description": "The address may have changed or the article may have been removed. A newly published article can take a minute or two to appear on the site.",
     "home": "Go home",
     "title": "Page not found"
+  },
+  "notice": {
+    "adjacent": "Other notices",
+    "backToList": "Back to list",
+    "count_one": "{{count}} notice",
+    "count_other": "{{count}} notices",
+    "empty": {
+      "description": "Notices will show up here.",
+      "title": "No notices yet"
+    },
+    "newer": "Next",
+    "older": "Previous",
+    "pageDescription": "Notices from the GIST Newspaper",
+    "pageTitle": "{{title}}, page {{page}}",
+    "publishedAt": "Posted {{date}}",
+    "title": "Notices",
+    "updatedAt": "Updated {{date}}"
   },
   "pagination": {
     "label": "Pages",

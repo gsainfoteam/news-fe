@@ -1,0 +1,12 @@
+---
+import { getPageI18n } from "@/common/lib/i18n";
+import { AdminNotices } from "@/features/notice";
+import AdminLayout from "@/layouts/admin-layout.astro";
+
+const { t } = getPageI18n(Astro.currentLocale);
+const title = t("admin.notices.title", "공지사항");
+---
+
+<AdminLayout title={title}>
+  <AdminNotices client:only="react" />
+</AdminLayout>
