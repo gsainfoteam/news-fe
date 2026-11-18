@@ -14,12 +14,13 @@ import {
   type ArticleDraft,
   type ArticleDraftErrors,
   getDetachedThumbnail,
-  getSelectedThumbnail,
+  getShownThumbnail,
   getThumbnailOptions,
   hasPendingImages,
   toArticleDraft,
   toArticleInput,
   toArticleUpdate,
+  toThumbnailPick,
   validateArticleDraft,
 } from "./article-editor";
 import { useArticleImages } from "./use-article-images";
@@ -134,7 +135,9 @@ export function useArticleEditor(
     images,
     thumbnail: {
       options: getThumbnailOptions(draft.content, detached),
-      selected: getSelectedThumbnail(draft, detached),
+      selected: getShownThumbnail(draft, detached),
+      pick: (src: string) =>
+        change("thumbnail", toThumbnailPick(draft.content, src)),
     },
   };
 }

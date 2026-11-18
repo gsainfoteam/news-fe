@@ -79,7 +79,7 @@ export const MOCK_EDIT_ARTICLE: Article = {
     "<blockquote><p>서류가 늘었지만, 사고가 났을 때 무엇을 봐야 할지는 분명해졌다.</p></blockquote>",
     `<img src="${MOCK_IMAGE_BUCKET}/articles/2026-10-28/r4t5y6-safety-board.png" alt="복도에 붙은 새 점검표">`,
   ].join(""),
-  thumbnailUrl: `${MOCK_IMAGE_BUCKET}/articles/2026-10-28/r4t5y6-safety-board.png`,
+  thumbnailUrl: null,
   views: 1204,
   categories: ["ACADEMIC_RESEARCH", "RESEARCH"],
   createdAt: new Date("2026-10-28T09:00:00Z"),

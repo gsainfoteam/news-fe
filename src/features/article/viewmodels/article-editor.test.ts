@@ -9,6 +9,7 @@ import {
   getImageKey,
   getImageSources,
   getSelectedThumbnail,
+  getShownThumbnail,
   getThumbnailOptions,
   hasPendingImages,
   isCategoryLocked,
@@ -18,6 +19,7 @@ import {
   toArticleImageRequest,
   toArticleInput,
   toArticleUpdate,
+  toThumbnailPick,
   toggleCategory,
   trimTrailingEmptyParagraphs,
   validateArticleDraft,
@@ -270,6 +272,21 @@ describe("thumbnail options", () => {
     expect(getSelectedThumbnail({ content, thumbnail: a })).toBe(a);
     expect(getSelectedThumbnail({ content, thumbnail: b })).toBeNull();
     expect(getSelectedThumbnail({ content, thumbnail: b }, b)).toBe(b);
+  });
+
+  test("picking the first body image keeps following the first image", () => {
+    const content = `<img src="${a}"><img src="${b}">`;
+    expect(toThumbnailPick(content, a)).toBeNull();
+    expect(toThumbnailPick(content, b)).toBe(b);
+  });
+
+  test("shows the first body image as picked until something else is", () => {
+    const content = `<img src="${a}"><img src="${b}">`;
+    expect(getShownThumbnail({ content, thumbnail: null })).toBe(a);
+    expect(getShownThumbnail({ content, thumbnail: b })).toBe(b);
+    expect(getShownThumbnail({ content: "<p>글</p>", thumbnail: null })).toBe(
+      null,
+    );
   });
 });
 

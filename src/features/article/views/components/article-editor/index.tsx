@@ -388,7 +388,7 @@ export function ArticleEditor({
             <ThumbnailPicker
               options={editor.thumbnail.options}
               value={editor.thumbnail.selected}
-              onChange={(value) => change("thumbnail", value)}
+              onChange={editor.thumbnail.pick}
             />
           </Panel>
 
