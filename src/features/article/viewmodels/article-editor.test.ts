@@ -9,6 +9,7 @@ import {
   getImageKey,
   getImageSources,
   getSelectedThumbnail,
+  getShownThumbnail,
   getThumbnailOptions,
   hasPendingImages,
   isCategoryLocked,
@@ -270,6 +271,15 @@ describe("thumbnail options", () => {
     expect(getSelectedThumbnail({ content, thumbnail: a })).toBe(a);
     expect(getSelectedThumbnail({ content, thumbnail: b })).toBeNull();
     expect(getSelectedThumbnail({ content, thumbnail: b }, b)).toBe(b);
+  });
+
+  test("shows the first body image as picked until something else is", () => {
+    const content = `<img src="${a}"><img src="${b}">`;
+    expect(getShownThumbnail({ content, thumbnail: null })).toBe(a);
+    expect(getShownThumbnail({ content, thumbnail: b })).toBe(b);
+    expect(getShownThumbnail({ content: "<p>글</p>", thumbnail: null })).toBe(
+      null,
+    );
   });
 });
 

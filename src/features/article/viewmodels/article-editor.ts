@@ -230,6 +230,18 @@ export function getSelectedThumbnail(
     : null;
 }
 
+// Unpicked, readers get the first body image, so the picker checks that one.
+export function getShownThumbnail(
+  draft: Pick<ArticleDraft, "content" | "thumbnail">,
+  detached?: string,
+) {
+  return (
+    getSelectedThumbnail(draft, detached) ??
+    getThumbnailOptions(draft.content, detached).find((o) => o.inBody)?.src ??
+    null
+  );
+}
+
 export function isContentEmpty(html: string) {
   return (
     getImageSources(html).length === 0 &&

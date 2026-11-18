@@ -14,7 +14,7 @@ import {
   type ArticleDraft,
   type ArticleDraftErrors,
   getDetachedThumbnail,
-  getSelectedThumbnail,
+  getShownThumbnail,
   getThumbnailOptions,
   hasPendingImages,
   toArticleDraft,
@@ -134,7 +134,7 @@ export function useArticleEditor(
     images,
     thumbnail: {
       options: getThumbnailOptions(draft.content, detached),
-      selected: getSelectedThumbnail(draft, detached),
+      selected: getShownThumbnail(draft, detached),
     },
   };
 }
