@@ -20,6 +20,7 @@ import {
   toArticleDraft,
   toArticleInput,
   toArticleUpdate,
+  toThumbnailPick,
   validateArticleDraft,
 } from "./article-editor";
 import { useArticleImages } from "./use-article-images";
@@ -135,6 +136,8 @@ export function useArticleEditor(
     thumbnail: {
       options: getThumbnailOptions(draft.content, detached),
       selected: getShownThumbnail(draft, detached),
+      pick: (src: string) =>
+        change("thumbnail", toThumbnailPick(draft.content, src)),
     },
   };
 }
