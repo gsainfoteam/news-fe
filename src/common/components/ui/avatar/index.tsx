@@ -4,6 +4,14 @@ import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar";
 
 import { cn } from "@/common/lib/cn";
 
+// Plain classes, not `data-[size=…]:` variants: a variant outranks an
+// unprefixed `size-5` in `className`, so callers could not resize it.
+const sizes = {
+  sm: "size-7 text-2xs",
+  default: "size-9 text-sm",
+  lg: "size-11 text-base",
+};
+
 export function Avatar({
   className,
   size = "default",
@@ -14,7 +22,8 @@ export function Avatar({
       data-slot="avatar"
       data-size={size}
       className={cn(
-        "group/avatar relative inline-flex size-9 shrink-0 overflow-hidden rounded-full bg-muted text-sm font-bold text-muted-foreground select-none data-[size=lg]:size-11 data-[size=lg]:text-base data-[size=sm]:size-7 data-[size=sm]:text-2xs",
+        "group/avatar relative inline-flex shrink-0 overflow-hidden rounded-full bg-muted font-bold text-muted-foreground select-none",
+        sizes[size],
         className,
       )}
       {...props}
