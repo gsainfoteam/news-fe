@@ -15,11 +15,15 @@ import { useSession } from "../../../viewmodels/use-session";
 import { AuthMessage } from "../auth-message";
 import { LoginFailed } from "../login-failed";
 
-export function RequireAuth(props: RequireAuth.Props) {
+export function RequireAuth({
+  frame = defaultFrame,
+  ...props
+}: RequireAuth.Props) {
+  // The SDK swaps in this fallback while the page leaves for the IdP.
   return (
     <QueryProvider>
-      <AuthProvider>
-        <RequireAuthContent {...props} />
+      <AuthProvider fallback={frame(<Loading />)}>
+        <RequireAuthContent frame={frame} {...props} />
       </AuthProvider>
     </QueryProvider>
   );
@@ -51,12 +55,7 @@ function RequireAuthContent({
 
   switch (session.status) {
     case "loading":
-      return frame(
-        <div role="status" className="flex flex-col items-center gap-3">
-          <Loader2Icon className="size-6 animate-spin text-subtle-foreground" />
-          <span className="sr-only">{t("auth.loading", "불러오는 중")}</span>
-        </div>,
-      );
+      return frame(<Loading />);
     case "error":
       return frame(
         <ErrorState
@@ -87,6 +86,16 @@ function RequireAuthContent({
         ? children({ user: session.user, logout: session.logout })
         : children;
   }
+}
+
+function Loading() {
+  const { t } = useTranslation();
+  return (
+    <div role="status" className="flex flex-col items-center gap-3">
+      <Loader2Icon className="size-6 animate-spin text-subtle-foreground" />
+      <span className="sr-only">{t("auth.loading", "불러오는 중")}</span>
+    </div>
+  );
 }
 
 function LoginRequired({ onLogin }: { onLogin: () => void }) {
