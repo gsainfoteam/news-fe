@@ -31,13 +31,13 @@ void (import.meta.env.SSR ? i18n : i18n.use(HttpBackend).use(LanguageDetector))
     resources,
     lng: import.meta.env.SSR ? "ko" : undefined,
     supportedLngs: LANGUAGES,
-    fallbackLng: "ko",
+    // No fallback language: `i18n:check` fails the build on a missing or
+    // empty translation. The default "dev" would also fetch /locales/dev.
+    fallbackLng: false,
     ns: ["_"],
     defaultNS: "_",
     nsSeparator: ":",
     keySeparator: ".",
-    // gen:i18n extracts untranslated keys as "": fall back to ko, not blank.
-    returnEmptyString: false,
     // The URL decides the language; the layout writes it to <html lang>.
     detection: {
       order: ["htmlTag"],
