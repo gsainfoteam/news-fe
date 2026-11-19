@@ -80,8 +80,7 @@ export function useAuthCallback(): AuthCallback {
 }
 
 // news-be answers a ticket older than 5 minutes (or one it can't verify)
-// with a bare 401, which the SDK reports as an `unknown` error with that
-// status. It only reports `expired` for an `invalid_ticket` body.
+// with a bare 401, not `invalid_ticket`, so the SDK reports it as `unknown`.
 export function isTicketExpired(error: unknown) {
   return (
     AccountError.is(error) && (error.kind === "expired" || error.status === 401)

@@ -19,7 +19,6 @@ export function RequireAuth({
   frame = defaultFrame,
   ...props
 }: RequireAuth.Props) {
-  // The SDK swaps in this fallback while the page leaves for the IdP.
   return (
     <QueryProvider>
       <AuthProvider fallback={frame(<Loading />)}>
