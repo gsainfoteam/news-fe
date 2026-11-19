@@ -44,6 +44,7 @@ describe("isTicketExpired", () => {
     expect(isTicketExpired(new AccountError("unknown", { status: 401 }))).toBe(
       true,
     );
+    expect(isTicketExpired(new AccountError("invalid_ticket"))).toBe(true);
   });
 
   test("leaves other signup failures to the form", () => {

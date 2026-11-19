@@ -53,7 +53,7 @@ export function useSession(): Session {
 }
 
 type SessionInput = Pick<AccountState, "status" | "canRetryLogin"> & {
-  error: Pick<AccountError, "code" | "details"> | null;
+  error: AccountError | null;
   me: {
     isPending: boolean;
     isError: boolean;

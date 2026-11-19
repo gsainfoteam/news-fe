@@ -1,3 +1,4 @@
+import { AccountError } from "@infoteam/account-react";
 import { describe, expect, mock, test } from "bun:test";
 
 import { resolveSession } from "./use-session";
@@ -44,10 +45,9 @@ describe("resolveSession", () => {
     const rejected = {
       ...base,
       status: "unauthenticated" as const,
-      error: {
-        code: "session_rejected" as const,
+      error: new AccountError("session_rejected", {
         details: { reason: "consent_required" },
-      },
+      }),
     };
     expect(resolveSession({ ...rejected, canRetryLogin: true })).toMatchObject({
       status: "anonymous",
