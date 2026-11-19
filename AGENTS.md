@@ -87,7 +87,7 @@ Enforced by `eslint-plugin-boundaries`:
   - In `.astro`, call `t` from that instance **in the frontmatter**: `gen:i18n` reads only the frontmatter of `.astro` files.
   - React Views do not inherit context from Astro, so pass the instance to the page's root React View (`i18n` prop), which wraps itself in `<I18nextProvider i18n={i18n}>`.
 - **Islands (browser)**: the i18next HTTP backend loads `public/locales` on the client, and the language comes from `<html lang>`, which the layout sets from the URL. Until the JSON arrives, `t()` returns the Korean defaults, so on `/en/` an island shows Korean briefly, then English.
-- Keys use `ns:key` (`nsSeparator: ":"`) with the `_` default namespace. Run `bun run gen:i18n` after adding/removing `t()` calls. Untranslated (`""`) values fall back to Korean.
+- Keys use `ns:key` (`nsSeparator: ":"`) with the `_` default namespace. Run `bun run gen:i18n` after adding/removing `t()` calls, then fill every new `en` value. There is no fallback language: `bun run build` runs `i18n:check` first, which fails when the JSON is out of date with the code or any value is empty.
 - Format dates with `useDayjs()` from `@/common/lib/dayjs` in React views. It follows the page language, both in the build and in islands. The global `dayjs` locale follows only the shared instance, which stays Korean during the build.
 
 ### Cross-Layer / Cross-Feature Imports
