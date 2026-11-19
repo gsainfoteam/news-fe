@@ -70,9 +70,12 @@ beforeEach(() => {
     }
     return new Response(null, { status: 404 });
   }) as typeof fetch;
+  // The client made at import saw no window and stays inert.
+  resetAccountClient();
 });
 
 afterEach(() => {
+  Reflect.deleteProperty(globalThis, "window");
   resetAccountClient();
   globalThis.fetch = realFetch;
 });

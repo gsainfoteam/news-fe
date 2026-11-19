@@ -1,7 +1,4 @@
-import {
-  type AccountClient,
-  createAccountClient,
-} from "@infoteam/account-react";
+import { createAccountClient } from "@infoteam/account-react";
 import { ACCOUNT_CLIENT_ID, ACCOUNT_ISSUER } from "astro:env/client";
 
 import { client as apiClient } from "@/@types/api/client.gen";
@@ -17,22 +14,24 @@ export {
   type AccountState,
 } from "@infoteam/account-react";
 
-let account: AccountClient<SignupInput> | undefined;
+function createClient() {
+  const client = createAccountClient<SignupInput>({
+    issuer: ACCOUNT_ISSUER,
+    clientId: ACCOUNT_CLIENT_ID,
+    api: API_URL,
+    silentLogin: false,
+  });
+  apiClient.setConfig({ fetch: client.fetch });
+  return client;
+}
+
+let account = createClient();
 
 export function getAccountClient() {
-  if (!account) {
-    account = createAccountClient<SignupInput>({
-      issuer: ACCOUNT_ISSUER,
-      clientId: ACCOUNT_CLIENT_ID,
-      api: API_URL,
-      silentLogin: false,
-    });
-    apiClient.setConfig({ fetch: account.fetch });
-  }
   return account;
 }
 
+// Stories and tests start each case from a fresh session.
 export function resetAccountClient() {
-  account = undefined;
-  apiClient.setConfig({ fetch: undefined });
+  account = createClient();
 }
