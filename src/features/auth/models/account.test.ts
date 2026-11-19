@@ -40,6 +40,8 @@ beforeEach(() => {
     window: {
       location: { href: "https://news.test/", origin: "https://news.test" },
       history: { replaceState() {} },
+      document: { baseURI: "https://news.test/" },
+      addEventListener() {},
     },
     sessionStorage: new MemoryStorage(),
     localStorage: new MemoryStorage(),
