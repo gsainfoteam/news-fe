@@ -6,6 +6,7 @@ import {
   type AccountError,
   type AccountState,
   meQuery,
+  type SignupInput,
   useAccount,
   type User,
 } from "../models";
@@ -17,13 +18,13 @@ export type Session =
       status: "anonymous";
       failure: LoginFailure | null;
       login: () => void;
-      retryLogin?: (body: unknown) => Promise<void>;
+      retryLogin?: (body: SignupInput) => Promise<void>;
     }
   | { status: "error"; retry: () => void; logout: () => void }
   | { status: "authenticated"; user: User; logout: () => void };
 
 export function useSession(): Session {
-  const account = useAccount();
+  const account = useAccount<SignupInput>();
   const queryClient = useQueryClient();
   const [loginError, setLoginError] = useState<AccountError | null>(null);
   const me = useQuery({
@@ -61,7 +62,7 @@ type SessionInput = Pick<AccountState, "status" | "canRetryLogin"> & {
     refetch: () => unknown;
   };
   login: () => void;
-  retryLogin: (body: unknown) => Promise<void>;
+  retryLogin: (body: SignupInput) => Promise<void>;
   logout: () => void;
 };
 

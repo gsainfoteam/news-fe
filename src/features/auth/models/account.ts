@@ -7,6 +7,8 @@ import { ACCOUNT_CLIENT_ID, ACCOUNT_ISSUER } from "astro:env/client";
 import { client as apiClient } from "@/@types/api/client.gen";
 import { API_URL } from "@/common/lib/api";
 
+import { type SignupInput } from ".";
+
 export {
   AccountError,
   AccountProvider,
@@ -15,11 +17,11 @@ export {
   type AccountState,
 } from "@infoteam/account-react";
 
-let account: AccountClient | undefined;
+let account: AccountClient<SignupInput> | undefined;
 
 export function getAccountClient() {
   if (!account) {
-    account = createAccountClient({
+    account = createAccountClient<SignupInput>({
       issuer: ACCOUNT_ISSUER,
       clientId: ACCOUNT_CLIENT_ID,
       api: API_URL,

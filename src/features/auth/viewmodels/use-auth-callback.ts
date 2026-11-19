@@ -31,7 +31,7 @@ export function useAuthCallback(): AuthCallback {
     canRetryLogin,
     login,
     retryLogin,
-  } = useAccount();
+  } = useAccount<SignupInput>();
   const [loginError, setLoginError] = useState<typeof error>(null);
   // A failed signup replaces the SDK's `session_rejected` error with that
   // failure, but the ticket is still good: the form stays and shows it.
