@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -26,7 +24,6 @@ export type Session =
 export function useSession(): Session {
   const account = useAccount<SignupInput>();
   const queryClient = useQueryClient();
-  const [loginError, setLoginError] = useState<AccountError | null>(null);
   const me = useQuery({
     ...meQuery(),
     enabled: account.isAuthenticated,
@@ -35,13 +32,10 @@ export function useSession(): Session {
 
   return resolveSession({
     status: account.status,
-    error: loginError ?? account.error,
+    error: account.error,
     canRetryLogin: account.canRetryLogin,
     me,
-    login: () => {
-      setLoginError(null);
-      account.login().catch(setLoginError);
-    },
+    login: () => void account.login().catch(() => undefined),
     retryLogin: account.retryLogin,
     logout: () => {
       void account

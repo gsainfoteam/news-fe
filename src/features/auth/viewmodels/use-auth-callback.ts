@@ -32,12 +32,11 @@ export function useAuthCallback(): AuthCallback {
     login,
     retryLogin,
   } = useAccount<SignupInput>();
-  const [loginError, setLoginError] = useState<typeof error>(null);
   // A failed signup replaces the SDK's `session_rejected` error with that
   // failure, but the ticket is still good: the form stays and shows it.
   const [signingUp, setSigningUp] = useState(false);
   const failed = !isLoading && !isAuthenticated && error !== null;
-  const failure = failed ? getLoginFailure(loginError ?? error) : null;
+  const failure = failed ? getLoginFailure(error) : null;
   if (!signingUp && failure === "consent" && canRetryLogin) setSigningUp(true);
 
   useEffect(() => {
@@ -63,7 +62,6 @@ export function useAuthCallback(): AuthCallback {
           // The IdP session usually outlives the 5-minute ticket, so this
           // comes straight back with a fresh one.
           await login();
-          return new Promise(() => undefined);
         }
       },
     };
@@ -72,10 +70,7 @@ export function useAuthCallback(): AuthCallback {
     status: "failed",
     failure,
     ...page,
-    login: () => {
-      setLoginError(null);
-      login().catch(setLoginError);
-    },
+    login: () => void login().catch(() => undefined),
   };
 }
 
