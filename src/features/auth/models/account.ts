@@ -19,7 +19,7 @@ function createClient() {
     issuer: ACCOUNT_ISSUER,
     clientId: ACCOUNT_CLIENT_ID,
     api: API_URL,
-    silentLogin: false,
+    app: "mpa",
   });
   apiClient.setConfig({ fetch: client.fetch });
   return client;

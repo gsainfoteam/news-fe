@@ -8,6 +8,7 @@ import {
   useAccount,
   type User,
 } from "../models";
+import { loginFrom } from "./login";
 import { getLoginFailure, type LoginFailure } from "./login-failure";
 
 export type Session =
@@ -35,7 +36,7 @@ export function useSession(): Session {
     error: account.error,
     canRetryLogin: account.canRetryLogin,
     me,
-    login: () => void account.login().catch(() => undefined),
+    login: () => void loginFrom(account.login),
     retryLogin: account.retryLogin,
     logout: () => {
       void account
