@@ -9,9 +9,11 @@ import { type SignupInput } from ".";
 export {
   AccountError,
   AccountProvider,
+  RequireAuth as AccountGate,
   useAccount,
   type AccountClient,
   type AccountState,
+  type UseAccountResult,
 } from "@infoteam/account-react";
 
 function createClient() {

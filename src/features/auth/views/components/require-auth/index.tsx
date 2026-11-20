@@ -9,20 +9,29 @@ import { cn } from "@/common/lib/cn";
 import { localizePath } from "@/common/lib/languages";
 import { QueryProvider } from "@/common/lib/query-client";
 
-import { type User } from "../../../models";
-import { AuthProvider } from "../../../viewmodels/auth-provider";
+import { type UseAccountResult, type User } from "../../../models";
+import { AuthGate, AuthProvider } from "../../../viewmodels/auth-provider";
+import { loginFrom } from "../../../viewmodels/login";
+import { getLoginFailure } from "../../../viewmodels/login-failure";
 import { useSession } from "../../../viewmodels/use-session";
 import { AuthMessage } from "../auth-message";
 import { LoginFailed } from "../login-failed";
 
 export function RequireAuth({
   frame = defaultFrame,
-  ...props
+  loginScreen,
+  children,
 }: RequireAuth.Props) {
   return (
     <QueryProvider>
       <AuthProvider fallback={frame(<Loading />)}>
-        <RequireAuthContent frame={frame} {...props} />
+        <AuthGate
+          fallback={(account) =>
+            frame(<SignedOut account={account} loginScreen={loginScreen} />)
+          }
+        >
+          <SignedIn frame={frame}>{children}</SignedIn>
+        </AuthGate>
       </AuthProvider>
     </QueryProvider>
   );
@@ -44,16 +53,44 @@ const defaultFrame = (screen: ReactNode) => (
   </div>
 );
 
-function RequireAuthContent({
-  children,
-  frame = defaultFrame,
+function SignedOut({
+  account,
   loginScreen,
-}: RequireAuth.Props) {
+}: {
+  account: UseAccountResult;
+  loginScreen: RequireAuth.Props["loginScreen"];
+}) {
   const { t, i18n } = useTranslation();
+  if (account.isLoading) return <Loading />;
+
+  const login = () => void loginFrom(account.login);
+  if (account.error) {
+    return (
+      <LoginFailed
+        failure={getLoginFailure(account.error)}
+        onLogin={login}
+        backHref={localizePath(i18n.language, "/")}
+        backLabel={t("auth.toHome", "홈으로 가기")}
+      />
+    );
+  }
+  return loginScreen ? loginScreen(login) : <LoginRequired onLogin={login} />;
+}
+
+// Signed in to the IdP; the page still waits for news-be's profile.
+function SignedIn({
+  frame,
+  children,
+}: {
+  frame: NonNullable<RequireAuth.Props["frame"]>;
+  children: RequireAuth.Props["children"];
+}) {
+  const { t } = useTranslation();
   const session = useSession();
 
   switch (session.status) {
     case "loading":
+    case "anonymous":
       return frame(<Loading />);
     case "error":
       return frame(
@@ -64,21 +101,6 @@ function RequireAuthContent({
           onRetry={session.retry}
           className="w-full max-w-[420px] self-start"
         />,
-      );
-    case "anonymous":
-      return frame(
-        session.failure ? (
-          <LoginFailed
-            failure={session.failure}
-            onLogin={session.login}
-            backHref={localizePath(i18n.language, "/")}
-            backLabel={t("auth.toHome", "홈으로 가기")}
-          />
-        ) : loginScreen ? (
-          loginScreen(session.login)
-        ) : (
-          <LoginRequired onLogin={session.login} />
-        ),
       );
     case "authenticated":
       return typeof children === "function"
