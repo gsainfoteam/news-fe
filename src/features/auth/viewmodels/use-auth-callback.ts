@@ -66,7 +66,8 @@ export function useAuthCallback(): AuthCallback {
           if (!isTicketExpired(error)) throw error;
           // The IdP session usually outlives the 5-minute ticket, so this
           // comes straight back with a fresh one.
-          await loginFrom(login, page.returnTo);
+          // Unlike `loginFrom`, a failure here reaches the form, which shows it.
+          await login({ returnTo: page.returnTo });
         }
       },
     };
