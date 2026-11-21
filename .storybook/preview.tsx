@@ -7,7 +7,10 @@ import { sb } from "storybook/test";
 import { queryClient } from "../src/common/lib/query-client";
 import { type renewAccount } from "../src/features/auth/models/__mocks__/account";
 import * as account from "../src/features/auth/models/account";
-import { handleSession } from "../src/features/auth/models/mocks";
+import {
+  handleSession,
+  settlePendingSessions,
+} from "../src/features/auth/models/mocks";
 
 import { withLocale, withTheme } from "./decorators";
 
@@ -47,6 +50,7 @@ const preview: Preview = {
     // story would show the previous story's cached responses.
     () => {
       queryClient.clear();
+      settlePendingSessions();
       mocked.renewAccount();
     },
   ],
