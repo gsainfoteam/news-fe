@@ -2,16 +2,24 @@ import { type Preview } from "@storybook/react-vite";
 import { isCommonAssetRequest } from "msw";
 import { setupWorker } from "msw/browser";
 import { mswLoader } from "msw-storybook-addon/csf3";
+import { sb } from "storybook/test";
 
 import { queryClient } from "../src/common/lib/query-client";
+import { type renewAccount } from "../src/features/auth/models/__mocks__/account";
+import * as account from "../src/features/auth/models/account";
 import {
   handleSession,
-  resetAccountClient,
+  settlePendingSessions,
 } from "../src/features/auth/models/mocks";
 
 import { withLocale, withTheme } from "./decorators";
 
 import "../src/styles/global.css";
+
+sb.mock(import("../src/features/auth/models/account.ts"));
+// Only the mocked module, imported by its original path, has `renewAccount`;
+// importing the mock file directly loads a separate copy of it.
+const mocked = account as unknown as { renewAccount: typeof renewAccount };
 
 // The addon's default setup throws when the browser refuses service workers
 // (embedded browsers, some privacy modes), and that error replaces every
@@ -42,7 +50,8 @@ const preview: Preview = {
     // story would show the previous story's cached responses.
     () => {
       queryClient.clear();
-      resetAccountClient();
+      settlePendingSessions();
+      mocked.renewAccount();
     },
   ],
   globalTypes: {

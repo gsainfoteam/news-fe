@@ -15,11 +15,14 @@ import { useSession } from "../../../viewmodels/use-session";
 import { AuthMessage } from "../auth-message";
 import { LoginFailed } from "../login-failed";
 
-export function RequireAuth(props: RequireAuth.Props) {
+export function RequireAuth({
+  frame = defaultFrame,
+  ...props
+}: RequireAuth.Props) {
   return (
     <QueryProvider>
-      <AuthProvider>
-        <RequireAuthContent {...props} />
+      <AuthProvider fallback={frame(<Loading />)}>
+        <RequireAuthContent frame={frame} {...props} />
       </AuthProvider>
     </QueryProvider>
   );
@@ -42,20 +45,33 @@ const defaultFrame = (screen: ReactNode) => (
 );
 
 function RequireAuthContent({
-  children,
-  frame = defaultFrame,
+  frame,
   loginScreen,
-}: RequireAuth.Props) {
+  children,
+}: RequireAuth.Props & { frame: NonNullable<RequireAuth.Props["frame"]> }) {
   const { t, i18n } = useTranslation();
   const session = useSession();
 
   switch (session.status) {
     case "loading":
+      return frame(<Loading />);
+    case "anonymous":
+      if (session.failure) {
+        return frame(
+          <LoginFailed
+            failure={session.failure}
+            onLogin={session.login}
+            backHref={localizePath(i18n.language, "/")}
+            backLabel={t("auth.toHome", "홈으로 가기")}
+          />,
+        );
+      }
       return frame(
-        <div role="status" className="flex flex-col items-center gap-3">
-          <Loader2Icon className="size-6 animate-spin text-subtle-foreground" />
-          <span className="sr-only">{t("auth.loading", "불러오는 중")}</span>
-        </div>,
+        loginScreen ? (
+          loginScreen(session.login)
+        ) : (
+          <LoginRequired onLogin={session.login} />
+        ),
       );
     case "error":
       return frame(
@@ -67,26 +83,21 @@ function RequireAuthContent({
           className="w-full max-w-[420px] self-start"
         />,
       );
-    case "anonymous":
-      return frame(
-        session.failure ? (
-          <LoginFailed
-            failure={session.failure}
-            onLogin={session.login}
-            backHref={localizePath(i18n.language, "/")}
-            backLabel={t("auth.toHome", "홈으로 가기")}
-          />
-        ) : loginScreen ? (
-          loginScreen(session.login)
-        ) : (
-          <LoginRequired onLogin={session.login} />
-        ),
-      );
     case "authenticated":
       return typeof children === "function"
         ? children({ user: session.user, logout: session.logout })
         : children;
   }
+}
+
+function Loading() {
+  const { t } = useTranslation();
+  return (
+    <div role="status" className="flex flex-col items-center gap-3">
+      <Loader2Icon className="size-6 animate-spin text-subtle-foreground" />
+      <span className="sr-only">{t("auth.loading", "불러오는 중")}</span>
+    </div>
+  );
 }
 
 function LoginRequired({ onLogin }: { onLogin: () => void }) {

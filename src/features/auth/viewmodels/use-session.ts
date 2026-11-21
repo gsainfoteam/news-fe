@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
@@ -9,23 +7,18 @@ import {
   useAccount,
   type User,
 } from "../models";
+import { loginFrom } from "./login";
 import { getLoginFailure, type LoginFailure } from "./login-failure";
 
 export type Session =
   | { status: "loading" }
-  | {
-      status: "anonymous";
-      failure: LoginFailure | null;
-      login: () => void;
-      retryLogin?: (body: unknown) => Promise<void>;
-    }
+  | { status: "anonymous"; failure: LoginFailure | null; login: () => void }
   | { status: "error"; retry: () => void; logout: () => void }
   | { status: "authenticated"; user: User; logout: () => void };
 
 export function useSession(): Session {
   const account = useAccount();
   const queryClient = useQueryClient();
-  const [loginError, setLoginError] = useState<AccountError | null>(null);
   const me = useQuery({
     ...meQuery(),
     enabled: account.isAuthenticated,
@@ -34,14 +27,9 @@ export function useSession(): Session {
 
   return resolveSession({
     status: account.status,
-    error: loginError ?? account.error,
-    canRetryLogin: account.canRetryLogin,
+    error: account.error,
     me,
-    login: () => {
-      setLoginError(null);
-      account.login().catch(setLoginError);
-    },
-    retryLogin: account.retryLogin,
+    login: () => void loginFrom(account.login),
     logout: () => {
       void account
         .logout()
@@ -52,8 +40,8 @@ export function useSession(): Session {
   });
 }
 
-type SessionInput = Pick<AccountState, "status" | "canRetryLogin"> & {
-  error: Pick<AccountError, "code" | "details"> | null;
+type SessionInput = Pick<AccountState, "status"> & {
+  error: AccountError | null;
   me: {
     isPending: boolean;
     isError: boolean;
@@ -61,24 +49,22 @@ type SessionInput = Pick<AccountState, "status" | "canRetryLogin"> & {
     refetch: () => unknown;
   };
   login: () => void;
-  retryLogin: (body: unknown) => Promise<void>;
   logout: () => void;
 };
 
-export function resolveSession(input: SessionInput): Session {
-  const { status, error, me, logout } = input;
-
+export function resolveSession({
+  status,
+  error,
+  me,
+  login,
+  logout,
+}: SessionInput): Session {
   if (status === "loading") return { status: "loading" };
   if (status === "unauthenticated") {
-    const failure = error ? getLoginFailure(error) : null;
     return {
       status: "anonymous",
-      failure,
-      login: input.login,
-      retryLogin:
-        failure === "consent" && input.canRetryLogin
-          ? input.retryLogin
-          : undefined,
+      failure: error ? getLoginFailure(error) : null,
+      login,
     };
   }
 

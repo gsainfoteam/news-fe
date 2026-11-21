@@ -147,7 +147,8 @@ export default defineConfig([
       ],
       "check-file/folder-naming-convention": [
         "error",
-        { "src/{common,features}/**/": "KEBAB_CASE" },
+        // Storybook finds a module mock only in a folder named `__mocks__`.
+        { "src/{common,features}/**/!(__mocks__)/": "KEBAB_CASE" },
       ],
 
       // Layer access rules (View -> ViewModel -> Model)

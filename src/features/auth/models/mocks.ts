@@ -9,8 +9,6 @@ import {
 
 import { type Permission, type User } from ".";
 
-export { resetAccountClient } from "./account";
-
 export const MOCK_ACCESS_TOKEN = "mock-access-token";
 
 export function handleSession() {
@@ -24,11 +22,20 @@ export function handleNoSession() {
   return handleRefresh(() => unauthorized());
 }
 
+const pendingSessions = new Set<() => void>();
+
 export function handleSessionPending() {
   return handleRefresh(async () => {
-    await delay("infinite");
+    await new Promise<void>((resolve) => pendingSessions.add(resolve));
     return unauthorized();
   });
+}
+
+// A pending refresh holds the SDK's cross-tab refresh lock, so the next
+// story's client would wait on it forever. Storybook ends it between stories.
+export function settlePendingSessions() {
+  for (const settle of pendingSessions) settle();
+  pendingSessions.clear();
 }
 
 export function handleSessionError() {

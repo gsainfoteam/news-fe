@@ -40,7 +40,7 @@ export function AccountMenu({ lng }: AccountMenu.Props) {
   return (
     <I18nextProvider i18n={i18n}>
       <QueryProvider>
-        <AuthProvider>
+        <AuthProvider fallback={<AccountMenuSkeleton />}>
           <AccountMenuContent />
         </AuthProvider>
       </QueryProvider>
