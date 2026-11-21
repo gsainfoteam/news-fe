@@ -2,7 +2,6 @@ import { type LoginDto, type UserDto } from "@/@types/api/types.gen";
 import { zLoginDto, zUpdateNicknameDto, zUserDto } from "@/@types/api/zod.gen";
 
 export * from "./account";
-export * from "./login-return";
 
 export {
   getMeOptions as meQuery,

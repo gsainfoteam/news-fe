@@ -6,12 +6,7 @@ import {
   localizePath,
 } from "@/common/lib/languages";
 
-import {
-  AccountError,
-  readReturnTo,
-  type SignupInput,
-  useAccount,
-} from "../models";
+import { AccountError, type SignupInput, useAccount } from "../models";
 import { loginFrom } from "./login";
 import { getLoginFailure, type LoginFailure } from "./login-failure";
 
@@ -43,8 +38,9 @@ export function useAuthCallback(): AuthCallback {
     canRetryLogin,
     login,
     retryLogin,
+    loginReturnTo,
   } = useAccount<SignupInput>();
-  const [page] = useState(() => getCallbackPage(readReturnTo()));
+  const page = getCallbackPage(loginReturnTo);
   // A failed signup replaces the SDK's `session_rejected` error with that
   // failure, but the ticket is still good: the form stays and shows it.
   const [signingUp, setSigningUp] = useState(false);
