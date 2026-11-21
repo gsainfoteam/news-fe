@@ -3,13 +3,13 @@ import { createElement, type ReactNode } from "react";
 import {
   AccountGate,
   AccountProvider,
-  getAccountClient,
+  account,
   type UseAccountResult,
 } from "../models";
 
 export function AuthProvider({ fallback, children }: AuthProvider.Props) {
   return createElement(AccountProvider, {
-    client: getAccountClient(),
+    client: account,
     fallback,
     children,
   });

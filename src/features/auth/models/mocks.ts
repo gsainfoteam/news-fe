@@ -9,8 +9,6 @@ import {
 
 import { type Permission, type User } from ".";
 
-export { resetAccountClient } from "./account";
-
 export const MOCK_ACCESS_TOKEN = "mock-access-token";
 
 export function handleSession() {

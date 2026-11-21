@@ -16,24 +16,11 @@ export {
   type UseAccountResult,
 } from "@infoteam/account-react";
 
-function createClient() {
-  const client = createAccountClient<SignupInput>({
-    issuer: ACCOUNT_ISSUER,
-    clientId: ACCOUNT_CLIENT_ID,
-    api: API_URL,
-    app: "mpa",
-  });
-  apiClient.setConfig({ fetch: client.fetch });
-  return client;
-}
+export const account = createAccountClient<SignupInput>({
+  issuer: ACCOUNT_ISSUER,
+  clientId: ACCOUNT_CLIENT_ID,
+  api: API_URL,
+  app: "mpa",
+});
 
-let account = createClient();
-
-export function getAccountClient() {
-  return account;
-}
-
-// Stories and tests start each case from a fresh session.
-export function resetAccountClient() {
-  account = createClient();
-}
+apiClient.setConfig({ fetch: account.fetch });
