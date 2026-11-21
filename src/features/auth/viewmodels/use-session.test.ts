@@ -6,11 +6,9 @@ import { mockUser } from "../models/mocks";
 
 const base = {
   status: "authenticated" as const,
-  canRetryLogin: false,
   error: null,
   me: { isPending: false, isError: false, refetch: () => {} },
   login: () => {},
-  retryLogin: async () => {},
   logout: () => {},
 };
 
@@ -41,22 +39,17 @@ describe("resolveSession", () => {
     expect(refetch).toHaveBeenCalled();
   });
 
-  test("offers retryLogin only for a consent rejection with a ticket", () => {
-    const rejected = {
-      ...base,
-      status: "unauthenticated" as const,
-      error: new AccountError("session_rejected", {
-        details: { reason: "consent_required" },
-      }),
-    };
-    expect(resolveSession({ ...rejected, canRetryLogin: true })).toMatchObject({
+  test("is anonymous with the failure of the last login, if any", () => {
+    const anonymous = { ...base, status: "unauthenticated" as const };
+    expect(resolveSession(anonymous)).toMatchObject({
       status: "anonymous",
-      failure: "consent",
-      retryLogin: base.retryLogin,
+      failure: null,
     });
-    expect(resolveSession(rejected)).toMatchObject({ retryLogin: undefined });
     expect(
-      resolveSession({ ...base, status: "unauthenticated" }),
-    ).toMatchObject({ status: "anonymous", failure: null });
+      resolveSession({
+        ...anonymous,
+        error: new AccountError("network_error"),
+      }),
+    ).toMatchObject({ status: "anonymous", failure: "network" });
   });
 });
