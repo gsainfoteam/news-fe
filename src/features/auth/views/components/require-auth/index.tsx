@@ -11,7 +11,7 @@ import { QueryProvider } from "@/common/lib/query-client";
 
 import { type User } from "../../../models";
 import { AuthProvider } from "../../../viewmodels/auth-provider";
-import { useSession } from "../../../viewmodels/use-session";
+import { type Session, useSession } from "../../../viewmodels/use-session";
 import { AuthMessage } from "../auth-message";
 import { LoginFailed } from "../login-failed";
 
@@ -30,15 +30,16 @@ export function RequireAuth({
 
 export namespace RequireAuth {
   export type Signed = { user: User; logout: () => void };
+  export type Frame = (screen: ReactNode) => ReactNode;
 
   export type Props = {
     children: ReactNode | ((session: Signed) => ReactNode);
-    frame?: (screen: ReactNode) => ReactNode;
+    frame?: Frame;
     loginScreen?: (login: () => void) => ReactNode;
   };
 }
 
-const defaultFrame = (screen: ReactNode) => (
+const defaultFrame: RequireAuth.Frame = (screen) => (
   <div className="flex justify-center px-4 pt-[120px] pb-[140px] mobile:pt-20 mobile:pb-24">
     {screen}
   </div>
@@ -48,45 +49,53 @@ function RequireAuthContent({
   frame,
   loginScreen,
   children,
-}: RequireAuth.Props & { frame: NonNullable<RequireAuth.Props["frame"]> }) {
-  const { t, i18n } = useTranslation();
+}: Omit<RequireAuth.Props, "frame"> & { frame: RequireAuth.Frame }) {
   const session = useSession();
+  if (session.status !== "authenticated") {
+    return frame(<SessionScreen session={session} loginScreen={loginScreen} />);
+  }
+  return typeof children === "function"
+    ? children({ user: session.user, logout: session.logout })
+    : children;
+}
 
+function SessionScreen({
+  session,
+  loginScreen,
+}: {
+  session: Exclude<Session, { status: "authenticated" }>;
+  loginScreen: RequireAuth.Props["loginScreen"];
+}) {
+  const { t, i18n } = useTranslation();
   switch (session.status) {
     case "loading":
-      return frame(<Loading />);
+      return <Loading />;
     case "anonymous":
       if (session.failure) {
-        return frame(
+        return (
           <LoginFailed
             failure={session.failure}
             onLogin={session.login}
             backHref={localizePath(i18n.language, "/")}
             backLabel={t("auth.toHome", "홈으로 가기")}
-          />,
+          />
         );
       }
-      return frame(
-        loginScreen ? (
-          loginScreen(session.login)
-        ) : (
-          <LoginRequired onLogin={session.login} />
-        ),
+      return loginScreen ? (
+        loginScreen(session.login)
+      ) : (
+        <LoginRequired onLogin={session.login} />
       );
     case "error":
-      return frame(
+      return (
         <ErrorState
           title={t("auth.error.title", "계정 정보를 불러오지 못했습니다")}
           description={t("error.description", "잠시 후 다시 시도해 주세요.")}
           retryLabel={t("error.retry", "다시 시도")}
           onRetry={session.retry}
           className="w-full max-w-[420px] self-start"
-        />,
+        />
       );
-    case "authenticated":
-      return typeof children === "function"
-        ? children({ user: session.user, logout: session.logout })
-        : children;
   }
 }
 
