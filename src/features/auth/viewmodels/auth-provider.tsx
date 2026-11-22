@@ -1,13 +1,13 @@
-import { createElement, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import { account, AccountProvider } from "../models";
 
 export function AuthProvider({ fallback, children }: AuthProvider.Props) {
-  return createElement(AccountProvider, {
-    client: account,
-    fallback,
-    children,
-  });
+  return (
+    <AccountProvider client={account} fallback={fallback}>
+      {children}
+    </AccountProvider>
+  );
 }
 
 export namespace AuthProvider {

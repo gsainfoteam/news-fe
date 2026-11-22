@@ -1,4 +1,4 @@
-import { createElement, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -11,7 +11,9 @@ export const queryClient = new QueryClient({
 });
 
 export function QueryProvider({ children }: QueryProvider.Props) {
-  return createElement(QueryClientProvider, { client: queryClient }, children);
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 }
 
 export namespace QueryProvider {
