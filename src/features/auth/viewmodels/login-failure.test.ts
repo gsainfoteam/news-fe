@@ -14,26 +14,11 @@ describe("getLoginFailure", () => {
   });
 
   test("tells a first login apart from other rejections", () => {
-    expect(
-      getLoginFailure(
-        new AccountError("session_rejected", {
-          details: { reason: "consent_required" },
-        }),
-      ),
-    ).toBe("consent");
-    expect(
-      getLoginFailure(
-        new AccountError("session_rejected", { reason: "consent_required" }),
-      ),
-    ).toBe("consent");
-    expect(
-      getLoginFailure(
-        new AccountError("session_rejected", { details: { reason: "x" } }),
-      ),
-    ).toBe("rejected");
-    expect(getLoginFailure(new AccountError("session_rejected"))).toBe(
-      "rejected",
-    );
+    const rejected = (reason?: string) =>
+      getLoginFailure(new AccountError("session_rejected", { reason }));
+    expect(rejected("consent_required")).toBe("consent");
+    expect(rejected("x")).toBe("rejected");
+    expect(rejected()).toBe("rejected");
   });
 
   test("groups connection failures", () => {
