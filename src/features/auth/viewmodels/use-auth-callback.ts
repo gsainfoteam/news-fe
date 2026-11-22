@@ -63,7 +63,7 @@ export function useAuthCallback(): AuthCallback {
         try {
           await retryLogin(input);
         } catch (error) {
-          if (!isTicketExpired(error)) throw error;
+          if (!AccountError.is(error) || error.kind !== "expired") throw error;
           // The IdP session usually outlives the 5-minute ticket, so this
           // comes straight back with a fresh one.
           // Unlike `loginFrom`, a failure here reaches the form, which shows it.
@@ -84,12 +84,4 @@ export function getCallbackPage(returnTo: string | null): CallbackPage {
   if (!returnTo) return { returnTo: "/", lng: "ko" };
   const { pathname } = new URL(returnTo, "https://localhost");
   return { returnTo, lng: getPathLanguage(pathname) };
-}
-
-// news-be answers a ticket older than 5 minutes (or one it can't verify)
-// with a bare 401, not `invalid_ticket`, so the SDK reports it as `unknown`.
-export function isTicketExpired(error: unknown) {
-  return (
-    AccountError.is(error) && (error.kind === "expired" || error.status === 401)
-  );
 }
