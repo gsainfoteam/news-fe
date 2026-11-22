@@ -20,10 +20,11 @@ const boundariesElements = [
   // Listed first: an element takes the first pattern it matches.
   { type: "stories", pattern: "src/**/*.stories.tsx", mode: "full" },
   { type: "tests", pattern: "src/**/*.test.{ts,tsx}", mode: "full" },
-  // MSW handlers and fixtures (`models/mocks.ts`), for stories and tests only.
+  // MSW handlers and fixtures (`models/mocks.ts`) and Storybook module mocks
+  // (`models/__mocks__/`), for stories and tests only.
   {
     type: "feature-mocks",
-    pattern: "src/features/*/models/*mocks.ts",
+    pattern: "src/features/*/models/{*mocks.ts,__mocks__/**}",
     mode: "full",
     capture: ["feature"],
   },
