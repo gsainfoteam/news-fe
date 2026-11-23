@@ -20,10 +20,11 @@ const boundariesElements = [
   // Listed first: an element takes the first pattern it matches.
   { type: "stories", pattern: "src/**/*.stories.tsx", mode: "full" },
   { type: "tests", pattern: "src/**/*.test.{ts,tsx}", mode: "full" },
-  // MSW handlers and fixtures (`models/mocks.ts`), for stories and tests only.
+  // MSW handlers and fixtures (`models/mocks.ts`) and Storybook module mocks
+  // (`models/__mocks__/`), for stories and tests only.
   {
     type: "feature-mocks",
-    pattern: "src/features/*/models/*mocks.ts",
+    pattern: "src/features/*/models/{*mocks.ts,__mocks__/**}",
     mode: "full",
     capture: ["feature"],
   },
@@ -147,7 +148,8 @@ export default defineConfig([
       ],
       "check-file/folder-naming-convention": [
         "error",
-        { "src/{common,features}/**/": "KEBAB_CASE" },
+        // Storybook finds a module mock only in a folder named `__mocks__`.
+        { "src/{common,features}/**/!(__mocks__)/": "KEBAB_CASE" },
       ],
 
       // Layer access rules (View -> ViewModel -> Model)

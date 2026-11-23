@@ -38,20 +38,6 @@ const localizedNotFound = {
   },
 };
 
-/** @type {import("astro").AstroIntegration} */
-const flatAuthCallback = {
-  name: "flat-auth-callback",
-  hooks: {
-    "astro:build:done": async ({ dir }) => {
-      for (const prefix of ["", "en/"]) {
-        const from = new URL(`${prefix}auth/callback/index.html`, dir);
-        await rename(from, new URL(`${prefix}auth/callback.html`, dir));
-        await rm(new URL(`${prefix}auth/callback/`, dir), { recursive: true });
-      }
-    },
-  },
-};
-
 // https://astro.build/config
 export default defineConfig({
   // OG tags, canonical, and hreflang need absolute URLs on the domain that
@@ -61,7 +47,7 @@ export default defineConfig({
   // Staging news-be and its S3 bucket allow only this origin through CORS.
   server: { port: 5173 },
 
-  integrations: [react(), localizedNotFound, flatAuthCallback],
+  integrations: [react(), localizedNotFound],
 
   // Article photos are converted to webp at build time (common/lib/image.ts).
   // news-be serves uploads path-style from S3 (`s3.<region>.amazonaws.com/

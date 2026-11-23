@@ -1,15 +1,20 @@
+import {
+  type AccountClient,
+  createAccountClient,
+} from "@infoteam/account-react";
+import { ACCOUNT_CLIENT_ID, ACCOUNT_ISSUER } from "astro:env/client";
 import { delay, HttpResponse } from "msw";
 
+import { client as apiClient } from "@/@types/api/client.gen";
 import {
   handleGetMe,
   handleLogout,
   handleRefresh,
   handleUpdateNickname,
 } from "@/@types/api/msw.gen";
+import { API_URL } from "@/common/lib/api";
 
-import { type Permission, type User } from ".";
-
-export { resetAccountClient } from "./account";
+import { type Permission, type SignupInput, type User } from ".";
 
 export const MOCK_ACCESS_TOKEN = "mock-access-token";
 
@@ -24,11 +29,33 @@ export function handleNoSession() {
   return handleRefresh(() => unauthorized());
 }
 
+const pendingSessions = new Set<() => void>();
+
 export function handleSessionPending() {
   return handleRefresh(async () => {
-    await delay("infinite");
+    await new Promise<void>((resolve) => pendingSessions.add(resolve));
     return unauthorized();
   });
+}
+
+// Storybook swaps `./account` for `./__mocks__/account`, which re-exports
+// this (`sb.mock` in .storybook/preview.tsx). A client restores its session
+// only once, so each story gets a new one for the session its handlers give.
+export let account: AccountClient<SignupInput>;
+
+export function renewAccount() {
+  // A pending refresh holds the SDK's cross-tab refresh lock, so the new
+  // client would wait on it forever.
+  for (const settle of pendingSessions) settle();
+  pendingSessions.clear();
+
+  account = createAccountClient<SignupInput>({
+    issuer: ACCOUNT_ISSUER,
+    clientId: ACCOUNT_CLIENT_ID,
+    api: API_URL,
+    app: "mpa",
+  });
+  apiClient.setConfig({ fetch: account.fetch });
 }
 
 export function handleSessionError() {
